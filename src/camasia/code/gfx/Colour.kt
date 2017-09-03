@@ -4,8 +4,15 @@ package camasia.code.gfx
  * Created by brian on 9/1/17.
  */
 
-typealias SingleColour = Short
+/**
+ * This type is for clarifications that it's for storing a colour value
+ */
+typealias Colour12_bit = Short
 
+/**
+ * @author Brian
+ * @since version
+ */
 enum class Position {
 	RED, YELLOW, GREEN, BLUE
 }
@@ -18,13 +25,14 @@ enum class Position {
  * @param yellow The colour substituting for the yellow pixels
  * @param green The colour substituting for the green pixels
  * @param blue The colour substituting for the blue pixels
+ * @constructor Creates a Colour variable from the colours given
  */
 class Colour(red: Int, yellow: Int, green: Int, blue: Int = 0) {
 	
-	val red: SingleColour
-	val yellow: SingleColour
-	val green: SingleColour
-	val blue: SingleColour
+	val red: Colour12_bit
+	val yellow: Colour12_bit
+	val green: Colour12_bit
+	val blue: Colour12_bit
 	
 	init {
 		val max = 0xfff
@@ -52,7 +60,7 @@ class Colour(red: Int, yellow: Int, green: Int, blue: Int = 0) {
 		}.toInt()
 	}
 	
-	operator fun get(i: Position): Int = when (i) {
+	operator fun get(colour: Position): Int = when (colour) {
 		Position.RED -> red
 		Position.YELLOW -> yellow
 		Position.GREEN -> green
@@ -80,8 +88,5 @@ class Colour(red: Int, yellow: Int, green: Int, blue: Int = 0) {
 	red = tOb.get(Position.RED)
 	red = tOb[0]
 	red = tOb[Position.RED]
-	
-
-
 }*/
 
