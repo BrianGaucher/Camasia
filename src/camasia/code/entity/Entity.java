@@ -51,6 +51,7 @@ public class Entity {
 
 	/** Extended in Mob.java */
 	public void hurt(Mob mob, int dmg, int attackDir) {
+	
 	}
 
 	/** Extended in Mob.java */
@@ -148,11 +149,13 @@ public class Entity {
 	}
 
 	/** returns if mobs can block you (aka: can't pass through them) */
-	public boolean isBlockableBy(Mob mob) {
+	public boolean canBeBlockedBy(Mob mob) {
 		return true; // yes they can block you
 	}
-
-	/** Used in ItenEntity.java, extended with Player.java */
+	 
+	 /**
+	  * Used in ItemEntity.java, extended with Player.java
+	  */
 	public void touchItem(ItemEntity itemEntity) {
 	}
 

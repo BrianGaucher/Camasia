@@ -512,11 +512,11 @@ public class LevelGen {
 		/* Note: I changed a bit of this method to make it a lot better. -David */
 
         int d = 0; // Depth used when looking at the underground map
-        boolean hasquit = false; // Determines if the player has quit the program or not.
-        while (!hasquit) { //If the player has not quit the map
+        boolean hasQuit = false; // Determines if the player has quit the program or not.
+        while ( !hasQuit ) { //If the player has not quit the map
             int w = 128; // width of the map
             int h = 128; // height of the map
-            int m = 0; // map being looked at (0 = overworld, 1 = underground, 2 = sky)
+            int m = 0; // map being looked at (0 = overWorld, 1 = underground, 2 = sky)
             byte[] map; // the map
 			
 			/* The switch statement is like a short if-else method.
@@ -593,7 +593,7 @@ public class LevelGen {
 			   If you press the red "x" close mark, the window will return -1 */
 
             // If the dialog returns -1 (red "x" button) or 1 ("Quit" button) then...
-            if (o == -1 || o == 1) hasquit = true; // stop the loop and close the program.
+            if ( o == -1 || o == 1 ) hasQuit = true; // stop the loop and close the program.
         }
     }
 	 

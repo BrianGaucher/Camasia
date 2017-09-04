@@ -75,7 +75,7 @@ public class Mob extends Entity {
 	}
 
 	public boolean blocks(Entity e) { // Check if another entity would be prevented from moving through this one
-		return e.isBlockableBy(this); // Call the method on the other entity to determine this, and return it
+		 return e.canBeBlockedBy( this ); // Call the method on the other entity to determine this, and return it
 	}
 
 	public void hurt(Tile tile, int x, int y, int damage) { // Hurt the mob, when the source of damage is a tile

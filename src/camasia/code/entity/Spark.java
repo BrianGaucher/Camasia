@@ -47,7 +47,7 @@ public class Spark extends Entity {
 	}
 
 	/** Can this entity block you? Nope. */
-	public boolean isBlockableBy(Mob mob) {
+	public boolean canBeBlockedBy(Mob mob) {
 		return false;
 	}
 

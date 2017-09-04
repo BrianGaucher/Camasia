@@ -1,7 +1,9 @@
 package camasia.code.gfx
 
 /**
- * Created by brian on 9/1/17.
+ * @author Brian Gaucher
+ * @since 2017/09/03
+ * 0.0.0.1.2
  */
 
 /**
@@ -26,6 +28,7 @@ enum class Position {
  * @param green The colour substituting for the green pixels
  * @param blue The colour substituting for the blue pixels
  * @constructor Creates a Colour variable from the colours given
+ * @sample Colour(red = 0xfff, yellow = 0xf80, green = 0x0f0, blue = 0x00f)
  */
 class Colour(red: Int, yellow: Int, green: Int, blue: Int = 0) {
 	

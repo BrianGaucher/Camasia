@@ -18,3 +18,17 @@ data class Quadruple<A, B, C, D>(val a: A, val b: B, val c: C, val d: D)
 fun Quadruple<Short, Short, Short, Short>.toInt(): Quadruple<Int, Int, Int, Int> {
 	return Quadruple(a.toInt(), b.toInt(), c.toInt(), d.toInt())
 }
+
+//I eventually want to use a typealias instead to remove overhead
+typealias Coordinate = Pair<Int, Int>
+
+/**
+ * Used for storing a coordinate
+ * @param X The X-coordinate
+ * @param Y The Y-coordinate
+ * @property X The X-coordinate
+ * @property Y The Y-coordinate
+ */
+data class LegacyCoordinate(val X: Int, val Y: Int) {
+	fun toCoordinate(): Coordinate = Coordinate(X, Y)
+}

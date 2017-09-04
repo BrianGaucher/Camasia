@@ -56,8 +56,8 @@ public class ItemEntity extends Entity {
 		xx += gotx - expectedx; // new xx position based on the difference between gotx and expectedx
 		yy += goty - expectedy; // new yy position based on the difference between goty and expectedy
 	}
-
-	public boolean isBlockableBy(Mob mob) {
+	 
+	 public boolean canBeBlockedBy(Mob mob) {
 		return false; // mobs cannot block this
 	}
 
