@@ -9,8 +9,8 @@ package camasia.code.gfx
  * @param c Third value
  * @param d Fourth value
  */
-
 data class Quadruple<A, B, C, D>(val a: A, val b: B, val c: C, val d: D)
+
 
 /**
  * This converts all the singleColour/Short into Ints
@@ -18,6 +18,8 @@ data class Quadruple<A, B, C, D>(val a: A, val b: B, val c: C, val d: D)
 fun Quadruple<Short, Short, Short, Short>.toInt(): Quadruple<Int, Int, Int, Int> {
 	return Quadruple(a.toInt(), b.toInt(), c.toInt(), d.toInt())
 }
+
+
 
 //I eventually want to use a typealias instead to remove overhead
 typealias Coordinate = Pair<Int, Int>
@@ -32,3 +34,9 @@ typealias Coordinate = Pair<Int, Int>
 data class LegacyCoordinate(val X: Int, val Y: Int) {
 	fun toCoordinate(): Coordinate = Coordinate(X, Y)
 }
+
+
+/**
+ * This type is for clarifications that it's for storing a colour value
+ */
+typealias Colour12_bit = Short

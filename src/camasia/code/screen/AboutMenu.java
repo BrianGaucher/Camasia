@@ -27,7 +27,7 @@ public class AboutMenu extends Menu {
 		
 		Font.draw("About Minicraft", screen, 2 * 8 + 4, 1 * 8, Color.get(0, 555, 555, 555)); //draws Title text
 		Font.draw("Minicraft was made", screen, 0 * 8 + 4, 3 * 8, Color.get(0, 333, 333, 333)); // draws text
-		Font.draw("by Markus Persson", screen, 0 * 8 + 4, 4 * 8, Color.get(0, 333, 333, 333)); // draws text
+		 Font.draw( "by Markus Person", screen, 0 * 8 + 4, 4 * 8, Color.get( 0, 333, 333, 333 ) ); // draws text
 		Font.draw("For the 22'nd ludum", screen, 0 * 8 + 4, 5 * 8, Color.get(0, 333, 333, 333)); // draws text
 		Font.draw("dare competition in", screen, 0 * 8 + 4, 6 * 8, Color.get(0, 333, 333, 333)); // draws text
 		Font.draw("december 2011.", screen, 0 * 8 + 4, 7 * 8, Color.get(0, 333, 333, 333)); // draws text

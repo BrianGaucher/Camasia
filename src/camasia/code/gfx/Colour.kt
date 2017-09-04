@@ -1,28 +1,12 @@
 package camasia.code.gfx
 
-/**
- * @author Brian Gaucher
- * @since 2017/09/03
- * 0.0.0.1.2
- */
-
-/**
- * This type is for clarifications that it's for storing a colour value
- */
-typealias Colour12_bit = Short
-
-/**
- * @author Brian
- * @since version
- */
-enum class Position {
-	RED, YELLOW, GREEN, BLUE
-}
-
 @Suppress("MemberVisibilityCanPrivate")
 /**
  * This class is used for storing colours.
  *
+ * @author Brian Gaucher
+ * @since 2017/09/03
+ * 0.0.0.1.2
  * @param red The colour substituting for the red pixels
  * @param yellow The colour substituting for the yellow pixels
  * @param green The colour substituting for the green pixels
@@ -63,33 +47,8 @@ class Colour(red: Int, yellow: Int, green: Int, blue: Int = 0) {
 		}.toInt()
 	}
 	
-	operator fun get(colour: Position): Int = when (colour) {
-		Position.RED -> red
-		Position.YELLOW -> yellow
-		Position.GREEN -> green
-		Position.BLUE -> blue
-	}.toInt()
-	
 	private fun Int.toSingleColour() = this.toShort()
 	
 	fun tuple() = Quadruple(red, yellow, green, blue)
 	
-	
 }
-
-/*fun test(): Unit {
-	val tOb: Colour = Colour(red = 0xf00, yellow = 0xf80, green = 0x0f0, blue = 0x00f)
-	var (red: Int,yellow,green, blue) = tOb.tuple().toInt()
-	green = tOb.green.toInt
-	red = tOb.get(2)
-	yellow = tOb.get(Position.YELLOW)
-	green = tOb[Position.GREEN]
-	red = tOb[2]
-	
-	red = tOb.red.toInt()
-	red = tOb.get(0)
-	red = tOb.get(Position.RED)
-	red = tOb[0]
-	red = tOb[Position.RED]
-}*/
-
