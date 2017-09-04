@@ -18,7 +18,7 @@ public class WaterTile extends Tile {
 
 	public void render(Screen screen, Level level, int x, int y) {
 		/* Sets the seed for which it will affect random variables */
-		wRandom.setSeed((tickCount + (x / 2 - y) * 4311) / 10 * 54687121l + x * 3271612l + y * 3412987161l);
+		wRandom.setSeed((tickCount + (x / 2 - y) * 4311) / 10 * 54_687_121L + x * 3_271_612L + y * 3_412_987_161L );
 		
 		int col = Color.get(005, 005, 115, 115); // main color of water
 		int transitionColor1 = Color.get(3, 005, level.dirtColor - 111, level.dirtColor); // transition color with dirt

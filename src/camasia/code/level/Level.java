@@ -36,9 +36,6 @@ public class Level {
 		}
 	};
 	private List<Entity> rowSprites = new ArrayList<>(); // list of entities to be rendered
-	 
-	 {
-	 }
 
     /**
      *  Level which the world is contained in
@@ -94,7 +91,7 @@ public class Level {
 
 		entitiesInTiles = new ArrayList[w * h]; // Creates a new arrayList with the size of width * height.
 		for (int i = 0; i < w * h; i++) { // Loops (width * height) times
-			entitiesInTiles[i] = new ArrayList<Entity>(); // Adds a entity list in that tile.
+			entitiesInTiles[i] = new ArrayList<>( ); // Adds a entity list in that tile.
 		}
 		
 		if (level==1) { // If the level is 1 (sky) then...
@@ -310,7 +307,7 @@ public class Level {
 
 	/** Gets all the entities from a square area of 4 points. */
 	public List<Entity> getEntities(int x0, int y0, int x1, int y1) {
-		List<Entity> result = new ArrayList<Entity>(); // result list of entities
+		List<Entity> result = new ArrayList<>( ); // result list of entities
 		int xt0 = (x0 >> 4) - 1; // location of x0
 		int yt0 = (y0 >> 4) - 1; // location of y0
 		int xt1 = (x1 >> 4) + 1; // location of x1

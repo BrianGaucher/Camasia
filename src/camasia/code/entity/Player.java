@@ -5,9 +5,8 @@ import camasia.code.InputHandler;
 import camasia.code.entity.particle.TextParticle;
 import camasia.code.gfx.Color;
 import camasia.code.gfx.Screen;
-import camasia.code.item.FurnitureItem;
-import camasia.code.item.Item;
-import camasia.code.item.PowerGloveItem;
+import camasia.code.item.*;
+import camasia.code.item.resource.Resource;
 import camasia.code.level.Level;
 import camasia.code.level.tile.Tile;
 import camasia.code.screen.InventoryMenu;
@@ -29,6 +28,7 @@ public class Player extends Mob {
 	 private InputHandler input; // keyboard input by the player
 	 private int attackTime, attackDir; // the time and direction of an attack.
 	 private int onStairDelay; // the delay before changing levels.
+	 private boolean developer = true;
 	// Note: the player's health & max health are inherited from Mob.java
 	
 	public Player(Game game, InputHandler input) {
@@ -40,6 +40,12 @@ public class Player extends Mob {
 
 		inventory.add(new FurnitureItem(new Workbench())); // adds a workbench to the player's inventory
 		inventory.add(new PowerGloveItem()); // adds a power glove to the player's inventory
+		 if(developer){
+		 	 for(int i = 0; i<10; i++) {
+				  inventory.add( new ResourceItem( Resource.bread ) );
+			 }
+		 }
+		 
 	}
 
 	public void tick() {
@@ -98,9 +104,7 @@ public class Player extends Mob {
 		}
 
 		if (input.attack.clicked) { // if the player presses the attack button...
-			if (stamina == 0) { // if the player's stamina is 0...
-				// nothing
-			} else { // if the player's stamina is larger than 0 then...
+			if (stamina > 0) { // if the player's stamina is larger than 0 then...
 				stamina--; // minus the stamina by 1
 				staminaRecharge = 0; // the recharge is set to 0
 				attack(); // calls the attack() method
@@ -194,30 +198,30 @@ public class Player extends Mob {
 	/** if the entity in-front of the player has a use() method, it will call it. */
 	private boolean use(int x0, int y0, int x1, int y1) {
 		List<Entity> entities = level.getEntities(x0, y0, x1, y1); // gets the entities within the 4 points
-		for (int i = 0; i < entities.size(); i++) { // cycles through the entities
-			Entity e = entities.get(i); // gets the current entity
-			if (e != this) if (e.use(this, attackDir)) return true; // if the entity is not the player, and has a use() method then return true.
-		}
+		 for ( Entity e : entities ) { // cycles through the entities
+			  if ( e != this ) if ( e.use( this, attackDir ) )
+					return true; // if the entity is not the player, and has a use() method then return true.
+		 }
 		return false;
 	}
 
 	/** if the entity in-front of the player has a interact() method, it will call it */
 	private boolean interact(int x0, int y0, int x1, int y1) {
 		List<Entity> entities = level.getEntities(x0, y0, x1, y1); // gets the entities within the 4 points
-		for (int i = 0; i < entities.size(); i++) { // cycles through the entities
-			Entity e = entities.get(i); // gets the current entity
-			if (e != this) if (e.interact(this, activeItem, attackDir)) return true; // if the entity is not the player, and has a interact() method then return true.
-		}
+		 for ( Entity e : entities ) { // cycles through the entities
+			  if ( e != this ) if ( e.interact( this, activeItem, attackDir ) )
+					return true; // if the entity is not the player, and has a interact() method then return true.
+		 }
 		return false;
 	}
 
 	/** if the entity in-front of the player has a hurt() method, it will call it */
 	private void hurt(int x0, int y0, int x1, int y1) {
 		List<Entity> entities = level.getEntities(x0, y0, x1, y1); // gets the entities within the 4 points
-		for (int i = 0; i < entities.size(); i++) { // cycles through the entities
-			Entity e = entities.get(i); // gets the current entity
-			if (e != this) e.hurt(this, getAttackDamage(e), attackDir); // if the entity is not the player, and has a hurt() method then return true.
-		}
+		 for ( Entity e : entities ) { // cycles through the entities
+			  if ( e != this )
+					e.hurt( this, getAttackDamage( e ), attackDir ); // if the entity is not the player, and has a hurt() method then return true.
+		 }
 	}
 
 	/** Gets the attack damage the player has */

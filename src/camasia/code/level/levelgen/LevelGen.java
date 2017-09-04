@@ -359,10 +359,8 @@ public class LevelGen {
 				/* Gets a absolute value from the values from the previous nval object and mnoise3, times it by 3 and subtracts by 2.*/
                 nval = Math.abs(nval - nnoise3.values[i]) * 3 - 2;
 
-				/* Gets a absolute value from the values from 2 noise objects */
-                double wval = Math.abs(wnoise1.values[i] - wnoise2.values[i]);
-				/* Gets a absolute value from the values from the previous wval object and mnoise3, times it by 3 and subtracts by 2.*/
-                wval = Math.abs(nval - wnoise3.values[i]) * 3 - 2;
+				/* Gets a absolute value from the values from the previous nval object and mnoise3, times it by 3 and subtracts by 2.*/
+                double wval = Math.abs(nval - wnoise3.values[i]) * 3 - 2;
 
                 double xd = x / (w - 1.0) * 2 - 1; // The x distance: (x value) / ((width value) - 1) * 2 - 1
                 double yd = y / (h - 1.0) * 2 - 1; // The y distance: (y value) / ((height value) - 1) * 2 - 1

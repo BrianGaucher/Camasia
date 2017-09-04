@@ -123,21 +123,21 @@ public class Entity {
 
 		List<Entity> wasInside = level.getEntities(x - xr, y - yr, x + xr, y + yr); // gets all of the entities that are inside this entity (aka: colliding)
 		List<Entity> isInside = level.getEntities(x + xa - xr, y + ya - yr, x + xa + xr, y + ya + yr); // gets the entities that this entity will touch.
-		for (int i = 0; i < isInside.size(); i++) { // loops through isInside list
-			Entity e = isInside.get(i); // current entity in the list
-			if (e == this) continue; // if the entity happens to be this one that is calling this method, then skip to the next entity.
-
-			e.touchedBy(this); // calls the touchedBy(entity) method in that entity's class
-		}
+		 for ( Entity e : isInside ) { // loops through isInside list
+			  if ( e == this )
+					continue; // if the entity happens to be this one that is calling this method, then skip to the next entity.
+			  
+			  e.touchedBy( this ); // calls the touchedBy(entity) method in that entity's class
+		 }
 		isInside.removeAll(wasInside); // removes all the entities that are in the wasInside from the isInside list.
-		for (int i = 0; i < isInside.size(); i++) { // loops through isInside list
-			Entity e = isInside.get(i); // current entity in the list
-			if (e == this) continue; // if the entity happens to be this one that is calling this method, then skip to the next entity.
-
-			if (e.blocks(this)) { // if the entity can block this entity then...
-				return false; // return false
-			}
-		}
+		 for ( Entity e : isInside ) { // loops through isInside list
+			  if ( e == this )
+					continue; // if the entity happens to be this one that is calling this method, then skip to the next entity.
+			  
+			  if ( e.blocks( this ) ) { // if the entity can block this entity then...
+					return false; // return false
+			  }
+		 }
 
 		x += xa; // moves horizontally based on the x acceleration
 		y += ya; // moves vertically based on the y acceleration

@@ -38,12 +38,11 @@ public class Spark extends Entity {
 		x = (int) xx; // the x position equals the integer converted xx position.
 		y = (int) yy; // the y position equals the integer converted yy position.
 		List<Entity> toHit = level.getEntities(x, y, x, y); // gets the entities in the current position to hit.
-		for (int i = 0; i < toHit.size(); i++) { // cycles through the list
-			Entity e = toHit.get(i); // gets the current entity
-			if (e instanceof Mob && !(e instanceof AirWizard)) { // if the entity is a mob, but not a Air Wizard then...
-				e.hurt(owner, 1, ((Mob) e).dir ^ 1); // hurt the mob with 1 damage
-			}
-		}
+		 for ( Entity e : toHit ) { // cycles through the list
+			  if ( e instanceof Mob && !(e instanceof AirWizard) ) { // if the entity is a mob, but not a Air Wizard then...
+					e.hurt( owner, 1, ((Mob) e).dir ^ 1 ); // hurt the mob with 1 damage
+			  }
+		 }
 	}
 
 	/** Can this entity block you? Nope. */

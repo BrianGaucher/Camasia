@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Inventory {
-	public List<Item> items = new ArrayList<Item>(); // the list of items that is in the inventory.
+	public List<Item> items = new ArrayList<>( ); // the list of items that is in the inventory.
 
 	/** Adds an item to the inventory */
 	public void add(Item item) {
@@ -32,20 +32,21 @@ public class Inventory {
 
 	/** Finds a resource in your inventory */
 	private ResourceItem findResource(Resource resource) {
-		for (int i = 0; i < items.size(); i++) { // loops through the items list
-			if (items.get(i) instanceof ResourceItem) { // if the current item is a ResourceItem
-				ResourceItem has = (ResourceItem) items.get(i); // converts the item object into a ResourceItem object
-				if (has.resource == resource) return has; // returns if the loop has found a matching resource in your inventory
-			}
-		}
+		 for ( Item item : items ) { // loops through the items list
+			  if ( item instanceof ResourceItem ) { // if the current item is a ResourceItem
+					ResourceItem has = (ResourceItem) item; // converts the item object into a ResourceItem object
+					if ( has.resource == resource )
+						 return has; // returns if the loop has found a matching resource in your inventory
+			  }
+		 }
 		return null; // else it will return null
 	}
 
 	/** Returns true if the player has the resource, and has equal or more than the amount given */
 	public boolean hasResources(Resource r, int count) {
-		ResourceItem ri = findResource(r); // finds the resource
-		if (ri == null) return false; // if the player doesn't have the resource, then return false
-		return ri.count >= count; // if the player has more or equal amount of resource than the count, then return true.
+		 ResourceItem ri = findResource( r ); // finds the resource
+		 // if the player doesn't have the resource, then return false
+		 return ri != null && ri.count >= count;
 	}
 
 	/** Removes resources from your inventory */
@@ -65,9 +66,10 @@ public class Inventory {
 			if (ri!=null) return ri.count; // returns the amount of that resource
 		} else { // if the item is NOT a resource...
 			int count = 0; // the count of the item
-			for (int i=0; i<items.size(); i++) { // loops through the player's inventory
-				if (items.get(i).matches(item)) count++; // if the current item matches the one given, then the count increases.
-			}
+			 for ( Item item1 : items ) { // loops through the player's inventory
+				  if ( item1.matches( item ) )
+						count++; // if the current item matches the one given, then the count increases.
+			 }
 			return count; // returns the count.
 		}
 		return 0;

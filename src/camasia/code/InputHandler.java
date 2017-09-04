@@ -9,7 +9,7 @@ public class InputHandler implements KeyListener {
 	
 	/* This class is used for handling your inputs and translating them as booleans */
 	
-	public List<Key> keys = new ArrayList<Key>(); // List of keys used in the game
+	public List<Key> keys = new ArrayList<>( ); // List of keys used in the game
 	/* Action keys */
 	public Key up = new Key( );
 	 public Key down = new Key( );
@@ -24,15 +24,15 @@ public class InputHandler implements KeyListener {
 
 	/** This is used to stop all of the actions when the game is out of focus. */
 	public void releaseAll() {
-		for (int i = 0; i < keys.size(); i++) {
-			keys.get(i).down = false; //turns all the keys down value to false
-		}
+		 for ( Key key : keys ) {
+			  key.down = false; //turns all the keys down value to false
+		 }
 	}
 
 	public void tick() {
-		for (int i = 0; i < keys.size(); i++) {
-			keys.get(i).tick(); //Ticks every key to see if it is pressed.
-		}
+		 for ( Key key : keys ) {
+			  key.tick( ); //Ticks every key to see if it is pressed.
+		 }
 	}
 
 	public void keyPressed(KeyEvent ke) {

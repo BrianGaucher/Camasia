@@ -21,7 +21,7 @@ public class CraftingMenu extends Menu {
 	private List<Recipe> recipes; // List of recipes used in this menu (workbench, anvil, oven, etc)
 
 	public CraftingMenu(List<Recipe> recipes, Player player) {
-		this.recipes = new ArrayList<Recipe>(recipes); // Assigns the recipes
+		this.recipes = new ArrayList<>( recipes ); // Assigns the recipes
 		this.player = player; // the player
 
 		for (int i = 0; i < recipes.size(); i++) {
@@ -57,9 +57,9 @@ public class CraftingMenu extends Menu {
 				r.craft(player); // It will craft (add) the item into the player's inventory
 				Sound.craft.play(); // Plays a sound to tell you that a item has been crafted
 			}
-			for (int i = 0; i < recipes.size(); i++) { // Loops through all the recipes in the list
-				recipes.get(i).checkCanCraft(player); // Refreshes the recipe list if the player can now craft a new item.
-			}
+			 for ( Recipe recipe : recipes ) { // Loops through all the recipes in the list
+				  recipe.checkCanCraft( player ); // Refreshes the recipe list if the player can now craft a new item.
+			 }
 		}
 	}
 

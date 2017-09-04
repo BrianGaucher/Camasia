@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Crafting {
-	public static final List<Recipe> anvilRecipes = new ArrayList<Recipe>(); // A list that contains all the recipes for the anvil
-	public static final List<Recipe> ovenRecipes = new ArrayList<Recipe>(); // A list that contains all the recipes for the oven
-	public static final List<Recipe> furnaceRecipes = new ArrayList<Recipe>(); // A list that contains all the recipes for the furnace
-	public static final List<Recipe> workbenchRecipes = new ArrayList<Recipe>(); // A list that contains all the recipes for the workbench
+	public static final List<Recipe> anvilRecipes = new ArrayList<>( ); // A list that contains all the recipes for the anvil
+	public static final List<Recipe> ovenRecipes = new ArrayList<>( ); // A list that contains all the recipes for the oven
+	public static final List<Recipe> furnaceRecipes = new ArrayList<>( ); // A list that contains all the recipes for the furnace
+	public static final List<Recipe> workbenchRecipes = new ArrayList<>( ); // A list that contains all the recipes for the workbench
 
 	static {
 		try {
