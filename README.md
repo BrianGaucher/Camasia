@@ -3,11 +3,11 @@
 Camasia is developed by a young team. Our goals is to create an open-RPG.
 
 Current Team<br>
-####Brian : Head Programmer
-####Matthew : Storyline Designer
-####Hannah : Art Designer
-#####Kevin : Intern Programmer
-#####Donny : Intern Programmer
+####Brian : Head Programmer<br>
+####Matthew : Storyline Designer<br>
+####Hannah : Art Designer<br>
+#####Kevin : Intern Programmer<br>
+#####Donny : Intern Programmer<br>
 
 ------------------
 ##Roadmap
@@ -21,7 +21,6 @@ Current Team<br>
   * Add Sprite class
   * Add Colour class
   * Add inversion-Enums
-  * Add
 
 2. Update 2 (Sprite Rendering)
 
