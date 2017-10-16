@@ -2,7 +2,6 @@ package camasia.code.level.levelgen
 
 import camasia.code.level.tile.Tile
 import java.awt.Image
-import java.awt.Menu
 import java.awt.image.BufferedImage
 import javax.swing.ImageIcon
 import javax.swing.JOptionPane
@@ -108,7 +107,6 @@ fun main(args: Array<String>) {
 		}
 		img.setRGB(0, 0, w, h, pixels, 0, w) // sets the pixels into the image
 		
-		val menu: Menu
 		val o = JOptionPane.showOptionDialog(// creates a new window dialog (It's an integer because it returns a number)
 				// lists the buttons below the image
 				null // start value (not important)

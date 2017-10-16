@@ -1,20 +1,16 @@
 package camasia.code.gfx;
 
-import camasia.code.level.tile.Sprite;
-
 public class Screen {
-	 
-	 //region Variables
-	 private static final int BIT_MIRROR_X = 0x01; // used for mirroring an image
-	 private static final int BIT_MIRROR_Y = 0x02; // used for mirroring an image
+	 public static final int BIT_MIRROR_X = 0x01; // used for mirroring an image
+	 public static final int BIT_MIRROR_Y = 0x02; // used for mirroring an image
 	 public final int w, h; // width and height of the screen
+	 public int xOffset; // the x offset of the screen.
+	 public int yOffset; // the y offset of the screen
 	 public int[] pixels; // pixels on the screen
-	 private int xOffset; // the x offset of the screen.
-	 private int yOffset; // the y offset of the screen
+	 
 	 private SpriteSheet sheet; // sprite sheet used in the game
 	 /* Used for the scattered dots at the edge of the light radius underground. */
 	 private int[] dither = new int[]{ 0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5, };
-	 //endregion
 	 
 	 public Screen(int w, int h, SpriteSheet sheet) {
 		  this.sheet = sheet; // assigns the sprite-sheet
@@ -29,48 +25,12 @@ public class Screen {
 	  * Clears all the colors on the screen
 	  */
 	 public void clear(int color) {
-		  for ( int i = 0; i < pixels.length; i++ ) // Loops through each pixel on the screen
+		  for ( int i = 0; i < pixels.length; i++ ) // Loops through each pixel on the scren
 				pixels[i] = color; // turns each pixel into a single color (clearing the screen!)
 	 }
 	 
 	 /**
 	  * Renders an object from the sprite sheet based on screen coordinates, tile (SpriteSheet location), colors, and bits (for mirroring)
-	  *
-	  * @param coordinate     The tile's coordinate on the screen
-	  * @param sprite The sprite object
-	  **/
-	 public void render(LegacyCoordinate coordinate, Sprite sprite) {
-		 
-		  int tile = sprite.getColumn( ) + sprite.getRow( ) * 32;
-		  Colour colour = sprite.getColour( );
-		  int red = colour.getRed( );
-		  int yellow = colour.getYellow( );
-		  int green = colour.getGreen( );
-		  int blue = colour.getBlue( );
-		  int colourInt = Color.get( red, yellow, green, blue );
-		  int bit = 0;
-		  if ( sprite.getBit( ).getX( ) ) bit += 1;
-		  if ( sprite.getBit( ).getY( ) ) bit += 2;
-		  render( coordinate.getX( ), coordinate.getY( ), tile, colourInt, bit );
-	 }
-	 
-	 /**
-	  * Renders an object from the sprite sheet based on screen coordinates, tile (SpriteSheet location), colors, and bits (for mirroring)
-	  *
-	  **/
-	 public void render(LegacyCoordinate coordinate, Sprite sprite, boolean maybe) {
-	 }
-	 
-	 /**
-	  * Renders an object from the sprite sheet based on screen coordinates, tile (SpriteSheet location), colors, and bits (for mirroring)
-	  *
-	  * @param xp     The tile's coordinate on the screen
-	  * @param yp     The tile's coordinate on the screen
-	  * @param tile   The tile's coordinate
-	  * @param colors The color integer
-	  * @param bits   The bits for inversion
-	  *               1 & 3 : X-axis mirroring
-	  *               2 & 3 : Y-axis mirroring
 	  */
 	 public void render(int xp, int yp, int tile, int colors, int bits) {
 		  xp -= xOffset; // horizontal offset of the screen
@@ -103,10 +63,7 @@ public class Screen {
 						  continue; // If the pixel is out of bounds, then skip the rest of the loop.
 					 int xs = x; // current x pixel
 					 if ( mirrorX ) xs = 7 - x;  // Reverses the pixel for a mirroring effect
-					 
-					 int col; // gets the color based on the passed in colors value.
-					 col = ((sheet.pixels[xs + ys * sheet.width + toffs] * 8) >> colors) & 255;
-					 
+					 int col = (colors >> (sheet.pixels[xs + ys * sheet.width + toffs] * 8)) & 255; // gets the color based on the passed in colors value.
 					 if ( col < 255 ) pixels[(x + xp) + (y + yp) * w] = col; // Inserts the colors into the image.
 				}
 		  }
