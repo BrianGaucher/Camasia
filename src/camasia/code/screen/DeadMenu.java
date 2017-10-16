@@ -28,7 +28,7 @@ public class DeadMenu extends Menu {
 	  */
 	 public void render(Screen screen) {
 		  Font.renderFrame( screen, "", 1, 3, 18, 9 ); // Draws a box frame based on 4 points. You can include a title as well.
-		  Font.draw( "You died! Aww!", screen, 2 * 8, 4 * 8, Color.get( -1, 555, 555, 555 ) ); // Draws text
+		  Font.draw( "Game Over!", screen, 2 * 8, 4 * 8, Color.get( -1, 555, 555, 555 ) ); // Draws text
 		  
 		  int seconds = game.gameTime / 60; // The current amount of seconds in the game.
 		  int minutes = seconds / 60; // The current amount of minutes in the game.
