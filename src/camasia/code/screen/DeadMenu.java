@@ -33,8 +33,8 @@ public class DeadMenu extends Menu {
 		  int seconds = game.gameTime / 60; // The current amount of seconds in the game.
 		  int minutes = seconds / 60; // The current amount of minutes in the game.
 		  int hours = minutes / 60; // The current amount of hours in the game.
-		  minutes %= 60; // fixes the number of minutes in the game. Without this, 1h 24min would look like: 1h 84min.
-		  seconds %= 60; // fixes the number of seconds in the game. Without this, 2min 35sec would look like: 2min 155sec.
+		  minutes %= 60; // Fixes the number of minutes in the game. Without this, 1h 24min would look like: 1h 84min.
+		  seconds %= 60; // Fixes the number of seconds in the game. Without this, 2min 35sec would look like: 2min 155sec.
 		  
 		  String timeString; // Full text of time.
 		  if ( hours > 0 ) {
