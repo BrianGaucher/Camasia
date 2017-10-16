@@ -2,7 +2,7 @@ package camasia.code.level;
 
 import camasia.code.entity.*;
 import camasia.code.gfx.Screen;
-import camasia.code.level.levelgen.LevelGen;
+import camasia.code.level.levelgen.LegacyLevelGen;
 import camasia.code.level.tile.Tile;
 
 import java.util.*;
@@ -54,12 +54,13 @@ public class Level {
 		byte[][] maps; // multidimensional array (an array within a array), used for the map
 
 		if (level == 0) // If the level is 0 (surface)...
-			maps = LevelGen.createAndValidateTopMap(w, h); // create a surface map for the level
+			 maps = LegacyLevelGen.createAndValidateTopMap( w, h ); // create a surface map for the level
 		else if (level < 0) { // if the level is less than 0 (underground)...
-			maps = LevelGen.createAndValidateUndergroundMap(w, h, -level); // create a underground map (depending on the level)
+			 maps = LegacyLevelGen
+						.createAndValidateUndergroundMap( w, h, -level ); // create a underground map (depending on the level)
 			monsterDensity = 4; // lowers the monsterDensity value, which makes more enemies spawn
 		} else { // if level is anything else, aka: above 0 (sky) then...
-			maps = LevelGen.createAndValidateSkyMap(w, h);  // creates a sky map
+			 maps = LegacyLevelGen.createAndValidateSkyMap( w, h );  // creates a sky map
 			monsterDensity = 4; // lowers the monsterDensity value, which makes more enemies spawn
 		}
 

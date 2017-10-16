@@ -8,7 +8,7 @@ import javax.swing.ImageIcon
 import javax.swing.JOptionPane
 
 /**
- * This class is meant to become a replacement for the current LevelGen class
+ * This class is meant to become a replacement for the current LegacyLevelGen class
  * @author Brian Gaucher
  * @since 2017/10/08
  */
@@ -58,7 +58,7 @@ class LevelGen2 {
 
 
 /**
- * Yep, LevelGen has a main method. When you run this class it will show a generator.
+ * This will generate the world. Especially useful in testing.
  */
 fun main(args: Array<String>) {
 	var hasquit = false // Determines if the player has quit the program or not.

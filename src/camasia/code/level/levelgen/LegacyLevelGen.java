@@ -7,19 +7,15 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-public class LevelGen {
-	 private static final Random randomGenerator = new Random( ); //Initializes the random class
-	 private double[] values; //An array of doubles, used to help making noise for the map
+public class LegacyLevelGen {
+	 private static final Random random = new Random( ); //Initializes the random class
+	 public double[] values; //An array of doubles, used to help making noise for the map
 	 private int w, h; // width and height of the map
 	 
 	 /**
 	  * This creates noise to create random values for level generation
-	  *
-	  * @param w           The world's width
-	  * @param h           The world's height
-	  * @param featureSize The size of the map
 	  */
-	 private LevelGen(int w, int h, int featureSize) {
+	 public LegacyLevelGen(int w, int h, int featureSize) {
 		  this.w = w; // assigns the width of the map
 		  this.h = h; // assigns the height of the map
 		  
@@ -27,7 +23,7 @@ public class LevelGen {
 		  
 		  for ( int y = 0; y < w; y += featureSize ) { // Loops through the width of the map, going up by the featureSize value each time.
 				for ( int x = 0; x < w; x += featureSize ) { // Loops through the width of the map a second time, going up by the featureSize value each time.
-					 setSample( x, y, randomGenerator.nextFloat( ) * 2 - 1 ); // sets a random value at a x and y point.
+					 setSample( x, y, random.nextFloat( ) * 2 - 1 ); // sets a random value at a x and y point.
 				}
 		  }
 		  
@@ -42,25 +38,16 @@ public class LevelGen {
 						  double b = sample( x + stepSize, y ); // gets a sample value from the next value of x, and the current y value.
 						  double c = sample( x, y + stepSize ); // gets a sample value from the current x, and next value of y.
 						  double d = sample( x + stepSize, y + stepSize ); // gets a sample value from the next x value and next y value.
-
-					/* The first thing it does is add up a+b+c+d as one variable.
-							* Then divides that number by 4 (making an average).
-					 * Then it creates a random number between 0 and 1 (such as 0.68765).
-					  * It doubles that value
-					  * then adds one
-					  * And adds it to the number
-					 * then you multiply by the step size
-					 * and multiply by the scale
-					 * Now at the start it's simple numbers,  but as we go farther below in the code we see these values change in this loop.
-					 * Simplified : Average + (between 1 and 3) * stepSize * scale.*/
-						  
-						  double e = (a + b + c + d); // the sum of the four
-						  e /= 4.0;                   // then gets the average
-						  double random;              // random number
-						  random = (2 * randomGenerator.nextFloat( )) + 1; // Between 1.0 and 2.9...
-						  e += random;                // adds that random number
-						  e *= stepSize;              // multiplies by the step size
-						  e *= scale;                 // multiplies by the scale
+					
+					/* Well doesn't this one look complicated? No worries, just look at it step by step. 
+					 *  The first thing it does is add up a+b+c+d as one variable. Then divides that number by 4 (making an average).
+					 *  Since java follows the pemdas rule, lets look at the right side next.
+					 *  "(random.nextFloat() * 2 - 1) * stepSize * scale"
+					 *   random.nextFloat() creates any random value between 0 to 1. For example: 0.39541882 is a value that can be, lets call it r.
+					 *   Now at the start it's simple numbers,  but as we go farther below in the code we see these values change in this loop.
+					 *   So the value of e can be simplified as: (Average of a,b,c,d) + ((value from 0 to 1) * 2 - 1) * (stepSize value) * (scale value).
+					 *   hope this helps a little bit, I'm not an algebra teacher lol. */
+						  double e = (a + b + c + d) / 4.0 + (random.nextFloat( ) * 2 - 1) * stepSize * scale;
 						  
 						  setSample( x + halfStep, y + halfStep, e ); // sets the value e at the next x value and next y value. repeat these until loop is done.
 					 }
@@ -77,10 +64,10 @@ public class LevelGen {
 					/* H & g are the same as e from the last paragraph. So see that for more info. */
 					
 					/* (Average of a,b,d,e) + ((value from 0 to 1) * 2 - 1) * (stepSize value) * (scale value) * 0.5 */
-						  double H = (a + b + d + e) / 4.0 + (randomGenerator.nextFloat( ) * 2 - 1) * stepSize * scale * 0.5;
+						  double H = (a + b + d + e) / 4.0 + (random.nextFloat( ) * 2 - 1) * stepSize * scale * 0.5;
 					
 					/* (Average of a,c,d,f) + ((value from 0 to 1) * 2 - 1) * (stepSize value) * (scale value) * 0.5 */
-						  double g = (a + c + d + f) / 4.0 + (randomGenerator.nextFloat( ) * 2 - 1) * stepSize * scale * 0.5;
+						  double g = (a + c + d + f) / 4.0 + (random.nextFloat( ) * 2 - 1) * stepSize * scale * 0.5;
 						  
 						  setSample( x + halfStep, y, H ); // sets the H value at the half-way position of the next x value, and the current y value.
 						  setSample( x, y + halfStep, g ); // sets the g value at the current x value, and half-way position of the next y value.
@@ -93,36 +80,50 @@ public class LevelGen {
 	 }
 	 
 	 /**
-	  * Yep, LevelGen has a main method. When you run this class it will show a generator.
+	  * Yep, LegacyLevelGen has a main method. When you run this class it will show a generator.
 	  */
 	 public static void main(String[] args) {
 		/* Note: I changed a bit of this method to make it a lot better. -David */
-		  
+		  System.out.println( "Began program" );
 		  int d = 0; // Depth used when looking at the underground map
 		  boolean hasQuit = false; // Determines if the player has quit the program or not.
+		  int level = 0; // map being looked at (0 = overWorld, 1 = underground, 2 = sky)
 		  while ( !hasQuit ) { //If the player has not quit the map
+				System.out.println( "In the loop" );
 				int w = 128; // width of the map
 				int h = 128; // height of the map
-				int m = 0; // map being looked at (0 = overWorld, 1 = underground, 2 = sky)
 				byte[] map; // the map
 			
 			/* The switch statement is like a short if-else method.
-			  In this case we are switching the map variable based on what m is.
-			  If m = 1, then it will be case 1. Which is the underground
-			  if m = 2, then it will be case 2. Which is the sky
-			  If m is anything else, it will create the sky map. (that is what default stands for) */
-				switch ( m ) {
-					 default:
-						  map = LevelGen.createAndValidateTopMap( w, h )[0]; // Map will show the surface.
+			  In this case we are switching the map variable based on what level is.
+			  If level = 0, then it will be case 0. Which is the Top map
+			  If level = 1, then it will be case 1. Which is the caves
+			  If level = 2, then it will be case 2. Which is the mines
+			  If level = 3, then it will be case 3. Which is the nether
+			  if level = 4, then it will be case 4. Which is the sky */
+				switch ( level ) {
+					 case 0:
+						  map = LegacyLevelGen.createAndValidateTopMap( w, h )[0]; // Map will show the surface.
 						  break; // breaks the switch so it won't go to case 1.
 					 case 1:
-						  map = LevelGen
-									 .createAndValidateUndergroundMap( w, h, (d++ % 3) + 1 )[0];// Map will show the underground, switching depths each time.
+						  map = LegacyLevelGen
+									 .createAndValidateUndergroundMap( w, h, 1 )[0];// Map will show the caves
 						  break; // breaks the switch so it won't go to case 2.
 					 case 2:
-						  map = LevelGen.createAndValidateSkyMap( w, h )[0]; // Map will show the sky.
+						  map = LegacyLevelGen
+									 .createAndValidateUndergroundMap( w, h, 2 )[0];// Map will show the mines.
+						  break; // breaks the switch so it won't go to case 2.
+					 case 3:
+						  map = LegacyLevelGen
+									 .createAndValidateUndergroundMap( w, h, 3 )[0];// Map will show the nether,
+						  break; // breaks the switch so it won't go to case 2.
+					 case 4:
+						  map = LegacyLevelGen.createAndValidateSkyMap( w, h )[0]; // Map will show the sky.
 						  break; // breaks the switch.
+					 default:
+						  throw new IllegalStateException( "The options list is too large." );
 				}
+				System.out.println( "Map is generated" );
 				
 				BufferedImage img = new BufferedImage( w, h, BufferedImage.TYPE_INT_RGB ); // creates an image
 				int[] pixels = new int[w * h]; // The pixels in the image. (an integer array, the size is Width * height)
@@ -163,8 +164,8 @@ public class LevelGen {
 					 }
 				}
 				img.setRGB( 0, 0, w, h, pixels, 0, w ); // sets the pixels into the image
-				
-				String[] options = { "Another", "Quit" }; //Name of the buttons used for the window.
+			 
+				String[] options = { "Top", "Caves", "Mines", "Nether", "Sky", "Quit" }; //Name of the buttons used for the window.
 				
 				int o = JOptionPane
 						  .showOptionDialog( // creates a new window dialog (It's an integer because it returns a number)
@@ -178,13 +179,17 @@ public class LevelGen {
 									 options, // lists the buttons below the image
 									 null // start value (not important)
 						  );
+				System.out.println( "Created menu" );
 			/* Now you noticed that we made the dialog an integer. This is because when you click a button it will return a number.
 				 Since we passed in 'options', the window will return 0 if you press "Another" and it will return 1 when you press "Quit".
 			   If you press the red "x" close mark, the window will return -1 */
 				
 				// If the dialog returns -1 (red "x" button) or 1 ("Quit" button) then...
-				if ( o == -1 || o == 1 ) hasQuit = true; // stop the loop and close the program.
+				if ( o == -1 || o == options.length - 1 ) hasQuit = true; // stop the loop and close the program.
+				level = o;
+				System.out.println( "End loop" );
 		  }
+		  System.out.println( "End program" );
 	 }
 	 
 	 /**
@@ -272,13 +277,13 @@ public class LevelGen {
 	  * Creates the surface map
 	  */
 	 private static byte[][] createTopMap(int w, int h) {
-		  
-		  LevelGen mnoise1 = new LevelGen( w, h, 16 ); // creates noise used for map generation, see the top of this class for more info.
-		  LevelGen mnoise2 = new LevelGen( w, h, 16 ); // creates noise used for map generation, see the top of this class for more info.
-		  LevelGen mnoise3 = new LevelGen( w, h, 16 ); // creates noise used for map generation, see the top of this class for more info.
-		  
-		  LevelGen noise1 = new LevelGen( w, h, 32 ); // creates noise used for map generation, see the top of this class for more info.
-		  LevelGen noise2 = new LevelGen( w, h, 32 ); // creates noise used for map generation, see the top of this class for more info.
+		 
+		  LegacyLevelGen mnoise1 = new LegacyLevelGen( w, h, 16 ); // creates noise used for map generation, see the top of this class for more info.
+		  LegacyLevelGen mnoise2 = new LegacyLevelGen( w, h, 16 ); // creates noise used for map generation, see the top of this class for more info.
+		  LegacyLevelGen mnoise3 = new LegacyLevelGen( w, h, 16 ); // creates noise used for map generation, see the top of this class for more info.
+		 
+		  LegacyLevelGen noise1 = new LegacyLevelGen( w, h, 32 ); // creates noise used for map generation, see the top of this class for more info.
+		  LegacyLevelGen noise2 = new LegacyLevelGen( w, h, 32 ); // creates noise used for map generation, see the top of this class for more info.
 		  
 		  byte[] map = new byte[w * h]; // The tiles of the map
 		  byte[] data = new byte[w * h]; // the data of the tiles
@@ -329,19 +334,17 @@ public class LevelGen {
 		 /* A loop that will occur if a value "i" is smaller than the Width * Height / 2800,  put in different number
 		  instead of 2800 to have different effects on the terrain. (Bigger number, more of that tile will spawn)*/
 		  for ( int i = 0; i < w * h / 2800; i++ ) {
-				int xs = randomGenerator
+				int xs = random
 						  .nextInt( w ); // A random number between 0 to the map's width (minus 1, because 0 is the first number)
-				int ys = randomGenerator
+				int ys = random
 						  .nextInt( h ); // A random number between 0 to the map's height (minus 1, because 0 is the first number)
 				for ( int k = 0; k < 10; k++ ) { // a loop inside the main loop that occurs 10 times.
-					 int x = xs + randomGenerator
-								.nextInt( 21 ) - 10; // x value which is: xs + (random value between 0 to 20) - 10
-					 int y = ys + randomGenerator
-								.nextInt( 21 ) - 10; // y value which is: ys + (random value between 0 to 20) - 10
+					 int x = xs + random.nextInt( 21 ) - 10; // x value which is: xs + (random value between 0 to 20) - 10
+					 int y = ys + random.nextInt( 21 ) - 10; // y value which is: ys + (random value between 0 to 20) - 10
 					 for ( int j = 0; j < 100; j++ ) { // A loop inside a loop inside the main loop, repeats 100 times.
-						  int xo = x + randomGenerator.nextInt( 5 ) - randomGenerator
+						  int xo = x + random.nextInt( 5 ) - random
 									 .nextInt( 5 ); // xo value: x + (random value between 0 to 4) - (random val between 0 to 4)
-						  int yo = y + randomGenerator.nextInt( 5 ) - randomGenerator
+						  int yo = y + random.nextInt( 5 ) - random
 									 .nextInt( 5 ); // yo value: y + (random value between 0 to 4) - (random val between 0 to 4)
 						  for ( int yy = yo - 1; yy <= yo + 1; yy++ ) // Loopception, Loops if yy is smaller or equal to yo + 1
 								for ( int xx = xo - 1; xx <= xo + 1; xx++ ) // Loopception, Loops if xx is smaller or equal to xo + 1
@@ -355,14 +358,14 @@ public class LevelGen {
 		  }
 		  
 		  for ( int i = 0; i < w * h / 400; i++ ) {
-				int x = randomGenerator
+				int x = random
 						  .nextInt( w );// A random number between 0 to the map's width (minus 1, because 0 is the first number)
-				int y = randomGenerator
+				int y = random
 						  .nextInt( h );// A random number between 0 to the map's height (minus 1, because 0 is the first number)
 				for ( int j = 0; j < 200; j++ ) { // A loop that occurs 200 times
-					 int xx = x + randomGenerator.nextInt( 15 ) - randomGenerator
+					 int xx = x + random.nextInt( 15 ) - random
 								.nextInt( 15 ); // x + (random value between 0 to 14) - (random value between 0 to 14)
-					 int yy = y + randomGenerator.nextInt( 15 ) - randomGenerator
+					 int yy = y + random.nextInt( 15 ) - random
 								.nextInt( 15 ); // y + (random value between 0 to 14) - (random value between 0 to 14)
 					 if ( xx >= 0 && yy >= 0 && xx < w && yy < h ) { // if xx or yy is equal or larger than 0, and smaller than the width and height of the map...
 						  if ( map[xx + yy * w] == Tile.grass.id ) { // If the specific xx and yy coordinates happen to be a grass tile...
@@ -373,20 +376,20 @@ public class LevelGen {
 		  }
 		  
 		  for ( int i = 0; i < w * h / 400; i++ ) {
-				int x = randomGenerator
+				int x = random
 						  .nextInt( w );// A random number between 0 to the map's width (minus 1, because 0 is the first number)
-				int y = randomGenerator
+				int y = random
 						  .nextInt( h );// A random number between 0 to the map's height (minus 1, because 0 is the first number)
-				int col = randomGenerator.nextInt( 4 ); // random number between 0 to 3
+				int col = random.nextInt( 4 ); // random number between 0 to 3
 				for ( int j = 0; j < 30; j++ ) { // loop that occurs 30 times
-					 int xx = x + randomGenerator.nextInt( 5 ) - randomGenerator
+					 int xx = x + random.nextInt( 5 ) - random
 								.nextInt( 5 ); // x + (random value between 0 to 4) - (random value between 0 to 4)
-					 int yy = y + randomGenerator.nextInt( 5 ) - randomGenerator
+					 int yy = y + random.nextInt( 5 ) - random
 								.nextInt( 5 ); // y + (random value between 0 to 4) - (random value between 0 to 4)
 					 if ( xx >= 0 && yy >= 0 && xx < w && yy < h ) { // if xx or yy is equal or larger than 0, and smaller than the width and height of the map...
 						  if ( map[xx + yy * w] == Tile.grass.id ) { // If the specific xx and yy coordinates happen to be a grass tile...
 								map[xx + yy * w] = Tile.flower.id; // replace the tile with a flower tile
-								data[xx + yy * w] = (byte) (col + randomGenerator
+								data[xx + yy * w] = (byte) (col + random
 										  .nextInt( 4 ) * 16); // Adds data to the tile, (flipping it sideways)
 						  }
 					 }
@@ -394,9 +397,9 @@ public class LevelGen {
 		  }
 		  
 		  for ( int i = 0; i < w * h / 100; i++ ) {
-				int xx = randomGenerator
+				int xx = random
 						  .nextInt( w );// A random number between 0 to the map's width (minus 1, because 0 is the first number)
-				int yy = randomGenerator
+				int yy = random
 						  .nextInt( h );// A random number between 0 to the map's height (minus 1, because 0 is the first number)
 				if ( xx >= 0 && yy >= 0 && xx < w && yy < h ) { // if xx or yy is equal or larger than 0, and smaller than the width and height of the map...
 					 if ( map[xx + yy * w] == Tile.sand.id ) { // If the specific xx and yy coordinates happen to be a sand tile...
@@ -408,10 +411,8 @@ public class LevelGen {
 		  int count = 0; // number of stairs in the map
 		  stairsLoop:
 		  for ( int i = 0; i < w * h / 100; i++ ) {
-				int x = randomGenerator
-						  .nextInt( w - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
-				int y = randomGenerator
-						  .nextInt( h - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
+				int x = random.nextInt( w - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
+				int y = random.nextInt( h - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
 				
 				for ( int yy = y - 1; yy <= y + 1; yy++ ) // Loops if yy is smaller or equal to y + 1
 					 for ( int xx = x - 1; xx <= x + 1; xx++ ) { // Loops if xx is smaller or equal to x + 1
@@ -431,20 +432,20 @@ public class LevelGen {
 	  * Creates the underground maps (mines, water mines, lava mines)
 	  */
 	 private static byte[][] createUndergroundMap(int w, int h, int depth) {
-		  LevelGen mnoise1 = new LevelGen( w, h, 16 );
-		  LevelGen mnoise2 = new LevelGen( w, h, 16 );  /* creates noise used for map generation, see the top of this class for more info. */
-		  LevelGen mnoise3 = new LevelGen( w, h, 16 );
-		  
-		  LevelGen nnoise1 = new LevelGen( w, h, 16 );
-		  LevelGen nnoise2 = new LevelGen( w, h, 16 );  /* creates noise used for map generation, see the top of this class for more info. */
-		  LevelGen nnoise3 = new LevelGen( w, h, 16 );
-		  
-		  LevelGen wnoise1 = new LevelGen( w, h, 16 );
-		  LevelGen wnoise2 = new LevelGen( w, h, 16 );  /* creates noise used for map generation, see the top of this class for more info. */
-		  LevelGen wnoise3 = new LevelGen( w, h, 16 );
-		  
-		  LevelGen noise1 = new LevelGen( w, h, 32 );  /* creates noise used for map generation, see the top of this class for more info. */
-		  LevelGen noise2 = new LevelGen( w, h, 32 );
+		  LegacyLevelGen mnoise1 = new LegacyLevelGen( w, h, 16 );
+		  LegacyLevelGen mnoise2 = new LegacyLevelGen( w, h, 16 );  /* creates noise used for map generation, see the top of this class for more info. */
+		  LegacyLevelGen mnoise3 = new LegacyLevelGen( w, h, 16 );
+		 
+		  LegacyLevelGen nnoise1 = new LegacyLevelGen( w, h, 16 );
+		  LegacyLevelGen nnoise2 = new LegacyLevelGen( w, h, 16 );  /* creates noise used for map generation, see the top of this class for more info. */
+		  LegacyLevelGen nnoise3 = new LegacyLevelGen( w, h, 16 );
+		 
+		  LegacyLevelGen wnoise1 = new LegacyLevelGen( w, h, 16 );
+		  LegacyLevelGen wnoise2 = new LegacyLevelGen( w, h, 16 );  /* creates noise used for map generation, see the top of this class for more info. */
+		  LegacyLevelGen wnoise3 = new LegacyLevelGen( w, h, 16 );
+		 
+		  LegacyLevelGen noise1 = new LegacyLevelGen( w, h, 32 );  /* creates noise used for map generation, see the top of this class for more info. */
+		  LegacyLevelGen noise2 = new LegacyLevelGen( w, h, 32 );
 		  
 		  byte[] map = new byte[w * h];  // The tiles of the map
 		  byte[] data = new byte[w * h];  // The data of the tiles
@@ -473,8 +474,10 @@ public class LevelGen {
 				/* Gets a absolute value from the values from the previous nval object and mnoise3, times it by 3 and subtracts by 2.*/
 					 nval = Math.abs( nval - nnoise3.values[i] ) * 3 - 2;
 
-				/* Gets a absolute value from the values from the previous nval object and mnoise3, times it by 3 and subtracts by 2.*/
-					 double wval = Math.abs( nval - wnoise3.values[i] ) * 3 - 2;
+				/* Gets a absolute value from the values from 2 noise objects */
+					 double wval = Math.abs( wnoise1.values[i] - wnoise2.values[i] );
+				/* Gets a absolute value from the values from the previous wval object and mnoise3, times it by 3 and subtracts by 2.*/
+					 wval = Math.abs( nval - wnoise3.values[i] ) * 3 - 2;
 					 
 					 double xd = x / (w - 1.0) * 2 - 1; // The x distance: (x value) / ((width value) - 1) * 2 - 1
 					 double yd = y / (h - 1.0) * 2 - 1; // The y distance: (y value) / ((height value) - 1) * 2 - 1
@@ -505,14 +508,14 @@ public class LevelGen {
 			 /* A loop that will occur if a value "i" is smaller than the Width * Height / 400,  put in different number
 			  instead of 400 to have different effects on the terrain. (Bigger number, more of that tile will spawn)*/
 				for ( int i = 0; i < w * h / 400; i++ ) {
-					 int x = randomGenerator
+					 int x = random
 								.nextInt( w );  // A random number between 0 to the map's width (minus 1, because 0 is the first number)
-					 int y = randomGenerator
+					 int y = random
 								.nextInt( h ); // A random number between 0 to the map's height (minus 1, because 0 is the first number)
 					 for ( int j = 0; j < 30; j++ ) { // A loop that occurs 30 times
-						  int xx = x + randomGenerator.nextInt( 5 ) - randomGenerator
+						  int xx = x + random.nextInt( 5 ) - random
 									 .nextInt( 5 ); // x + (random number between 0 to 4) - (random number between 0 to 4)
-						  int yy = y + randomGenerator.nextInt( 5 ) - randomGenerator
+						  int yy = y + random.nextInt( 5 ) - random
 									 .nextInt( 5 ); // y + (random number between 0 to 4) - (random number between 0 to 4)
 						  if ( xx >= r && yy >= r && xx < w - r && yy < h - r ) { // If xx & yy are equal to or larger than r, and smaller than (w - r) and (h - r) then...
 								if ( map[xx + yy * w] == Tile.rock.id ) { // If the current tile is a rock tile...
@@ -527,9 +530,9 @@ public class LevelGen {
 				int count = 0; // count of stairs
 				stairsLoop:
 				for ( int i = 0; i < w * h / 100; i++ ) {
-					 int x = randomGenerator
+					 int x = random
 								.nextInt( w - 20 ) + 10; // A random number between 0 to the map's width minus 20, plus 10.
-					 int y = randomGenerator
+					 int y = random
 								.nextInt( h - 20 ) + 10; // A random number between 0 to the map's width minus 20, plus 10.
 					 
 					 for ( int yy = y - 1; yy <= y + 1; yy++ )  // Loops if yy is smaller or equal to y + 1
@@ -548,8 +551,8 @@ public class LevelGen {
 	 }
 	 
 	 private static byte[][] createSkyMap(int w, int h) {
-		  LevelGen noise1 = new LevelGen( w, h, 8 );  // creates noise used for map generation, see the top of this class for more info.
-		  LevelGen noise2 = new LevelGen( w, h, 8 );  // creates noise used for map generation, see the top of this class for more info.
+		  LegacyLevelGen noise1 = new LegacyLevelGen( w, h, 8 );  // creates noise used for map generation, see the top of this class for more info.
+		  LegacyLevelGen noise2 = new LegacyLevelGen( w, h, 8 );  // creates noise used for map generation, see the top of this class for more info.
 		  
 		  byte[] map = new byte[w * h]; // The tiles of the map
 		  byte[] data = new byte[w * h]; // The data of the tiles
@@ -591,10 +594,8 @@ public class LevelGen {
 		  
 		  cactusLoop:
 		  for ( int i = 0; i < w * h / 50; i++ ) { //loops through all the numbers that are less than (width * height / 50)
-				int x = randomGenerator
-						  .nextInt( w - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
-				int y = randomGenerator
-						  .nextInt( h - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
+				int x = random.nextInt( w - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
+				int y = random.nextInt( h - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
 				
 				for ( int yy = y - 1; yy <= y + 1; yy++ ) // Loops if yy is smaller or equal to y + 1
 					 for ( int xx = x - 1; xx <= x + 1; xx++ ) { // Loops if xx is smaller or equal to x + 1
@@ -608,10 +609,8 @@ public class LevelGen {
 		  int count = 0;// number of stairs in the map
 		  stairsLoop:
 		  for ( int i = 0; i < w * h; i++ ) { //loops through the entire map
-				int x = randomGenerator
-						  .nextInt( w - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
-				int y = randomGenerator
-						  .nextInt( h - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
+				int x = random.nextInt( w - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
+				int y = random.nextInt( h - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
 				
 				for ( int yy = y - 1; yy <= y + 1; yy++ ) // Loops if yy is smaller or equal to y + 1
 					 for ( int xx = x - 1; xx <= x + 1; xx++ ) { // Loops if xx is smaller or equal to x + 1
@@ -640,4 +639,5 @@ public class LevelGen {
 	 private void setSample(int x, int y, double value) {
 		  values[(x & (w - 1)) + (y & (h - 1)) * w] = value;
 	 }
+	 
 }
