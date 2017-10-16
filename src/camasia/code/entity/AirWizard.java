@@ -153,7 +153,7 @@ public class AirWizard extends Mob {
 			level.player.score += 1000; // gives the player 1000 points of score
 			level.player.gameWon(); // player wins the game
 		}
-		Sound.bossdeath.play(); // plays a sound.
+		 Sound.bossDeath.play( ); // plays a sound.
 	}
 
 }
