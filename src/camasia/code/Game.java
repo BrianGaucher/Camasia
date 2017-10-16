@@ -29,6 +29,10 @@ public class Game extends Canvas implements Runnable {
 	 public static final int WIDTH = 267;
 	 private static final long serialVersionUID = 1L;
 	 private static final int SCALE = 3; // scales the window
+	 /**
+	  * The history of all the frames in the game
+	  */
+	 public int totalFrames;
 	 public int gameTime = 0; // Main value in the timer used on the dead screen.
 	 public Player player; // the player himself
 	 public Menu menu; // the current menu you are on.
@@ -58,10 +62,6 @@ public class Game extends Canvas implements Runnable {
 	 private int playerDeadTime; // the paused time when you die before the dead menu shows up.
 	 private int pendingLevelChange; // used to determined if the player should change levels or not.
 	 private int wonTimer = 0; // the paused time when you win before the win menu shows up.
-	 /**
-	  * The history of all the frames in the game
-	  */
-	 private int totalFrames;
 	 //endregion
 	 
 	 /**
