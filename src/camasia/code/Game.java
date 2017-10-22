@@ -96,7 +96,7 @@ public class Game extends Canvas implements Runnable {
 	 /**
 	  * This pauses the game
 	  */
-	 public void stop( ) {
+	 protected void stop( ) {
 		  running = false;
 	 }
 	 
@@ -123,15 +123,15 @@ public class Game extends Canvas implements Runnable {
 		/* Please note: the terms "Mines", "Deep Mines", and "Nether" are not the real names used in the code
 			I just got those names from the wiki where someone named them that. Those levels don't have any real names yet -David
 		*/
-		  
-		  level = levels[currentLevel]; // puts level to the current level (surface)
+		 
+		  this.level = levels[currentLevel]; // puts level to the current level (surface)
 		  player = new Player( this, input ); // creates a new player
 		  player.findStartPos( level ); // finds the start level for the player
 		  
 		  level.add( player ); // adds the player to the current level
 		 
-		  for ( int i = 0; i < levels.length; i++ ) {
-				levels[i].trySpawn( 5000 ); // populates all 5 levels with mobs.
+		  for ( Level forLevel : levels ) {
+				forLevel.trySpawn( 5000 ); // populates all 5 levels with mobs.
 		  }
 	 }
 	 
