@@ -11,7 +11,7 @@ import javax.swing.JOptionPane
  * @author Brian Gaucher
  * @since 2017/10/08
  */
-class LevelGen2 {
+class LevelGen {
 	
 	companion object {
 		
@@ -20,16 +20,16 @@ class LevelGen2 {
 		 * @param w The width of the map
 		 * @param h The height of the map
 		 */
-		fun createDirtWorld(w: Int, h: Int): LevelMap {
+		fun createDirtMap(w: Int, h: Int): LevelMap {
 			val map = ByteArray(w * h)
 			val data = ByteArray(w * h)
 			for (x in 0 until w) {
 				for (y in 0 until h) {
 					val i: Int = x + (y * w)
 					map[i] = Tile.grass.id
+					if (i % 0x111 == 0) map[i] = Tile.stairsDown.id
 				}
 			}
-			
 			return arrayOf(map, data) // returns the map's tiles and data.
 		}
 		
@@ -38,7 +38,7 @@ class LevelGen2 {
 		 * @param w The width of the map
 		 * @param h The height of the map
 		 */
-		fun createCheckerboardWorld(w: Int, h: Int): LevelMap {
+		fun createCheckerboardMap(w: Int, h: Int): LevelMap {
 			val map = ByteArray(w * h)
 			val data = ByteArray(w * h)
 			for (x in 0 until w) {
@@ -64,7 +64,7 @@ fun main(args: Array<String>) {
 	val w = 128 // width of the map
 	val h = 128 // height of the map
 	val options = arrayOf("Dirt", "Checkerboard", "Quit") // Name of the buttons used for the window.
-	val optionsFun: Array<() -> LevelMap> = arrayOf({ LevelGen2.createDirtWorld(w, h) }, { LevelGen2.createCheckerboardWorld(w, h) }, { throw IllegalArgumentException("This should quit") })
+	val optionsFun: Array<() -> LevelMap> = arrayOf({ LevelGen.createDirtMap(w, h) }, { LevelGen.createCheckerboardMap(w, h) }, { throw IllegalArgumentException("This should quit") })
 	
 	var level = 0 // map being looked at (0 = all-dirt, 1 = checkerboard, 2 = quit)
 	while (!hasquit) { //If the player has not quit the map

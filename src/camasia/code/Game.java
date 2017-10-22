@@ -58,7 +58,7 @@ public class Game extends Canvas implements Runnable {
 	 //	 private ArrayList<Level> levels = new ArrayList<>(5);
 	 // This is the level the player is on.
 	 // This is set to 3 which is the surface.
-	 private int currentLevel = 3;
+	 private int currentLevel = 0;
 	 private int playerDeadTime; // the paused time when you die before the dead menu shows up.
 	 private int pendingLevelChange; // used to determined if the player should change levels or not.
 	 private int wonTimer = 0; // the paused time when you win before the win menu shows up.
@@ -109,16 +109,16 @@ public class Game extends Canvas implements Runnable {
 		  wonTimer = 0;
 		  gameTime = 0;
 		  hasWon = false;
-		  
-		  levels = new Level[5];
-		  currentLevel = 3;
+		 
+		  levels = new Level[2];
+		  currentLevel = 0;
 		  
 		  // generates new maps
-		  levels[4] = new Level( 128, 128, 1, null ); // creates the sky map
-		  levels[3] = new Level( 128, 128, 0, levels[4] ); // creates the overWorld
-		  levels[2] = new Level( 128, 128, -1, levels[3] ); // creates the mines (iron level)
-		  levels[1] = new Level( 128, 128, -2, levels[2] ); // creates the deep mines (water/gold level)
-		  levels[0] = new Level( 128, 128, -3, levels[1] ); // creates the nether (lava/gem level)
+//		  levels[4] = new Level( 128, 128, 1, null ); // creates the sky map
+//		  levels[3] = new Level( 128, 128, 0, levels[4] ); // creates the overWorld
+//		  levels[2] = new Level( 128, 128, -1, levels[3] ); // creates the mines (iron level)
+		  levels[1] = new Level( 128, 128, 4, null ); // creates the deep mines (water/gold level)
+		  levels[0] = new Level( 128, 128, 3, levels[1] ); // creates the nether (lava/gem level)
 
 		/* Please note: the terms "Mines", "Deep Mines", and "Nether" are not the real names used in the code
 			I just got those names from the wiki where someone named them that. Those levels don't have any real names yet -David
@@ -129,8 +129,8 @@ public class Game extends Canvas implements Runnable {
 		  player.findStartPos( level ); // finds the start level for the player
 		  
 		  level.add( player ); // adds the player to the current level
-		  
-		  for ( int i = 0; i < 5; i++ ) {
+		 
+		  for ( int i = 0; i < levels.length; i++ ) {
 				levels[i].trySpawn( 5000 ); // populates all 5 levels with mobs.
 		  }
 	 }
@@ -304,11 +304,11 @@ public class Game extends Canvas implements Runnable {
 		  level.renderSprites( screen, xScroll, yScroll ); // Calls the renderSprites() method in Level.java
 		  
 		  // this creates the fog-of-war (darkness) in the caves
-		  if ( currentLevel < 3 ) {
-				lightScreen.clear( 0 ); //clears the light screen to a black color
-				level.renderLight( lightScreen, xScroll, yScroll ); // finds all (and renders) the light from objects (like the player, lanterns, and lava).
-				screen.overlay( lightScreen, xScroll, yScroll ); // overlays the light screen over the main screen.
-		  }
+//		  if ( currentLevel < 3 ) {
+//				lightScreen.clear( 0 ); //clears the light screen to a black color
+//				level.renderLight( lightScreen, xScroll, yScroll ); // finds all (and renders) the light from objects (like the player, lanterns, and lava).
+//				screen.overlay( lightScreen, xScroll, yScroll ); // overlays the light screen over the main screen.
+//		  }
 		  
 		  renderGui( ); // calls the renderGui() method.
 		  
