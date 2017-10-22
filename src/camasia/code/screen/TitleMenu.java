@@ -37,7 +37,7 @@ public class TitleMenu extends Menu {
 						  break;
 					 case 3:
 						  System.out.println( "You have decided to quit\n" +
-									 "The average FPS was : " + game.totalFrames / game.gameTime + '\n' +
+									 "The average FPS was : " + game.totalFrames / (game.gameTime / 60) + '\n' +
 									 "The total time was : " + game.gameTime / 60 + '\n' );
 						  System.exit( 0 );
 				}
