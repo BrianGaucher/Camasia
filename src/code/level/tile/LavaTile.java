@@ -65,13 +65,15 @@ public class LavaTile extends Tile {
 	}
 
 	public void tick(Level level, int xt, int yt) {
-		int xn = xt; // next x position
-		int yn = yt; // next y position
+		 int xn = xt; // next column position
+		 int yn = yt; // next row position
 
 		if (random.nextBoolean()) // makes a random decision of true or false
-			xn += random.nextInt(2) * 2 - 1; // if that decision is true, then the next x position = (random value between 0 to 1) * 2 - 1
+			 xn += random
+						.nextInt( 2 ) * 2 - 1; // if that decision is true, then the next column position = (random value between 0 to 1) * 2 - 1
 		else
-			yn += random.nextInt(2) * 2 - 1; // if that decision is false, then the next y position = (random value between 0 to 1) * 2 - 1
+			 yn += random
+						.nextInt( 2 ) * 2 - 1; // if that decision is false, then the next row position = (random value between 0 to 1) * 2 - 1
 
 		if (level.getTile(xn, yn) == Tile.hole) { // if the next positions are a hole tile then...
 			level.setTile(xn, yn, this, 0); // set that hole tile to a lava tile

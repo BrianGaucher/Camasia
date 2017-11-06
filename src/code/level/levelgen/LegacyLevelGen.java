@@ -23,7 +23,7 @@ public class LegacyLevelGen {
 		  
 		  for ( int y = 0; y < w; y += featureSize ) { // Loops through the width of the map, going up by the featureSize value each time.
 				for ( int x = 0; x < w; x += featureSize ) { // Loops through the width of the map a second time, going up by the featureSize value each time.
-					 setSample( x, y, random.nextFloat( ) * 2 - 1 ); // sets a random value at a x and y point.
+					 setSample( x, y, random.nextFloat( ) * 2 - 1 ); // sets a random value at a column and row point.
 				}
 		  }
 		  
@@ -34,10 +34,10 @@ public class LegacyLevelGen {
 				int halfStep = stepSize / 2;  // Half of stepSize
 				for ( int y = 0; y < w; y += stepSize ) { // Loops through the width value of the map, going up by the stepSize value each time.
 					 for ( int x = 0; x < w; x += stepSize ) { // Loops through the width value of the map, going up by the stepSize value each time.
-						  double a = sample( x, y ); // gets a sample value from the x and y value.
-						  double b = sample( x + stepSize, y ); // gets a sample value from the next value of x, and the current y value.
-						  double c = sample( x, y + stepSize ); // gets a sample value from the current x, and next value of y.
-						  double d = sample( x + stepSize, y + stepSize ); // gets a sample value from the next x value and next y value.
+						  double a = sample( x, y ); // gets a sample value from the column and row value.
+						  double b = sample( x + stepSize, y ); // gets a sample value from the next value of column, and the current row value.
+						  double c = sample( x, y + stepSize ); // gets a sample value from the current column, and next value of row.
+						  double d = sample( x + stepSize, y + stepSize ); // gets a sample value from the next column value and next row value.
 					
 					/* Well doesn't this one look complicated? No worries, just look at it step by step. 
 					 *  The first thing it does is add up a+b+c+d as one variable. Then divides that number by 4 (making an average).
@@ -48,18 +48,18 @@ public class LegacyLevelGen {
 					 *   So the value of e can be simplified as: (Average of a,b,c,d) + ((value from 0 to 1) * 2 - 1) * (stepSize value) * (scale value).
 					 *   hope this helps a little bit, I'm not an algebra teacher lol. */
 						  double e = (a + b + c + d) / 4.0 + (random.nextFloat( ) * 2 - 1) * stepSize * scale;
-						  
-						  setSample( x + halfStep, y + halfStep, e ); // sets the value e at the next x value and next y value. repeat these until loop is done.
+						 
+						  setSample( x + halfStep, y + halfStep, e ); // sets the value e at the next column value and next row value. repeat these until loop is done.
 					 }
 				}
 				for ( int y = 0; y < w; y += stepSize ) { // Loops through the width value of the map, going up by the stepSize value each time.
 					 for ( int x = 0; x < w; x += stepSize ) { // Loops through the width value of the map, going up by the stepSize value each time.
-						  double a = sample( x, y ); // gets a sample value from the x and y value.
-						  double b = sample( x + stepSize, y ); // gets a sample value from the next value of x, and the current y value.
-						  double c = sample( x, y + stepSize ); // gets a sample value from the current x, and next value of y.
-						  double d = sample( x + halfStep, y + halfStep ); // gets a sample value from the next x value and next y value.
-						  double e = sample( x + halfStep, y - halfStep ); // gets a sample value from the next x value and the previous y value.
-						  double f = sample( x - halfStep, y + halfStep ); // gets a sample value from the previous x value and the next y value.
+						  double a = sample( x, y ); // gets a sample value from the column and row value.
+						  double b = sample( x + stepSize, y ); // gets a sample value from the next value of column, and the current row value.
+						  double c = sample( x, y + stepSize ); // gets a sample value from the current column, and next value of row.
+						  double d = sample( x + halfStep, y + halfStep ); // gets a sample value from the next column value and next row value.
+						  double e = sample( x + halfStep, y - halfStep ); // gets a sample value from the next column value and the previous row value.
+						  double f = sample( x - halfStep, y + halfStep ); // gets a sample value from the previous column value and the next row value.
 
 					/* H & g are the same as e from the last paragraph. So see that for more info. */
 					
@@ -68,9 +68,9 @@ public class LegacyLevelGen {
 					
 					/* (Average of a,c,d,f) + ((value from 0 to 1) * 2 - 1) * (stepSize value) * (scale value) * 0.5 */
 						  double g = (a + c + d + f) / 4.0 + (random.nextFloat( ) * 2 - 1) * stepSize * scale * 0.5;
-						  
-						  setSample( x + halfStep, y, H ); // sets the H value at the half-way position of the next x value, and the current y value.
-						  setSample( x, y + halfStep, g ); // sets the g value at the current x value, and half-way position of the next y value.
+						 
+						  setSample( x + halfStep, y, H ); // sets the H value at the half-way position of the next column value, and the current row value.
+						  setSample( x, y + halfStep, g ); // sets the g value at the current column value, and half-way position of the next row value.
 					 }
 				}
 				stepSize /= 2; // cuts the stepSize value in half.
@@ -182,9 +182,9 @@ public class LegacyLevelGen {
 				System.out.println( "Created menu" );
 			/* Now you noticed that we made the dialog an integer. This is because when you click a button it will return a number.
 				 Since we passed in 'options', the window will return 0 if you press "Another" and it will return 1 when you press "Quit".
-			   If you press the red "x" close mark, the window will return -1 */
-				
-				// If the dialog returns -1 (red "x" button) or 1 ("Quit" button) then...
+			   If you press the red "column" close mark, the window will return -1 */
+			 
+				// If the dialog returns -1 (red "column" button) or 1 ("Quit" button) then...
 				if ( o == -1 || o == options.length - 1 ) hasQuit = true; // stop the loop and close the program.
 				level = o;
 				System.out.println( "End loop" );
@@ -308,12 +308,12 @@ public class LegacyLevelGen {
 				/* Gets a absolute value from the values from the previous mval object and mnoise3, times it by 3 and subtracts by 2.*/
 					 mval = Math.abs( mval - mnoise3.values[i] ) * 3 - 2;
 					 
-					 double xd = x / (w - 1.0) * 2 - 1; // The x distance: (x value) / ((width value) - 1) * 2 - 1
-					 double yd = y / (h - 1.0) * 2 - 1; // The y distance: (y value) / ((height value) - 1) * 2 - 1
+					 double xd = x / (w - 1.0) * 2 - 1; // The column distance: (column value) / ((width value) - 1) * 2 - 1
+					 double yd = y / (h - 1.0) * 2 - 1; // The row distance: (row value) / ((height value) - 1) * 2 - 1
 					 if ( xd < 0 )
-						  xd = -xd; // If the x distance is smaller than 0, it reverses the value (turning it from negative to positive).
+						  xd = -xd; // If the column distance is smaller than 0, it reverses the value (turning it from negative to positive).
 					 if ( yd < 0 )
-						  yd = -yd; // If the y distance is smaller than 0, it reverses the value (turning it from negative to positive).
+						  yd = -yd; // If the row distance is smaller than 0, it reverses the value (turning it from negative to positive).
 					 double dist = xd >= yd? xd: yd; // distance of water, between the border and land. Chooses either xd or yd depending on which is bigger
 					 dist = dist * dist * dist * dist; // Multiplies itself by 4, get rid of some dists if you want more water around the edges
 					 dist = dist * dist * dist * dist; // Multiplies itself by 4 (again)
@@ -339,13 +339,14 @@ public class LegacyLevelGen {
 				int ys = random
 						  .nextInt( h ); // A random number between 0 to the map's height (minus 1, because 0 is the first number)
 				for ( int k = 0; k < 10; k++ ) { // a loop inside the main loop that occurs 10 times.
-					 int x = xs + random.nextInt( 21 ) - 10; // x value which is: xs + (random value between 0 to 20) - 10
-					 int y = ys + random.nextInt( 21 ) - 10; // y value which is: ys + (random value between 0 to 20) - 10
+					 int x = xs + random
+								.nextInt( 21 ) - 10; // column value which is: xs + (random value between 0 to 20) - 10
+					 int y = ys + random.nextInt( 21 ) - 10; // row value which is: ys + (random value between 0 to 20) - 10
 					 for ( int j = 0; j < 100; j++ ) { // A loop inside a loop inside the main loop, repeats 100 times.
 						  int xo = x + random.nextInt( 5 ) - random
-									 .nextInt( 5 ); // xo value: x + (random value between 0 to 4) - (random val between 0 to 4)
+									 .nextInt( 5 ); // xo value: column + (random value between 0 to 4) - (random val between 0 to 4)
 						  int yo = y + random.nextInt( 5 ) - random
-									 .nextInt( 5 ); // yo value: y + (random value between 0 to 4) - (random val between 0 to 4)
+									 .nextInt( 5 ); // yo value: row + (random value between 0 to 4) - (random val between 0 to 4)
 						  for ( int yy = yo - 1; yy <= yo + 1; yy++ ) // Loopception, Loops if yy is smaller or equal to yo + 1
 								for ( int xx = xo - 1; xx <= xo + 1; xx++ ) // Loopception, Loops if xx is smaller or equal to xo + 1
 									 if ( xx >= 0 && yy >= 0 && xx < w && yy < h ) { // if xx or yy is equal or larger than 0, and smaller than the width and height of the map...
@@ -364,9 +365,9 @@ public class LegacyLevelGen {
 						  .nextInt( h );// A random number between 0 to the map's height (minus 1, because 0 is the first number)
 				for ( int j = 0; j < 200; j++ ) { // A loop that occurs 200 times
 					 int xx = x + random.nextInt( 15 ) - random
-								.nextInt( 15 ); // x + (random value between 0 to 14) - (random value between 0 to 14)
+								.nextInt( 15 ); // column + (random value between 0 to 14) - (random value between 0 to 14)
 					 int yy = y + random.nextInt( 15 ) - random
-								.nextInt( 15 ); // y + (random value between 0 to 14) - (random value between 0 to 14)
+								.nextInt( 15 ); // row + (random value between 0 to 14) - (random value between 0 to 14)
 					 if ( xx >= 0 && yy >= 0 && xx < w && yy < h ) { // if xx or yy is equal or larger than 0, and smaller than the width and height of the map...
 						  if ( map[xx + yy * w] == Tile.grass.id ) { // If the specific xx and yy coordinates happen to be a grass tile...
 								map[xx + yy * w] = Tile.tree.id; // replace the tile with a tree
@@ -383,9 +384,9 @@ public class LegacyLevelGen {
 				int col = random.nextInt( 4 ); // random number between 0 to 3
 				for ( int j = 0; j < 30; j++ ) { // loop that occurs 30 times
 					 int xx = x + random.nextInt( 5 ) - random
-								.nextInt( 5 ); // x + (random value between 0 to 4) - (random value between 0 to 4)
+								.nextInt( 5 ); // column + (random value between 0 to 4) - (random value between 0 to 4)
 					 int yy = y + random.nextInt( 5 ) - random
-								.nextInt( 5 ); // y + (random value between 0 to 4) - (random value between 0 to 4)
+								.nextInt( 5 ); // row + (random value between 0 to 4) - (random value between 0 to 4)
 					 if ( xx >= 0 && yy >= 0 && xx < w && yy < h ) { // if xx or yy is equal or larger than 0, and smaller than the width and height of the map...
 						  if ( map[xx + yy * w] == Tile.grass.id ) { // If the specific xx and yy coordinates happen to be a grass tile...
 								map[xx + yy * w] = Tile.flower.id; // replace the tile with a flower tile
@@ -413,9 +414,9 @@ public class LegacyLevelGen {
 		  for ( int i = 0; i < w * h / 100; i++ ) {
 				int x = random.nextInt( w - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
 				int y = random.nextInt( h - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
-				
-				for ( int yy = y - 1; yy <= y + 1; yy++ ) // Loops if yy is smaller or equal to y + 1
-					 for ( int xx = x - 1; xx <= x + 1; xx++ ) { // Loops if xx is smaller or equal to x + 1
+			 
+				for ( int yy = y - 1; yy <= y + 1; yy++ ) // Loops if yy is smaller or equal to row + 1
+					 for ( int xx = x - 1; xx <= x + 1; xx++ ) { // Loops if xx is smaller or equal to column + 1
 						  if ( map[xx + yy * w] != Tile.rock.id )
 								continue stairsLoop; // If the current tile is NOT a rock tile, then it skips the loops back to the top.
 					 }
@@ -479,12 +480,12 @@ public class LegacyLevelGen {
 				/* Gets a absolute value from the values from the previous wval object and mnoise3, times it by 3 and subtracts by 2.*/
 					 wval = Math.abs( nval - wnoise3.values[i] ) * 3 - 2;
 					 
-					 double xd = x / (w - 1.0) * 2 - 1; // The x distance: (x value) / ((width value) - 1) * 2 - 1
-					 double yd = y / (h - 1.0) * 2 - 1; // The y distance: (y value) / ((height value) - 1) * 2 - 1
+					 double xd = x / (w - 1.0) * 2 - 1; // The column distance: (column value) / ((width value) - 1) * 2 - 1
+					 double yd = y / (h - 1.0) * 2 - 1; // The row distance: (row value) / ((height value) - 1) * 2 - 1
 					 if ( xd < 0 )
-						  xd = -xd; // If the x distance is smaller than 0, it reverses the value (turning it from negative to positive).
+						  xd = -xd; // If the column distance is smaller than 0, it reverses the value (turning it from negative to positive).
 					 if ( yd < 0 )
-						  yd = -yd; // If the y distance is smaller than 0, it reverses the value (turning it from negative to positive).
+						  yd = -yd; // If the row distance is smaller than 0, it reverses the value (turning it from negative to positive).
 					 double dist = xd >= yd? xd: yd; // distance of dirt in the cave. Chooses either xd or yd depending on which is bigger
 					 dist = dist * dist * dist * dist; // dist multiplies itself by 4
 					 dist = dist * dist * dist * dist; // multiplies itself by 4 (again)
@@ -514,9 +515,9 @@ public class LegacyLevelGen {
 								.nextInt( h ); // A random number between 0 to the map's height (minus 1, because 0 is the first number)
 					 for ( int j = 0; j < 30; j++ ) { // A loop that occurs 30 times
 						  int xx = x + random.nextInt( 5 ) - random
-									 .nextInt( 5 ); // x + (random number between 0 to 4) - (random number between 0 to 4)
+									 .nextInt( 5 ); // column + (random number between 0 to 4) - (random number between 0 to 4)
 						  int yy = y + random.nextInt( 5 ) - random
-									 .nextInt( 5 ); // y + (random number between 0 to 4) - (random number between 0 to 4)
+									 .nextInt( 5 ); // row + (random number between 0 to 4) - (random number between 0 to 4)
 						  if ( xx >= r && yy >= r && xx < w - r && yy < h - r ) { // If xx & yy are equal to or larger than r, and smaller than (w - r) and (h - r) then...
 								if ( map[xx + yy * w] == Tile.rock.id ) { // If the current tile is a rock tile...
 									 map[xx + yy * w] = (byte) ((Tile.ironOre.id & 0xff) + depth - 1); // Then set the ore tile (changes from Iron, Gold, & Gem depending on the depth)
@@ -535,8 +536,8 @@ public class LegacyLevelGen {
 					 int y = random
 								.nextInt( h - 20 ) + 10; // A random number between 0 to the map's width minus 20, plus 10.
 					 
-					 for ( int yy = y - 1; yy <= y + 1; yy++ )  // Loops if yy is smaller or equal to y + 1
-						  for ( int xx = x - 1; xx <= x + 1; xx++ ) {  // Loops if xx is smaller or equal to x + 1
+					 for ( int yy = y - 1; yy <= y + 1; yy++ )  // Loops if yy is smaller or equal to row + 1
+						  for ( int xx = x - 1; xx <= x + 1; xx++ ) {  // Loops if xx is smaller or equal to column + 1
 								if ( map[xx + yy * w] != Tile.rock.id )
 									 continue stairsLoop; // If the current Tile is not a rock then start the main loop all over.
 						  }
@@ -571,12 +572,12 @@ public class LegacyLevelGen {
 				/* Gets a absolute value from the values from both noise objects, times it by 3 and subtracts by 2.*/
 					 double val = Math.abs( noise1.values[i] - noise2.values[i] ) * 3 - 2;
 					 
-					 double xd = x / (w - 1.0) * 2 - 1; // The x distance: (x value) / ((width value) - 1) * 2 - 1
-					 double yd = y / (h - 1.0) * 2 - 1; // The y distance: (y value) / ((height value) - 1) * 2 - 1
+					 double xd = x / (w - 1.0) * 2 - 1; // The column distance: (column value) / ((width value) - 1) * 2 - 1
+					 double yd = y / (h - 1.0) * 2 - 1; // The row distance: (row value) / ((height value) - 1) * 2 - 1
 					 if ( xd < 0 )
-						  xd = -xd; // If the x distance is smaller than 0, it reverses the value (turning it from negative to positive).
+						  xd = -xd; // If the column distance is smaller than 0, it reverses the value (turning it from negative to positive).
 					 if ( yd < 0 )
-						  yd = -yd; // If the y distance is smaller than 0, it reverses the value (turning it from negative to positive).
+						  yd = -yd; // If the row distance is smaller than 0, it reverses the value (turning it from negative to positive).
 					 double dist = xd >= yd? xd: yd; // distance of clouds in the sky. Chooses either xd or yd depending on which is bigger
 					 dist = dist * dist * dist * dist; // Multiplies itself 4 times.
 					 dist = dist * dist * dist * dist; // Multiplies itself 4 times. (again)
@@ -596,9 +597,9 @@ public class LegacyLevelGen {
 		  for ( int i = 0; i < w * h / 50; i++ ) { //loops through all the numbers that are less than (width * height / 50)
 				int x = random.nextInt( w - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
 				int y = random.nextInt( h - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
-				
-				for ( int yy = y - 1; yy <= y + 1; yy++ ) // Loops if yy is smaller or equal to y + 1
-					 for ( int xx = x - 1; xx <= x + 1; xx++ ) { // Loops if xx is smaller or equal to x + 1
+			 
+				for ( int yy = y - 1; yy <= y + 1; yy++ ) // Loops if yy is smaller or equal to row + 1
+					 for ( int xx = x - 1; xx <= x + 1; xx++ ) { // Loops if xx is smaller or equal to column + 1
 						  if ( map[xx + yy * w] != Tile.cloud.id )
 								continue cactusLoop; // If the current tile is NOT a cloud tile, then it skips the loops back to the top.
 					 }
@@ -611,9 +612,9 @@ public class LegacyLevelGen {
 		  for ( int i = 0; i < w * h; i++ ) { //loops through the entire map
 				int x = random.nextInt( w - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
 				int y = random.nextInt( h - 2 ) + 1; // A random number between 0 to the map's width minus 2, plus one.
-				
-				for ( int yy = y - 1; yy <= y + 1; yy++ ) // Loops if yy is smaller or equal to y + 1
-					 for ( int xx = x - 1; xx <= x + 1; xx++ ) { // Loops if xx is smaller or equal to x + 1
+			 
+				for ( int yy = y - 1; yy <= y + 1; yy++ ) // Loops if yy is smaller or equal to row + 1
+					 for ( int xx = x - 1; xx <= x + 1; xx++ ) { // Loops if xx is smaller or equal to column + 1
 						  if ( map[xx + yy * w] != Tile.cloud.id )
 								continue stairsLoop; // If the current tile is NOT a cloud tile, then it skips the loops back to the top.
 					 }

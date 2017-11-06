@@ -47,7 +47,7 @@ public class Menu {
 		}
 
 		if (renderCursor) {
-			int yy = selected + 1 - io + yo; // the y position of the currently selected item
+			 int yy = selected + 1 - io + yo; // the row position of the currently selected item
 			Font.draw(">", screen, (xo + 0) * 8, yy * 8, Color.get(5, 555, 555, 555)); // draws the left cursor next to the name
 			Font.draw("<", screen, (xo + w) * 8, yy * 8, Color.get(5, 555, 555, 555)); // draws the right cursor next to the name
 		}

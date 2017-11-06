@@ -22,7 +22,7 @@ public class InstructionsMenu extends Menu {
 	public void render(Screen screen) {
 		 screen.clear( ); // clears the screen to be a black color.
 		
-		/* Font.draw Parameters: Font.draw(String text, Screen screen, int x, int y, int color) */
+		/* Font.draw Parameters: Font.draw(String text, Screen screen, int column, int row, int color) */
 
 		Font.draw("HOW TO PLAY", screen, 4 * 8 + 4, 1 * 8, Color.get(0, 555, 555, 555)); //draws Title text
 		Font.draw("Move your character", screen, 0 * 8 + 4, 3 * 8, Color.get(0, 333, 333, 333)); // draws text

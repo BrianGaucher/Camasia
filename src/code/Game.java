@@ -268,8 +268,8 @@ public class Game extends Canvas implements Runnable {
 		  level.remove( player ); // removes the player from the current level.
 		  currentLevel += dir; // changes the current level by the amount
 		  level = levels[currentLevel]; // sets the level to the current level
-		  player.x = (player.x >> 4) * 16 + 8; //sets the player's x coord (to center yourself on the stairs)
-		  player.y = (player.y >> 4) * 16 + 8; //sets the player's y coord (to center yourself on the stairs)
+		  player.x = (player.x >> 4) * 16 + 8; //sets the player's column coord (to center yourself on the stairs)
+		  player.y = (player.y >> 4) * 16 + 8; //sets the player's row coord (to center yourself on the stairs)
 		  level.add( player ); // adds the player to the level.
 	 }
 	 
@@ -283,9 +283,9 @@ public class Game extends Canvas implements Runnable {
 				requestFocus( ); // requests the focus of the screen.
 				return;
 		  }
-		  
-		  int xScroll = player.x - screen.w / 2; // scrolls the screen in the x axis.
-		  int yScroll = player.y - (screen.h - 8) / 2; //scrolls the screen in the y axis.
+		 
+		  int xScroll = player.x - screen.w / 2; // scrolls the screen in the column axis.
+		  int yScroll = player.y - (screen.h - 8) / 2; //scrolls the screen in the row axis.
 		  if ( xScroll < 16 ) xScroll = 16; // if the screen is at the left border, then stop scrolling.
 		  if ( yScroll < 16 ) yScroll = 16; // if the screen is at the top border, then stop scrolling.
 		  if ( xScroll > level.w * 16 - screen.w - 16 )

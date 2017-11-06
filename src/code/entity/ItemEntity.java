@@ -6,22 +6,22 @@ import code.item.Item;
 import code.sound.Sound;
 
 public class ItemEntity extends Entity {
-	public double xa, ya, za; // the x, y, and z acceleration
-	public double xx, yy, zz; // the x, y, and z coordinates
+	 public double xa, ya, za; // the column, row, and z acceleration
+	 public double xx, yy, zz; // the column, row, and z coordinates
 	public Item item; // the item that this entity is based off of.
 	 private int lifeTime; // the life time of this entity in the level
 	private int time = 0; // time it has lasted in the level
 
 	public ItemEntity(Item item, int x, int y) {
 		this.item = item; // assigns the item
-		xx = this.x = x; // assigns the x coordinate
-		yy = this.y = y; // assigns the y coordinate
-		xr = 3; // x radius (size)
-		yr = 3; // y radius (size)
+		 xx = this.x = x; // assigns the column coordinate
+		 yy = this.y = y; // assigns the row coordinate
+		 xr = 3; // column radius (size)
+		 yr = 3; // row radius (size)
 
 		zz = 2; // z coordinate
-		xa = random.nextGaussian() * 0.3; // random direction for x acceleration
-		ya = random.nextGaussian() * 0.2; // random direction for y acceleration
+		 xa = random.nextGaussian( ) * 0.3; // random direction for column acceleration
+		 ya = random.nextGaussian( ) * 0.2; // random direction for row acceleration
 		za = random.nextFloat() * 0.7 + 1; // random direction for z acceleration
 
 		lifeTime = 60 * 10 + random.nextInt(60); // sets the lifetime of the item. min = 600 ticks, max = 629 ticks.
@@ -34,25 +34,25 @@ public class ItemEntity extends Entity {
 			remove(); // remove from the world
 			return; // skip the rest of the code
 		}
-		xx += xa; // moves the xx coordinate by the x acceleration
-		yy += ya; // moves the yy coordinate by the y acceleration
+		 xx += xa; // moves the xx coordinate by the column acceleration
+		 yy += ya; // moves the yy coordinate by the row acceleration
 		zz += za; // moves the zz coordinate by the z acceleration
 		if (zz < 0) { //if zz is smaller than 0
 			zz = 0; // zz now will be 0
 			za *= -0.5; // multiplies the z acceleration by -0.5
-			xa *= 0.6; // multiplies the x acceleration by 0.6
-			ya *= 0.6; // multiplies the y acceleration by 0.6
+			 xa *= 0.6; // multiplies the column acceleration by 0.6
+			 ya *= 0.6; // multiplies the row acceleration by 0.6
 		}
 		za -= 0.15; // minuses the z acceleration by 0.15
-		int ox = x; // x coordinate
-		int oy = y; // y coordinate
+		 int ox = x; // column coordinate
+		 int oy = y; // row coordinate
 		int nx = (int) xx; // integer conversion of xx
 		int ny = (int) yy; // integer conversion of yy
-		int expectedx = nx - x; // the difference of nx and x
-		int expectedy = ny - y; // the difference of ny and y
+		 int expectedx = nx - x; // the difference of nx and column
+		 int expectedy = ny - y; // the difference of ny and row
 		move(nx - x, ny - y); // moves the ItemEntity
-		int gotx = x - ox; // the difference between the new x and ox
-		int goty = y - oy; // the difference between the new y and oy
+		 int gotx = x - ox; // the difference between the new column and ox
+		 int goty = y - oy; // the difference between the new row and oy
 		xx += gotx - expectedx; // new xx position based on the difference between gotx and expectedx
 		yy += goty - expectedy; // new yy position based on the difference between goty and expectedy
 	}

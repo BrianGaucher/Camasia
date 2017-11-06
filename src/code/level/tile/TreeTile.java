@@ -8,6 +8,7 @@ import code.entity.particle.SmashParticle;
 import code.entity.particle.TextParticle;
 import code.gfx.Color;
 import code.gfx.Screen;
+import code.gfx.Sprite;
 import code.item.Item;
 import code.item.ResourceItem;
 import code.item.ToolItem;
@@ -49,12 +50,12 @@ public class TreeTile extends Tile {
 		  int column;
 		  int bit;
 		  if ( u && ul && l ) { // if there is a tree above, to the left, and to the upper left of this tile then...
-				//	screen.render( x * 16 + 0, y * 16 + 0, 10 + 1 * 32, col, 0 ); // render a tree tile sprite that will connect to other trees. (top-left)
+				//	screen.render( column * 16 + 0, row * 16 + 0, 10 + 1 * 32, col, 0 ); // render a tree tile sprite that will connect to other trees. (top-left)
 				row = 1;
 				column = 10;
 				bit = 0;
 		  } else {
-				//screen.render( x * 16 + 0, y * 16 + 0, 9 + 0 * 32, col, 0 ); // else render the normal top-left part of the tree
+				//screen.render( column * 16 + 0, row * 16 + 0, 9 + 0 * 32, col, 0 ); // else render the normal top-left part of the tree
 				row = 0;
 				column = 9;
 				bit = 0;

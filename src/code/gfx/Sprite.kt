@@ -1,6 +1,4 @@
-package code.level.tile
-
-import code.gfx.Colour
+package code.gfx
 
 /**
  * Use this class for describing sprites
@@ -12,7 +10,7 @@ import code.gfx.Colour
  * @param colour The colour variable
  * @constructor creates all the fields.
  */
-class Sprite(val row: Int, val column: Int, val bit: Inversion = Inversion.NONE, val colour: Colour)
+data class Sprite(val row: Int, val column: Int, val bit: Inversion = Inversion.NONE, val colour: Colour)
 
 enum class Inversion(val X: Boolean, val Y: Boolean) {
 	NONE(false, false), X_AXIS(true, false), Y_AXIS(false, true), MIRROR_180(true, true)

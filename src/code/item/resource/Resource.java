@@ -29,8 +29,8 @@ public class Resource {
 	public static Resource cloth = new Resource("cloth", 1 + 4 * 32, Color.get(-1, 25, 252, 141));
 	public static Resource cloud = new PlantableResource("cloud", 2 + 4 * 32, Color.get(-1, 222, 555, 444), Tile.cloud, Tile.infiniteFall);
 	public static Resource gem = new Resource("gem", 13 + 4 * 32, Color.get(-1, 101, 404, 545));
-
-	// public static Resource resource = new Resource("Name", x-sprite position + y-sprite position * 32, Color.get(-1,555,555,555))
+	 
+	 // public static Resource resource = new Resource("Name", column-sprite position + row-sprite position * 32, Color.get(-1,555,555,555))
 	
 	public final String name; // the name of the resource
 	public final int sprite; // the sprite of the resource

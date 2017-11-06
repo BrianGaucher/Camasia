@@ -6,14 +6,16 @@ import code.item.ResourceItem;
 import code.item.resource.Resource;
 
 public class Slime extends Mob {
-	private int xa, ya; // x & y acceleration
+	 private int xa, ya; // column & row acceleration
 	private int jumpTime = 0; // jumpTimer, also acts as a rest timer before the next jump
 	private int lvl; // how tough the slime is
 
 	public Slime(int lvl) {
 		this.lvl = lvl; // level is passed through constructor
-		x = random.nextInt(64 * 16); // gives it a random x position anywhere between (0 to 1023) [Tile position (0 to 64)]
-		y = random.nextInt(64 * 16); // gives it a random y position anywhere between (0 to 1023) [Tile position (0 to 64)]
+		 x = random
+					.nextInt( 64 * 16 ); // gives it a random column position anywhere between (0 to 1023) [Tile position (0 to 64)]
+		 y = random
+					.nextInt( 64 * 16 ); // gives it a random row position anywhere between (0 to 1023) [Tile position (0 to 64)]
 		health = maxHealth = lvl * lvl * 5; // Health based on level
 	}
 
@@ -33,10 +35,14 @@ public class Slime extends Mob {
 					/* If the horizontal distance� + vertical distance� is smaller than 50� then...*/
 					if (xd * xd + yd * yd < 50 * 50) { // Notch is an evil man who should be punished for this line of code, it seems to test the distance between slime and the player
 						// Why is notch evil for making that line of code? :o -David
-						if (xd < 0) xa = -1; // if the horizontal difference is smaller than 0, then the x acceleration will be 1 (negative direction)
-						if (xd > 0) xa = +1; // if the horizontal difference is larger than 0, then the x acceleration will be 1
-						if (yd < 0) ya = -1; // if the vertical difference is smaller than 0, then the y acceleration will be 1 (negative direction)
-						if (yd > 0) ya = +1; // if the vertical difference is larger than 0, then the y acceleration will be 1
+						 if ( xd < 0 )
+							  xa = -1; // if the horizontal difference is smaller than 0, then the column acceleration will be 1 (negative direction)
+						 if ( xd > 0 )
+							  xa = +1; // if the horizontal difference is larger than 0, then the column acceleration will be 1
+						 if ( yd < 0 )
+							  ya = -1; // if the vertical difference is smaller than 0, then the row acceleration will be 1 (negative direction)
+						 if ( yd > 0 )
+							  ya = +1; // if the vertical difference is larger than 0, then the row acceleration will be 1
 					}
 
 				}

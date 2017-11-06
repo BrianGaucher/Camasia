@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class Entity {
 	protected final Random random = new Random(); // Used for random numbers, example: random.randInt(5)
-	public int x, y;// x & y coordinates on the map
+	 public int x, y;// column & row coordinates on the map
 	public int xr = 6; // horizontal radius of entity
 	public int yr = 6; // vertical radius of entity
 	public boolean removed; // Determines if the entity should be removed from the level
@@ -36,10 +36,10 @@ public class Entity {
 
 	/** If this entity intersects 4 points then return true */
 	public boolean intersects(int x0, int y0, int x1, int y1) {
-		/* if (x position + horizontal radius) is NOT smaller than x0 OR... 
-		 * if (y position + vertical radius) is NOT smaller than y0 OR... 
-		 * if (x position - horizontal radius) is NOT larger than x1 OR... 
-		 * if (y position - vertical radius) is NOT larger than y1. Then return true.
+		/* if (column position + horizontal radius) is NOT smaller than x0 OR...
+		 * if (row position + vertical radius) is NOT smaller than y0 OR...
+		 * if (column position - horizontal radius) is NOT larger than x1 OR...
+		 * if (row position - vertical radius) is NOT larger than y1. Then return true.
 		 *  */
 		return !(x + xr < x0 || y + yr < y0 || x - xr > x1 || y - yr > y1); 
 	}
@@ -70,15 +70,15 @@ public class Entity {
 				 * The world coordinates for tiles is 128x128
 				 * The world coordinates for entities is 2048x2048
 				 * This is because each tile is 16x16 pixels big
-				 * 128 x 16 = 2048.
+				 * 128 column 16 = 2048.
 				 * When ever you see a ">>", it means that it is a right shift operator. This means it shifts bits to the right (making them smaller)
-				 * x >> 4 is the equivalent to x / (2^4). Which means it's dividing the X value by 16. (2x2x2x2 = 16)
+				 * column >> 4 is the equivalent to column / (2^4). Which means it's dividing the X value by 16. (2x2x2x2 = 16)
 				 * xt << 4 is the equivalent to xt * (2^4). Which means it's multiplying the X tile value by 16.
 				 * 
 				 * These bit shift operators are used to easily get the X & Y coordinates of a tile that the entity is standing on. */
-				
-				int xt = x >> 4; // the x tile coordinate that the entity is standing on.
-				int yt = y >> 4; // the y tile coordinate that the entity is standing on.
+				 
+				 int xt = x >> 4; // the column tile coordinate that the entity is standing on.
+				 int yt = y >> 4; // the row tile coordinate that the entity is standing on.
 				level.getTile(xt, yt).steppedOn(level, xt, yt, this); // Calls the steppedOn() method in a tile's class. (like sand or lava)
 			}
 			return !stopped; // returns the opposite of stopped
@@ -88,7 +88,7 @@ public class Entity {
 
 	/** Second part to the move method (moves in one direction at a time) */
 	protected boolean move2(int xa, int ya) {
-		/* If the x acceleration and y acceleration are BOTH NOT 0, then throw an error */
+		/* If the column acceleration and row acceleration are BOTH NOT 0, then throw an error */
 		if (xa != 0 && ya != 0) throw new IllegalArgumentException("Move2 can only move along one axis at a time!");
 
 		/* Note: I was tired when typing this part, please excuse grammar quirks in the writing. (Or just re-write it to make it more sensible, lol) */
@@ -138,9 +138,9 @@ public class Entity {
 					return false; // return false
 			  }
 		 }
-
-		x += xa; // moves horizontally based on the x acceleration
-		y += ya; // moves vertically based on the y acceleration
+		 
+		 x += xa; // moves horizontally based on the column acceleration
+		 y += ya; // moves vertically based on the row acceleration
 		return true; // return true
 	}
 

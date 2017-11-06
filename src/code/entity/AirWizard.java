@@ -5,15 +5,15 @@ import code.gfx.Screen;
 import code.sound.Sound;
 
 public class AirWizard extends Mob {
-	private int xa, ya; // x & y acceleration
+	 private int xa, ya; // column & row acceleration
 	private int randomWalkTime = 0; // time it takes for him to complete walking
 	private int attackDelay = 0; // attack delay variable
 	private int attackTime = 0; // attack time variable
 	private int attackType = 0; // attack type variable
 
 	public AirWizard() {
-		x = random.nextInt(64 * 16); // x position is anywhere between (0 to 1023) [Tile position (0 to 64)]
-		y = random.nextInt(64 * 16); // y position is anywhere between (0 to 1023) [Tile position (0 to 64)]
+		 x = random.nextInt( 64 * 16 ); // column position is anywhere between (0 to 1023) [Tile position (0 to 64)]
+		 y = random.nextInt( 64 * 16 ); // row position is anywhere between (0 to 1023) [Tile position (0 to 64)]
 		health = maxHealth = 2000; // health and maxHealth set to 2000.
 	}
 
@@ -48,30 +48,34 @@ public class AirWizard extends Mob {
 		if (level.player != null && randomWalkTime == 0) { // if there is a player around, and the randomWalkTime is equal to 0
 			int xd = level.player.x - x; // the horizontal distance between the player and the air wizard.
 			int yd = level.player.y - y; // the vertical distance between the player and the air wizard.
-			if (xd * xd + yd * yd < 32 * 32) { // if the x-distance� + y-distance� is smaller than 32� then...
+			 if ( xd * xd + yd * yd < 32 * 32 ) { // if the column-distance� + row-distance� is smaller than 32� then...
 				/* Move away from the player */
-				xa = 0; // x acceleration
-				ya = 0; // y acceleration
-				if (xd < 0) xa = +1; // if the xd is less than 0, then increase x acceleration by 1
-				if (xd > 0) xa = -1; // if the xd is more than 0, then increase x acceleration by 1 (negative direction)
-				if (yd < 0) ya = +1; // if the yd is less than 0, then increase y acceleration by 1
-				if (yd > 0) ya = -1; // if the yd is more than 0, then increase y acceleration by 1 (negative direction)
-			} else if (xd * xd + yd * yd > 80 * 80) { // if the x-distance� + y-distance� is smaller than 80� then...
+				  xa = 0; // column acceleration
+				  ya = 0; // row acceleration
+				  if ( xd < 0 ) xa = +1; // if the xd is less than 0, then increase column acceleration by 1
+				  if ( xd > 0 )
+						xa = -1; // if the xd is more than 0, then increase column acceleration by 1 (negative direction)
+				  if ( yd < 0 ) ya = +1; // if the yd is less than 0, then increase row acceleration by 1
+				  if ( yd > 0 )
+						ya = -1; // if the yd is more than 0, then increase row acceleration by 1 (negative direction)
+			 } else if ( xd * xd + yd * yd > 80 * 80 ) { // if the column-distance� + row-distance� is smaller than 80� then...
 				/* Move towards from the player */
-				xa = 0; // x acceleration
-				ya = 0; // y acceleration
-				if (xd < 0) xa = -1; // if the xd is less than 0, then increase x acceleration by 1 (negative direction)
-				if (xd > 0) xa = +1; // if the xd is more than 0, then increase x acceleration by 1
-				if (yd < 0) ya = -1; // if the yd is less than 0, then increase y acceleration by 1 (negative direction)
-				if (yd > 0) ya = +1; // if the yd is more than 0, then increase y acceleration by 1
+				  xa = 0; // column acceleration
+				  ya = 0; // row acceleration
+				  if ( xd < 0 )
+						xa = -1; // if the xd is less than 0, then increase column acceleration by 1 (negative direction)
+				  if ( xd > 0 ) xa = +1; // if the xd is more than 0, then increase column acceleration by 1
+				  if ( yd < 0 )
+						ya = -1; // if the yd is less than 0, then increase row acceleration by 1 (negative direction)
+				  if ( yd > 0 ) ya = +1; // if the yd is more than 0, then increase row acceleration by 1
 			}
 		}
 
 		int speed = (tickTime % 4) == 0 ? 0 : 1; // if the remainder of tickTime/4 is equal to 0, then speed is equal to 0, else it is equal to 1.
 		if (!move(xa * speed, ya * speed) || random.nextInt(100) == 0) { // If the air wizard is not moving & a random value (0 to 99) equals 0...
 			randomWalkTime = 30; // randomWalkTime is equal to 30
-			xa = (random.nextInt(3) - 1); // x-accelerations equals (random number between 0 to 2) minus 1.
-			ya = (random.nextInt(3) - 1); // y-accelerations equals (random number between 0 to 2) minus 1.
+			 xa = (random.nextInt( 3 ) - 1); // column-accelerations equals (random number between 0 to 2) minus 1.
+			 ya = (random.nextInt( 3 ) - 1); // row-accelerations equals (random number between 0 to 2) minus 1.
 		}
 		if (randomWalkTime > 0) { // if randomWalkTime is larger than 0...
 			randomWalkTime--; // decrease randomWalkTime by 1
@@ -79,7 +83,7 @@ public class AirWizard extends Mob {
 				int xd = level.player.x - x; // the horizontal distance between the player and the air wizard.
 				int yd = level.player.y - y; // the vertical distance between the player and the air wizard.
 				
-				/* if a random number (0 to 3) equals 0 and the x-distance� + y-distance� is smaller than 50� then...*/
+				/* if a random number (0 to 3) equals 0 and the column-distance� + row-distance� is smaller than 50� then...*/
 				if (random.nextInt(4) == 0 && xd * xd + yd * yd < 50 * 50) {
 					if (attackDelay == 0 && attackTime == 0) { // if attackDelay & attackTime equal 0, then...
 						attackDelay = 60 * 2; // attackDelay equals 120 (about 2 seconds)
@@ -91,8 +95,8 @@ public class AirWizard extends Mob {
 
 	/** Renders the air wizard on the screen */
 	public void render(Screen screen) {
-		int xt = 8; // x coordinate on the sprite sheet
-		int yt = 14; // y coordinate on the sprite sheet
+		 int xt = 8; // column coordinate on the sprite sheet
+		 int yt = 14; // row coordinate on the sprite sheet
 
 		int flip1 = (walkDist >> 3) & 1; // animation flip value (used to mirror the sprite).
 		int flip2 = (walkDist >> 3) & 1; // animation flip value (used to mirror the sprite).
@@ -132,7 +136,7 @@ public class AirWizard extends Mob {
 		}
 
 		
-		/* screen.render(int x position, int y-position, int sprite-location, int colors, int bits (0 = not mirrored, 1 = mirrored)) */
+		/* screen.render(int column position, int row-position, int sprite-location, int colors, int bits (0 = not mirrored, 1 = mirrored)) */
 		screen.render(xo + 8 * flip1, yo + 0, xt + yt * 32, col1, flip1); //renders the top-right of the sprite
 		screen.render(xo + 8 - 8 * flip1, yo + 0, xt + 1 + yt * 32, col1, flip1); //renders the top-left of the sprite
 		screen.render(xo + 8 * flip2, yo + 8, xt + (yt + 1) * 32, col2, flip2); //renders the bottom-right of the sprite

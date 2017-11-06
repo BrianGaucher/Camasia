@@ -1,7 +1,5 @@
 package code.gfx;
 
-import code.level.tile.Sprite;
-
 /**
  * This class was being worked on by Notch, but he abandoned it. We can do it better.
  * @see Sprite
@@ -14,8 +12,8 @@ import code.level.tile.Sprite;
 	public int bits; // bits of the sprite
 
 	public legacySprite(int x, int y, int img, int col, int bits) {
-		this.x = x; // assigns the x coordinate
-		this.y = y; // assigns the y coordinate
+		 this.x = x; // assigns the column coordinate
+		 this.y = y; // assigns the row coordinate
 		this.img = img; // assigns the image value
 		this.col = col; // assigns the color value
 		this.bits = bits; // assigns the bits value

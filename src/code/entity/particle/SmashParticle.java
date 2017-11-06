@@ -9,8 +9,8 @@ public class SmashParticle extends Entity {
 	private int time = 0; // the time that the particle is on screen
 
 	public SmashParticle(int x, int y) {
-		this.x = x; // assigns the x position of the particle
-		this.y = y; // assigns the y position of the particle
+		 this.x = x; // assigns the column position of the particle
+		 this.y = y; // assigns the row position of the particle
 		Sound.monsterHurt.play(); // plays a sound
 	}
 

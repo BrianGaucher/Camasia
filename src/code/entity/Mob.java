@@ -17,8 +17,8 @@ public class Mob extends Entity {
 	 protected int xKnockback, yKnockback; // The amount of vertical/horizontal knockback that needs to be inflicted, if it's not 0, it will be moved one pixel at a time.
 
 	public Mob() {
-		x = y = 8; // By default, set x and y coordinates to 8
-		xr = 4; // Sets the x and y radius/size of the mob
+		 x = y = 8; // By default, set column and row coordinates to 8
+		 xr = 4; // Sets the column and row radius/size of the mob
 		yr = 3;
 	}
 
@@ -70,7 +70,7 @@ public class Mob extends Entity {
 	}
 
 	protected boolean isSwimming() { // Check if the mob is swimming
-		Tile tile = level.getTile(x >> 4, y >> 4); // Get the tile the mob is standing on (at x/16, y/16)
+		 Tile tile = level.getTile( x >> 4, y >> 4 ); // Get the tile the mob is standing on (at column/16, row/16)
 		return tile == Tile.water || tile == Tile.lava; // Check if the tile is liquid, and return true if so
 	}
 
@@ -99,8 +99,8 @@ public class Mob extends Entity {
 		if (hurtTime > 0) return; // If the mob has been hurt recently and hasn't cooled down, don't continue
 
 		if (level.player != null) { // If there is a player in the level
-			int xd = level.player.x - x; // Set xd to the difference between our's and the player's x-coordinate.
-			int yd = level.player.y - y; // Set yd to the difference between our's and the player's y-coordinate.
+			 int xd = level.player.x - x; // Set xd to the difference between our's and the player's column-coordinate.
+			 int yd = level.player.y - y; // Set yd to the difference between our's and the player's row-coordinate.
 			if (xd * xd + yd * yd < 80 * 80) { // Some math to figure out if the distance is less than 80 pixels. Pythagoras' theorem is used on a hypothetical right-angled triangle between our two points, where the hypotenuse is the diagonal distance
 				Sound.monsterHurt.play(); // If we are close enough to the player, play the monsterHurt sound
 			}
@@ -115,14 +115,14 @@ public class Mob extends Entity {
 	}
 
 	public boolean findStartPos(Level level) { // Find a place to spawn the mob
-		int x = random.nextInt(level.w); // Pick a random x coordinate, inside the level's bounds
-		int y = random.nextInt(level.h); // Pick a random y coordinate, inside the level's bounds
+		 int x = random.nextInt( level.w ); // Pick a random column coordinate, inside the level's bounds
+		 int y = random.nextInt( level.h ); // Pick a random row coordinate, inside the level's bounds
 		int xx = x * 16 + 8; // Get actual pixel coordinates from this tile coord
 		int yy = y * 16 + 8;
 
 		if (level.player != null) { // If there is a player in our level
-			int xd = level.player.x - xx; // Get the difference between our attempted spawn x, and the player's x
-			int yd = level.player.y - yy; // Get the difference between our attempted spawn y, and the player's y
+			 int xd = level.player.x - xx; // Get the difference between our attempted spawn column, and the player's column
+			 int yd = level.player.y - yy; // Get the difference between our attempted spawn row, and the player's row
 			if (xd * xd + yd * yd < 80 * 80) return false; // Use pythagoras' theorem to determine the distance between us and the player, and if it is less than 80 (too close) then return false
 		}
 

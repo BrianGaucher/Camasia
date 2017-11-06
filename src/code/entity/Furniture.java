@@ -13,8 +13,8 @@ public class Furniture extends Entity {
 
 	public Furniture(String name) {
 		this.name = name; // assigns the name
-		xr = 3; // the x radius of the furniture
-		yr = 3; // the y radius of the furniture
+		 xr = 3; // the column radius of the furniture
+		 yr = 3; // the row radius of the furniture
 	}
 
 	/** Update method, updates (ticks) 60 times a second */

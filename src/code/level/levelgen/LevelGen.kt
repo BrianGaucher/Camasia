@@ -118,9 +118,9 @@ fun main(args: Array<String>) {
 				options, null)// this would normally be used for a parent component (parent window), but we don't have one so it's null.
 		/* Now you noticed that we made the dialog an integer. This is because when you click a button it will return a number.
 			 Since we passed in 'options', the window will return 0 if you press "Another" and it will return 1 when you press "Quit".
-			If you press the red "x" close mark, the window will return -1 */
+			If you press the red "column" close mark, the window will return -1 */
 		
-		// If the dialog returns -1 (red "x" button) or 1 ("Quit" button) then...
+		// If the dialog returns -1 (red "column" button) or 1 ("Quit" button) then...
 		
 		level = o
 		if (o == -1 || o == options.lastIndex) hasquit = true // stop the loop and close the program.

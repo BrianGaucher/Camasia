@@ -72,14 +72,14 @@ public class CraftingMenu extends Menu {
 		if (recipes.size() > 0) { // If the size of the recipe list is above 0...
 			Recipe recipe = recipes.get(selected); // currently selected recipe
 			int hasResultItems = player.inventory.count(recipe.resultTemplate); // Counts the number of items to see if you can craft the recipe
-			int xo = 13 * 8; // x coordinate of the items in the 'have' and 'cost' windows
+			 int xo = 13 * 8; // column coordinate of the items in the 'have' and 'cost' windows
 			screen.render(xo, 2 * 8, recipe.resultTemplate.getSprite(), recipe.resultTemplate.getColor(), 0); // Renders the sprites in the 'have' & 'cost' windows
 			Font.draw("" + hasResultItems, screen, xo + 8, 2 * 8, Color.get(-1, 555, 555, 555)); // draws the amount in the 'have' menu
 
 			List<Item> costs = recipe.costs; // the list items that is needed to make the recipe
 			for (int i = 0; i < costs.size(); i++) { // Loops through the costs list
 				Item item = costs.get(i); // Current cost item
-				int yo = (5 + i) * 8; // y coordinate of the cost item
+				 int yo = (5 + i) * 8; // row coordinate of the cost item
 				screen.render(xo, yo, item.getSprite(), item.getColor(), 0); // renders the cost item
 				int requiredAmt = 1; // required amount need to craft (normally 1)
 				 if ( item instanceof ResourceItem ) { // If the item is a resource...

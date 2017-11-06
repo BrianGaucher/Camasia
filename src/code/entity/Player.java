@@ -34,8 +34,8 @@ public class Player extends Mob {
 	 public Player(Game game, InputHandler input) {
 		  this.game = game; // assigns the game that the player is in
 		  this.input = input; // assigns the input
-		  x = 24; // players x position
-		  y = 24; // players y position
+		  x = 24; // players column position
+		  y = 24; // players row position
 		  stamina = maxStamina; // assigns the stamina to be the max stamina (10)
 		  
 		  inventory.add( new FurnitureItem( new Workbench( ) ) ); // adds a workbench to the player's inventory
@@ -46,6 +46,8 @@ public class Player extends Mob {
 				}
 				inventory.add( new ToolItem( ToolType.pickaxe, 4 ) );
 				inventory.add( new ToolItem( ToolType.sword, 4 ) );
+				inventory.add( new ToolItem( ToolType.shovel, 4 ) );
+				inventory.add( new ResourceItem( Resource.stone, 99 ) );
 		  }
 		  
 	 }
@@ -86,13 +88,13 @@ public class Player extends Mob {
 						  stamina++; // if the player's stamina is less than their max stamina then add 1 stamina.
 				}
 		  }
-		  
-		  int xa = 0; // x acceleration
-		  int ya = 0; // y acceleration
-		  if ( input.up.down ) ya--; // if the player presses up then his y acceleration will be -1
-		  if ( input.down.down ) ya++; // if the player presses down then his y acceleration will be 1
-		  if ( input.left.down ) xa--; // if the player presses left then his x acceleration will be -1
-		  if ( input.right.down ) xa++; // if the player presses up right his x acceleration will be 1
+		 
+		  int xa = 0; // column acceleration
+		  int ya = 0; // row acceleration
+		  if ( input.up.down ) ya--; // if the player presses up then his row acceleration will be -1
+		  if ( input.down.down ) ya++; // if the player presses down then his row acceleration will be 1
+		  if ( input.left.down ) xa--; // if the player presses left then his column acceleration will be -1
+		  if ( input.right.down ) xa++; // if the player presses up right his column acceleration will be 1
 		  
 		  if ( isSwimming( ) && tickTime % 60 == 0 ) { // if the player is swimming and the remainder of (tickTime/60) equals 0 then...
 				if ( stamina > 0 ) { // if stamina is above 0 then...
@@ -103,7 +105,7 @@ public class Player extends Mob {
 		  }
 		  
 		  if ( staminaRechargeDelay % 2 == 0 ) { // if the remainder of (staminaRechargeDelay/2) equals 0 then...
-				move( xa, ya ); // move the player in the x & y acceleration
+				move( xa, ya ); // move the player in the column & row acceleration
 		  }
 		  
 		  if ( input.attack.clicked ) { // if the player presses the attack button...
@@ -143,7 +145,7 @@ public class Player extends Mob {
 		  
 		  if ( activeItem != null ) { // if the player has a active Item
 				attackTime = 10; // attack time will be set to 10.
-				int yo = -2; // y offset
+				int yo = -2; // row offset
 				int range = 12; // range from an object
 			/* if the interaction between you and an entity is successful then done = true */
 				if ( dir == 0 && interact( x - 8, y + 4 + yo, x + 8, y + range + yo ) ) done = true;
@@ -151,9 +153,9 @@ public class Player extends Mob {
 				if ( dir == 3 && interact( x + 4, y - 8 + yo, x + range, y + 8 + yo ) ) done = true;
 				if ( dir == 2 && interact( x - range, y - 8 + yo, x - 4, y + 8 + yo ) ) done = true;
 				if ( done ) return; // if done = true, then skip the rest of the code.
-				
-				int xt = x >> 4; // current x-tile coordinate you are on.
-				int yt = (y + yo) >> 4; // current y-tile coordinate you are on.
+			 
+				int xt = x >> 4; // current column-tile coordinate you are on.
+				int yt = (y + yo) >> 4; // current row-tile coordinate you are on.
 				int r = 12; // radius
 				if ( attackDir == 0 ) yt = (y + r + yo) >> 4; // gets the tile below that you are attacking.
 				if ( attackDir == 1 ) yt = (y - r + yo) >> 4; // gets the tile above that you are attacking.
@@ -181,15 +183,15 @@ public class Player extends Mob {
 		  if ( activeItem == null || activeItem
 					 .canAttack( ) ) { // if there is no active item, OR if the item can be used to attack...
 				attackTime = 5; // attack time = 5
-				int yo = -2; // y offset
+				int yo = -2; // row offset
 				int range = 20; // range of attack
 				if ( dir == 0 ) hurt( x - 8, y + 4 + yo, x + 8, y + range + yo ); // attacks the entity below you.
 				if ( dir == 1 ) hurt( x - 8, y - range + yo, x + 8, y - 4 + yo ); // attacks the entity above you.
 				if ( dir == 3 ) hurt( x + 4, y - 8 + yo, x + range, y + 8 + yo ); // attacks the entity to the right of you.
 				if ( dir == 2 ) hurt( x - range, y - 8 + yo, x - 4, y + 8 + yo ); // attacks the entity to the left of you.
-				
-				int xt = x >> 4; // current x-tile coordinate you are on.
-				int yt = (y + yo) >> 4; // current y-tile coordinate you are on.
+			 
+				int xt = x >> 4; // current column-tile coordinate you are on.
+				int yt = (y + yo) >> 4; // current row-tile coordinate you are on.
 				int r = 12; // radius
 				if ( attackDir == 0 ) yt = (y + r + yo) >> 4; // gets the tile below that you are attacking.
 				if ( attackDir == 1 ) yt = (y - r + yo) >> 4; // gets the tile above that you are attacking.
@@ -276,7 +278,7 @@ public class Player extends Mob {
 		  int xo = x - 8; // the horizontal offset location to start drawing the sprite
 		  int yo = y - 11; // the vertical offset location to start drawing the sprite
 		  if ( isSwimming( ) ) { // if the player is swimming...
-				yo += 4; // y offset is moved up by 4
+				yo += 4; // row offset is moved up by 4
 				int waterColor = Color.get( -1, -1, 115, 335 ); // color of water circle
 				if ( tickTime / 8 % 2 == 0 ) { // if the remainder of (tickTime/8)/2 is equal to 0...
 					 waterColor = Color.get( -1, 335, 5, 115 ); // change the color of water circle
@@ -299,7 +301,7 @@ public class Player extends Mob {
 		  }
 		  
 		  if ( activeItem instanceof FurnitureItem ) { // if the active item is a furniture item
-				yt += 2; // moves the y tile 2 over. (for the player holding his hands up)
+				yt += 2; // moves the row tile 2 over. (for the player holding his hands up)
 		  }
 		  screen.render( xo + 8 * flip1, yo + 0, xt + yt * 32, col, flip1 ); // render the top-left part of the sprite
 		  screen.render( xo + 8 - 8 * flip1, yo + 0, xt + 1 + yt * 32, col, flip1 ); // render the top-right part of the sprite
@@ -335,8 +337,8 @@ public class Player extends Mob {
 		  
 		  if ( activeItem instanceof FurnitureItem ) { // if the active Item is a furniture item.
 				Furniture furniture = ((FurnitureItem) activeItem).furniture; // gets the furniture of that item
-				furniture.x = x; // the x position is that of the player's
-				furniture.y = yo; // the y position is that of yo
+				furniture.x = x; // the column position is that of the player's
+				furniture.y = yo; // the row position is that of yo
 				furniture.render( screen ); // renders the furniture on the screen (above his hands)
 				
 		  }
@@ -364,9 +366,10 @@ public class Player extends Mob {
 		  while ( true ) { // will loop until it returns
 				int x = random.nextInt( level.w ); // gets a random value between 0 and the world's width - 1
 				int y = random.nextInt( level.h ); // gets a random value between 0 and the world's height - 1
-				if ( level.getTile( x, y ) == Tile.grass ) { // if the tile at the x & y coordinates is a grass tile then...
-					 this.x = x * 16 + 8; // the player's x coordinate will be in the middle of the tile
-					 this.y = y * 16 + 8; // the player's y coordinate will be in the middle of the tile
+				if ( level
+						  .getTile( x, y ) == Tile.grass ) { // if the tile at the column & row coordinates is a grass tile then...
+					 this.x = x * 16 + 8; // the player's column coordinate will be in the middle of the tile
+					 this.y = y * 16 + 8; // the player's row coordinate will be in the middle of the tile
 					 return true; // returns and stop's the loop
 				}
 		  }

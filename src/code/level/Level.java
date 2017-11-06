@@ -29,9 +29,9 @@ public class Level {
 		  public int compare(Entity e0, Entity e1) { // compares 2 entities
 				if ( e1.y < e0.y )
 					 
-					 return +1; // If the y position of the first entity is less (higher up) than the second entity, then it will be moved up in sorting.
+					 return +1; // If the row position of the first entity is less (higher up) than the second entity, then it will be moved up in sorting.
 				if ( e1.y > e0.y )
-					 return -1; // If the y position of the first entity is more (lower) than the second entity, then it will be moved down in sorting.
+					 return -1; // If the row position of the first entity is more (lower) than the second entity, then it will be moved down in sorting.
 				return 0; // ends the method
 		  }
 	 };
@@ -113,8 +113,8 @@ public class Level {
 		  
 		  if ( level == 1 ) { // If the level is 1 (sky) then...
 				AirWizard aw = new AirWizard( ); // Create the air wizard
-				aw.x = w * 8; // set his position to the middle of the map (x-position)
-				aw.y = h * 8; // set his position to the middle of the map (y-position)
+				aw.x = w * 8; // set his position to the middle of the map (column-position)
+				aw.y = h * 8; // set his position to the middle of the map (row-position)
 				add( aw ); // adds the air wizard to the level
 		  }
 	 }
@@ -157,7 +157,7 @@ public class Level {
 		  for ( int y = yo; y <= h + yo; y++ ) { // loops through the vertical positions
 				for ( int x = xo; x <= w + xo; x++ ) { // loops through the horizontal positions
 					 if ( x < 0 || y < 0 || x >= this.w || y >= this.h )
-						  continue; // If the x & y positions of the sprites are within the map's boundaries
+						  continue; // If the column & row positions of the sprites are within the map's boundaries
 					 rowSprites
 								.addAll( entitiesInTiles[x + y * this.w] ); // adds all of the sprites in the entitiesInTiles array.
 				}
@@ -188,7 +188,7 @@ public class Level {
 		  for ( int y = yo - r; y <= h + yo + r; y++ ) {
 				for ( int x = xo - r; x <= w + xo + r; x++ ) { // loops through the horizontal positions + r
 					 if ( x < 0 || y < 0 || x >= this.w || y >= this.h )
-						  continue; // If the x & y positions of the sprites are within the map's boundaries
+						  continue; // If the column & row positions of the sprites are within the map's boundaries
 					 List<Entity> entities = entitiesInTiles[x + y * this.w]; // gets all the entities in the level
 					 for ( Entity e : entities ) { // loops through the list of entities
 						  int lr = e.getLightRadius( ); // gets the light radius from the entity.
@@ -219,7 +219,7 @@ public class Level {
 	  */
 	 public Tile getTile(int x, int y) {
 		  if ( x < 0 || y < 0 || x >= w || y >= h )
-				return Tile.rock; // If the tile request is outside the world's boundaries (like x = -5), then returns a rock.
+				return Tile.rock; // If the tile request is outside the world's boundaries (like column = -5), then returns a rock.
 		  return Tile.tiles[tiles[x + y * w]]; // Returns the tile that is at the position
 	 }
 	 
@@ -228,13 +228,13 @@ public class Level {
 	  */
 	 public void setTile(int x, int y, Tile t, int dataVal) {
 		  if ( x < 0 || y < 0 || x >= w || y >= h ) return;
-		  // If the tile request position is outside the world boundaries (like x = -1337), then stop the method.
-		  tiles[x + y * w] = t.id; // Places the tile at the x & y location
+		  // If the tile request position is outside the world boundaries (like column = -1337), then stop the method.
+		  tiles[x + y * w] = t.id; // Places the tile at the column & row location
 		  data[x + y * w] = (byte) dataVal; // sets the data value of the tile
 	 }
 	 
 	 /**
-	  * Gets the data from the x & y position
+	  * Gets the data from the column & row position
 	  */
 	 public int getData(int x, int y) {
 		  // If the data request position is outside the world boundaries, then stop the method.
@@ -243,7 +243,7 @@ public class Level {
 	 }
 	 
 	 /**
-	  * Sets a data to the x & y positioned tile
+	  * Sets a data to the column & row positioned tile
 	  */
 	 public void setData(int x, int y, int val) {
 		  if ( x < 0 || y < 0 || x >= w || y >= h )
@@ -270,9 +270,9 @@ public class Level {
 	  */
 	 public void remove(Entity e) {
 		  entities.remove( e ); // removes the entity from the entities list
-		  int xto = e.x >> 4; // gets the x position of the entity
-		  int yto = e.y >> 4; // gets the y position of the entity
-		  removeEntity( xto, yto, e ); // removes the entity based on the x & y position.
+		  int xto = e.x >> 4; // gets the column position of the entity
+		  int yto = e.y >> 4; // gets the row position of the entity
+		  removeEntity( xto, yto, e ); // removes the entity based on the column & row position.
 	 }
 	 
 	 /**
@@ -334,8 +334,8 @@ public class Level {
 		  }
 		  for ( int i = 0; i < entities.size( ); i++ ) { // Loops through all the entities inside the entities list
 				Entity e = entities.get( i ); // the current entity
-				int xto = e.x >> 4; // gets the entity's x coordinate
-				int yto = e.y >> 4; // gets the entity's y coordinate
+				int xto = e.x >> 4; // gets the entity's column coordinate
+				int yto = e.y >> 4; // gets the entity's row coordinate
 				
 				e.tick( ); // calls the entity's tick() method.
 				
@@ -343,8 +343,8 @@ public class Level {
 					 entities.remove( i-- ); // removes the entity from the entities list and makes the list smaller.
 					 removeEntity( xto, yto, e ); // Removes the entity from the world
 				} else { // if the entity's removed value is false...
-					 int xt = e.x >> 4; // gets the entity's x coordinate
-					 int yt = e.y >> 4; // gets the entity's y coordinate
+					 int xt = e.x >> 4; // gets the entity's column coordinate
+					 int yt = e.y >> 4; // gets the entity's row coordinate
 					 
 					 if ( xto != xt || yto != yt ) { // If xto and xt, & yto and yt don't match...
 						  removeEntity( xto, yto, e ); // remove the entity from xto & yto position
@@ -366,8 +366,8 @@ public class Level {
 		  for ( int y = yt0; y <= yt1; y++ ) { // Loops through the difference between y0 and y1
 				for ( int x = xt0; x <= xt1; x++ ) { // Loops through the difference between x0 & x1
 					 if ( x < 0 || y < 0 || x >= w || y >= h )
-						  continue; // if the x & y position is outside the world, then skip the rest of this loop.
-					 List<Entity> entities = entitiesInTiles[x + y * this.w]; // gets the entity from the x & y position
+						  continue; // if the column & row position is outside the world, then skip the rest of this loop.
+					 List<Entity> entities = entitiesInTiles[x + y * this.w]; // gets the entity from the column & row position
 					 for ( Entity e : entities ) { // Loops through all the entities in the entities list
 						  if ( e.intersects( x0, y0, x1, y1 ) )
 								result.add( e ); // if the entity intersects these 4 points, then add it to the result list.
