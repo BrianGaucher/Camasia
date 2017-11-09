@@ -1,4 +1,4 @@
-package code.screen;
+package code.menu;
 
 import code.gfx.Screen;
 

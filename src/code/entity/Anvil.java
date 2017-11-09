@@ -2,7 +2,7 @@ package code.entity;
 
 import code.crafting.Crafting;
 import code.gfx.Color;
-import code.screen.CraftingMenu;
+import code.menu.CraftingMenu;
 
 public class Anvil extends Furniture {
 	

@@ -1,21 +1,23 @@
 ##Version
 
-Major version = 0 
+Major version = 0 // Alpha
 
-Minor version = 0
 
-Update        = 0
 
-Patch         = 1
+Minor version = 1 // First stable
 
-Commit        = 2
+Update        = 0 // Initial work
 
-Version code =  (Major version * 100_000_000) + (Minor version * 1_000_000) + (Update * 10_000) + (Patch * 1000) + Commit
+Patch         = 2
+
+Commit        = 3
+
+Version code =  (Major version * 100_000_000) + (Minor version * 1_000_000) + (Update * 10_000) + (Patch * 100) + Commit
 
 Current version
 
-- 0000001002
+- 001000103
 
 Version String
 
-- 0.0.0.1.2
+- 0.1.0.1.3

@@ -1,7 +1,7 @@
 package code.entity;
 
 import code.gfx.Color;
-import code.screen.ContainerMenu;
+import code.menu.ContainerMenu;
 
 public class Chest extends Furniture {
 	public Inventory inventory = new Inventory(); // Inventory of the chest

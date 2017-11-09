@@ -6,7 +6,7 @@ import code.entity.Player;
 import code.gfx.Screen;
 import code.level.Level;
 import code.level.tile.Tile;
-import code.screen.ListItem;
+import code.menu.ListItem;
 
 public class Item implements ListItem {
 	

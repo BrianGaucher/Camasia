@@ -9,7 +9,7 @@ import code.item.*;
 import code.item.resource.Resource;
 import code.level.Level;
 import code.level.tile.Tile;
-import code.screen.InventoryMenu;
+import code.menu.InventoryMenu;
 import code.sound.Sound;
 
 import java.util.List;
@@ -289,6 +289,7 @@ public class Player extends Mob {
 		  
 		  if ( attackTime > 0 && attackDir == 1 ) { // if the attack time is larger than 0 and the attack Direction is 1 (Up)
 				screen.render( xo + 0, yo - 4, 6 + 13 * 32, Color.get( -1, 555, 555, 555 ), 0 ); // render a half-slash
+			 
 				screen.render( xo + 8, yo - 4, 6 + 13 * 32, Color
 						  .get( -1, 555, 555, 555 ), 1 ); // render a mirrored half-slash to the right of it.
 				if ( attackItem != null ) { // if the player has an item

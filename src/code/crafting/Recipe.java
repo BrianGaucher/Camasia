@@ -7,7 +7,7 @@ import code.gfx.Screen;
 import code.item.Item;
 import code.item.ResourceItem;
 import code.item.resource.Resource;
-import code.screen.ListItem;
+import code.menu.ListItem;
 
 import java.util.ArrayList;
 import java.util.List;

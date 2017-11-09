@@ -40,3 +40,13 @@ data class LegacyCoordinate(val X: Int, val Y: Int) {
  * This type is for clarifications that it's for storing a colour value
  */
 typealias Colour12_bit = Short
+
+/**
+ * This serves for Inversions of sprites.
+ * @author Brian Gaucher
+ * @since 0.1.2
+ */
+enum class Inversion(val X: Boolean, val Y: Boolean) {
+	NONE(false, false), X_AXIS(true, false), Y_AXIS(false, true), ROTATE_180(true, true)
+	
+}

@@ -7,8 +7,8 @@ import code.gfx.Screen;
 import code.gfx.SpriteSheet;
 import code.level.Level;
 import code.level.tile.Tile;
-import code.screen.*;
-import code.screen.Menu;
+import code.menu.*;
+import code.menu.Menu;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
