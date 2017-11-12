@@ -15,9 +15,6 @@ public class Level {
 	 public int sandColor = 550; // color of sand
 	 public int monsterDensity = 8; // affects the number of monsters that are on the level, bigger the number the less monsters spawn.
 	 public Player player; // the player object
-	 /**
-	  *
-	  */
 	 private Random random = new Random( ); // creates a random object to be used.
 	 private byte[] data; // an array of the data of the tiles in the world.
 	 private List<Entity>[] entitiesInTiles; // An array of each entity in each tile in the world
@@ -55,13 +52,17 @@ public class Level {
 		  byte[][] maps; // multidimensional array (an array within a array), used for the map
 		  
 		  switch ( level ) {
+				case 2:
+					 maps = LevelGen.Companion.createCheckerboardMap( w, h ); // creates the first level
+					 monsterDensity = 200; // Makes very few monsters appear
+					 break;
 				case 3:
-					 maps = LevelGen.Companion.createCheckerboardMap( w, h ); // create a surface map for the level
-					 monsterDensity = 200; // lowers the monsterDensity value, which makes more enemies spawn
+					 maps = LevelGen.Companion.createDirtMap( w, h ); // creates the second level
+					 monsterDensity = 200; // Makes very few monsters appear
 					 break;
 				case 4:
-					 maps = LevelGen.Companion.createDirtMap( w, h ); // creates the second level
-					 monsterDensity = 200; // lowers the monsterDensity value, which makes more enemies spawn
+					 maps = LevelGen.Companion.createThirdLevel( w, h ); // Creates the third level
+					 monsterDensity = 400; // Makes very few monsters appear
 					 break;
 				default:
 					 maps = null;
@@ -82,17 +83,17 @@ public class Level {
 		  data = maps[1]; // assigns the data of the tiles
 		  
 		  if ( parentLevel != null ) { // If the level above this one is not null (aka, not sky)
-				for ( int y = 0; y < h; y++ ) // Loops through the height of the map
+				for ( int y = 0; y < h; y++ ) { // Loops through the height of the map
 					 for ( int x = 0; x < w; x++ ) { // Loops through the width of the map
-						  if ( parentLevel
-									 .getTile( x, y ) == Tile.stairsDown ) { // If the tile in the level above the current one is a stairs down then...
-								
+						  // If the tile in the level above the current one is a stairs down then...
+						  if ( parentLevel.getTile( x, y ) == Tile.stairsDown ) {
+							 
 								setTile( x, y, Tile.stairsUp, 0 ); // set a stairs up tile in the same position on the current level
-								
+							 
 								Tile tile = Tile.dirt; // assigns a tile to be a dirt
 								if ( level == 0 )
 									 tile = Tile.hardRock; // if the level is 0 (surface) then reassign the tile to be a hard rock.
-								
+							 
 								setTile( x - 1, y, tile, 0 ); // places the tile to the left of the stairs.
 								setTile( x + 1, y, tile, 0 ); // places the tile to the right of the stairs.
 								setTile( x, y - 1, tile, 0 ); // places the tile to the above of the stairs.
@@ -102,8 +103,9 @@ public class Level {
 								setTile( x + 1, y - 1, tile, 0 ); // places the tile to the upper-right position of the stairs.
 								setTile( x + 1, y + 1, tile, 0 ); // places the tile to the lower-right position of the stairs.
 						  }
-						  
+						
 					 }
+				}
 		  }
 		  
 		  entitiesInTiles = new ArrayList[w * h]; // Creates a new arrayList with the size of width * height.

@@ -110,15 +110,16 @@ public class Game extends Canvas implements Runnable {
 		  gameTime = 0;
 		  hasWon = false;
 		 
-		  levels = new Level[2];
+		  levels = new Level[3];
 		  currentLevel = 0;
 		  
 		  // generates new maps
 //		  levels[4] = new Level( 128, 128, 1, null ); // creates the sky map
 //		  levels[3] = new Level( 128, 128, 0, levels[4] ); // creates the overWorld
 //		  levels[2] = new Level( 128, 128, -1, levels[3] ); // creates the mines (iron level)
-		  levels[1] = new Level( 128, 128, 4, null ); // creates the deep mines (water/gold level)
-		  levels[0] = new Level( 128, 128, 3, levels[1] ); // creates the nether (lava/gem level)
+		  levels[2] = new Level( 128, 128, 4, null ); // Creates some custom level by Matthew
+		  levels[1] = new Level( 128, 128, 3, levels[2] ); // creates the deep mines (water/gold level)
+		  levels[0] = new Level( 128, 128, 2, levels[1] ); // creates the nether (lava/gem level)
 
 		/* Please note: the terms "Mines", "Deep Mines", and "Nether" are not the real names used in the code
 			I just got those names from the wiki where someone named them that. Those levels don't have any real names yet -David
@@ -129,10 +130,10 @@ public class Game extends Canvas implements Runnable {
 		  player.findStartPos( level ); // finds the start level for the player
 		  
 		  level.add( player ); // adds the player to the current level
-		 
-		  for ( Level forLevel : levels ) {
-				forLevel.trySpawn( 5000 ); // populates all 5 levels with mobs.
-		  }
+
+//		  for ( Level forLevel : levels ) {
+//				forLevel.trySpawn( 5000 ); // populates all 5 levels with mobs.
+//		  }
 	 }
 	 
 	 /**

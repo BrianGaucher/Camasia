@@ -16,24 +16,6 @@ class LevelGen {
 	companion object {
 		
 		/**
-		 * This will create an all-dirt world
-		 * @param w The width of the map
-		 * @param h The height of the map
-		 */
-		fun createDirtMap(w: Int, h: Int): LevelMap {
-			val map = ByteArray(w * h)
-			val data = ByteArray(w * h)
-			for (x in 0 until w) {
-				for (y in 0 until h) {
-					val i: Int = x + (y * w)
-					map[i] = Tile.grass.id
-					if (i % 0x111 == 0) map[i] = Tile.stairsDown.id
-				}
-			}
-			return arrayOf(map, data) // returns the map's tiles and data.
-		}
-		
-		/**
 		 * This will create a checkerboard world
 		 * @param w The width of the map
 		 * @param h The height of the map
@@ -47,8 +29,51 @@ class LevelGen {
 					map[i] = if (x + y and 1 == 0) Tile.grass.id else Tile.rock.id
 				}
 			}
-			
 			return arrayOf(map, data) // returns the map's tiles and data.
+		}
+		
+		/**
+		 * This will create an all-dirt world
+		 * @param w The width of the map
+		 * @param h The height of the map
+		 */
+		fun createDirtMap(w: Int, h: Int): LevelMap {
+			val map = ByteArray(w * h)
+			val data = ByteArray(w * h)
+			for (x in 0 until w) {
+				for (y in 0 until h) {
+					val i: Int = x + (y * w)
+					if (i % 0x222 == 0) map[i] = Tile.stairsDown.id
+				}
+			}
+//			addStairs(map, 0x2d3)
+			return arrayOf(map, data) // returns the map's tiles and data.
+		}
+		
+		/**
+		 * This will create a checkerboard world
+		 * @param w The width of the map
+		 * @param h The height of the map
+		 */
+		fun createThirdLevel(w: Int, h: Int): LevelMap {
+			val map = ByteArray(w * h)
+			val data = ByteArray(w * h)
+			for (x in 0 until w) {
+				for (y in 0 until h) {
+					val i: Int = x + (y * w)
+					map[i] = if (x + y and 1 == 0) Tile.grass.id else Tile.rock.id
+					if (i % 0x2f2 == 0) map[i] = Tile.stairsDown.id
+				}
+			}
+//			addStairs(map, 0x234) // Adds the stairs
+			return arrayOf(map, data) // returns the map's tiles and data.
+		}
+		
+		private fun addStairs(map: ByteArray, frequency: Int = 0x222) {
+			map.forEach {
+				if (it % frequency == 0) map[it.toInt()] = Tile.stairsDown.id
+			}
+			
 		}
 	}
 	

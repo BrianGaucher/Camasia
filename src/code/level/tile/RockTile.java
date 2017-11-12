@@ -8,7 +8,7 @@ import code.entity.particle.SmashParticle;
 import code.entity.particle.TextParticle;
 import code.gfx.Color;
 import code.gfx.Screen;
-import code.gfx.Sprite0x3;
+import code.gfx.Sprite0x4;
 import code.item.Item;
 import code.item.ResourceItem;
 import code.item.ToolItem;
@@ -28,180 +28,295 @@ public class RockTile extends Tile {
 		  super( id ); // assigns the id
 	 }
 	 
+	 //	 /**
+//	  * Renders the dirt
+//	  * @param screen
+//	  * @param level
+//	  * @param x
+//	  * @param y
+//	  */
 	 @SuppressWarnings( "PointlessArithmeticExpression" )
 	 public void render(Screen screen, Level level, int x, int y) {
-		  int col = Color.get( mainColor, mainColor, mainColor - 111, mainColor - 111 ); // color of the rock
-		  int transitionColor = Color
-					 .get( darkColor, mainColor, mainColor + 111, level.dirtColor ); // transitional color for the rock
 		  
-		  boolean u = level.getTile( x, y - 1 ) != t; // sees if the tile above this is not a rock tile.
-		  boolean d = level.getTile( x, y + 1 ) != t; // sees if the tile below this is not a rock tile.
-		  boolean l = level.getTile( x - 1, y ) != t; // sees if the tile to the left this is not a rock tile.
-		  boolean r = level.getTile( x + 1, y ) != t; // sees if the tile to the right this is not a rock tile.
+		  // color of the rock
+		  int col = Color.get( mainColor, mainColor, mainColor - 111, mainColor - 111 );
+		  // transitional color for the rock
+		  int transitionColor = Color.get( darkColor, mainColor, mainColor + 111, level.dirtColor );
 		  
-		  boolean ul = level.getTile( x - 1, y - 1 ) != t; // sees if the tile to the upper-left is not a rock tile.
-		  boolean dl = level.getTile( x - 1, y + 1 ) != t; // sees if the tile to the lower-left is not a rock tile.
-		  boolean ur = level.getTile( x + 1, y - 1 ) != t; // sees if the tile to the upper-right is not a rock tile.
-		  boolean dr = level.getTile( x + 1, y + 1 ) != t; // sees if the tile to the lower-right is not a rock tile.
-		 
-		  Sprite0x3 sprite;
-		  int colour;
+		  boolean u = level.getTile( x, y - 1 ) == t; // sees if the tile above this is not a rock tile.
+		  boolean d = level.getTile( x, y + 1 ) == t; // sees if the tile below this is not a rock tile.
+		  boolean l = level.getTile( x - 1, y ) == t; // sees if the tile to the left this is not a rock tile.
+		  boolean r = level.getTile( x + 1, y ) == t; // sees if the tile to the right this is not a rock tile.
+		  
+		  boolean ul = level.getTile( x - 1, y - 1 ) == t; // sees if the tile to the upper-left is not a rock tile.
+		  boolean dl = level.getTile( x - 1, y + 1 ) == t; // sees if the tile to the lower-left is not a rock tile.
+		  boolean ur = level.getTile( x + 1, y - 1 ) == t; // sees if the tile to the upper-right is not a rock tile.
+		  boolean dr = level.getTile( x + 1, y + 1 ) == t; // sees if the tile to the lower-right is not a rock tile.
+		  
+		  Sprite0x4 sprite;
 		  int up = y * 16;
 		  int down = y * 16 + 8;
 		  int left = x * 16;
 		  int right = x * 16 + 8;
-
-//		  Third method
 		  
-		  //region render up-left
+		  //region HISTORY
+/*
+		  // Eight version
 		  if ( !u ) { // If it's up
 				if ( !l ) { // if it's up and left
 					 if ( !ul ) { // if it's up  & left & up-left
+						  sprite = new Sprite0x4( 0, 0, NONE, col );
+						  // render a corner piece. (upper-left sprite)
+					 } else { // If it's only up & left
+						  sprite = new Sprite0x4( 7, 0, ROTATE_180, transitionColor );
+					 }
+				} else { // If it's only up
+					 sprite = new Sprite0x4( 6, 1, ROTATE_180, transitionColor );
+				}
+		  } else if ( !l ) { // If it's only left
+				sprite = new Sprite0x4( 5, 2, ROTATE_180, transitionColor );
+		  } else { // No contact at all
+				sprite = new Sprite0x4( 6, 2, ROTATE_180, transitionColor );
+		  }
+		  screen.render( left, up, sprite ); // else render an end piece.
+*/
+
+/*
+		  // Seventh method
+		  if ( !d ) { // If it's up
+				if ( !r ) { // if it's up and left
+					 if ( !dr ) { // if it's up  & left & up-left
 						  sprite = new Sprite0x3( 0, 0, NONE );
 						  colour = col;
-						  // render a corner piece. (upper-left sprite)
+						  // render a corner piece. (up-left sprite)
 					 } else { // If it's only up & left
 						  sprite = new Sprite0x3( 7, 0, ROTATE_180 );
 						  colour = transitionColor;
 					 }
 				} else { // If it's only up
-					 sprite = new Sprite0x3( 6, 1, ROTATE_180 );
+					 sprite = new Sprite0x3( 4, 1, ROTATE_180 );
 					 colour = transitionColor;
 				}
-		  } else if ( !l ) { // If it's only left
+		  } else if ( !r ) { // If it's only left
 				sprite = new Sprite0x3( 5, 2, ROTATE_180 );
 				colour = transitionColor;
 		  } else { // No contact at all
 				sprite = new Sprite0x3( 6, 2, ROTATE_180 );
 				colour = transitionColor;
 		  }
-		  screen.render( left, up, sprite, colour ); // else render an end piece.
-		  //endregion
+		  screen.render( right, down, sprite, colour ); // else render an end piece.
+*/
 
-//		  Second method
-//		  if ( !u ) { // If it's up
-//				if ( !l ) { // if it's up and left
-//					 if ( !ul )// if it's up  & left & up-left
-//						  screen.render( column * 16 + 0, row * 16 + 0, new Sprite0x1( 0, 0 ), col, 0 );  // render a corner piece. (upper-left sprite)
-//					 else // If it's only up & left
-//						  screen.render( column * 16 + 0, row * 16 + 0, new Sprite0x1( 7, 0 ), transitionColor, 3 ); // render a flat tile
-//				} else // If it's only up
-//					 screen.render( column * 16 + 0, row * 16 + 0, new Sprite0x1( 6, 1 ), transitionColor, 3 ); // else render an end piece.
-//		  } else {// if it has no up contact
-//				if ( !l )// If it's only left
-//					 screen.render( column * 16 + 0, row * 16 + 0, new Sprite0x1( 5, 2 ), transitionColor, 3 ); // else render an end piece.
-//				else // No contact at all
-//					 screen.render( column * 16 + 0, row * 16 + 0, new Sprite0x1( 6, 2 ), transitionColor, 3 ); // else render an end piece.
-//		  }
-
-//		  First method
-//		  		  if ( !u && !l ) { // if there is a rock tile above, or to the left of this then...
-//				if ( !ul ) // if there is a rock tile to the upper-left of this one then...
-//					 screen.render( column * 16 + 0, row * 16 + 0, 0, col, 0 );  // render a corner piece. (upper-left sprite)
-//				else
-//					 screen.render( column * 16 + 0, row * 16 + 0, 7 + 0 * 32, transitionColor, 3 ); // render a flat tile
-//		  } else
-//				screen.render( column * 16 + 0, row * 16 + 0, (l? 6: 5) + (u? 2: 1) * 32, transitionColor, 3 ); // else render an end piece.
-		  
-		  //region render up-right
-		  if ( !u ) { // If it's up
-				if ( !r ) { // if it's up and right
-					 if ( !ur ) { // if it's u  & r & up-right
-						  sprite = new Sprite0x3( 1, 0, NONE );
+/*
+		  // Sixth method
+		  if ( !d ) { // If it's up
+				if ( !r ) { // if it's up and left
+					 if ( !dr ) { // if it's up  & left & up-left
+						  sprite = new Sprite0x3( 0, 0, Inversion.NONE );
 						  colour = col;
-						  // render a corner piece. (up-right sprite)
-					 } else { // If it's only up & right
-						  sprite = new Sprite0x3( 8, 0, ROTATE_180 );
+						  // render a corner piece. (up-left sprite)
+					 } else { // If it's only up & left
+						  sprite = new Sprite0x3( 7, 0, Inversion.ROTATE_180 );
 						  colour = transitionColor;
 					 }
 				} else { // If it's only up
-					 sprite = new Sprite0x3( 4, 1, ROTATE_180 );
+					 sprite = new Sprite0x3( 4, 1, Inversion.ROTATE_180 );
 					 colour = transitionColor;
 				}
-		  } else if ( !r ) { // If it's only right
-				sprite = new Sprite0x3( 5, 2, ROTATE_180 );
+		  } else if ( !r ) { // If it's only left
+				sprite = new Sprite0x3( 5, 2, Inversion.ROTATE_180 );
 				colour = transitionColor;
 		  } else { // No contact at all
-				sprite = new Sprite0x3( 4, 2, ROTATE_180 );
-				colour = transitionColor;
-		  }
-		  screen.render( right, up, sprite, colour ); // else render an end piece.
-		  //endregion
-
-//		  if ( !u && !r ) { // if there is a rock tile above, or to the right of this then...
-//				if ( !ur ) // if there is a rock tile to the upper-right of this one then...
-//					 screen.render( column * 16 + 8, row * 16 + 0, 1, col, 0 );  // render a corner piece. (upper-right sprite)
-//				else
-//					 screen.render( column * 16 + 8, row * 16 + 0, 8 + 0 * 32, transitionColor, 3 ); // render a flat tile
-//		  } else
-//				screen.render( column * 16 + 8, row * 16 + 0, (r? 4: 5) + (u? 2: 1) * 32, transitionColor, 3 ); // else render an end piece.
-		  
-		  //region render down-left
-		  if ( !d ) { // If it's down
-				if ( !l ) { // if it's down and left
-					 if ( !dl ) { // if it's down  & left & down-left
-						  sprite = new Sprite0x3( 2, 0, NONE );
-						  colour = col;
-						  // render a corner piece. (down-left sprite)
-					 } else { // If it's only d & l
-						  sprite = new Sprite0x3( 7, 1, ROTATE_180 );
-						  colour = transitionColor;
-					 }
-				} else { // If it's only down
-					 sprite = new Sprite0x3( 6, 1, ROTATE_180 );
-					 colour = transitionColor;
-				}
-		  } else if ( !l ) { // If it's only left
-				sprite = new Sprite0x3( 5, 0, ROTATE_180 );
-				colour = transitionColor;
-		  } else { // No contact at all
-				sprite = new Sprite0x3( 6, 0, ROTATE_180 );
-				colour = transitionColor;
-		  }
-		  screen.render( left, down, sprite, colour ); // else render an end piece.
-		  //endregion
-
-//		  if ( !d && !l ) { // if there is a rock tile below, or to the left of this then...
-//				if ( !dl ) // if there is a rock tile to the lower-left of this one then...
-//					 screen.render( column * 16 + 0, row * 16 + 8, 2, col, 0 );  // render a corner piece. (lower-left sprite)
-//				else
-//					 screen.render( column * 16 + 0, row * 16 + 8, 7 + 1 * 32, transitionColor, 3 ); // render a flat tile
-//		  } else
-//				screen.render( column * 16 + 0, row * 16 + 8, (l? 6: 5) + (d? 0: 1) * 32, transitionColor, 3 ); // else render an end piece.
-		  
-		  //region down-right
-		  if ( !d ) { // If it's down
-				if ( !r ) { // if it's down and right
-					 if ( !dr ) { // if it's down  & right & down-right
-						  sprite = new Sprite0x3( 3, 0, NONE );
-						  colour = col;
-						  // render a corner piece. (down-right sprite)
-					 } else { // If it's only down & right
-						  sprite = new Sprite0x3( 8, 1, ROTATE_180 );
-						  colour = transitionColor;
-					 }
-				} else { // If it's only down
-					 sprite = new Sprite0x3( 4, 1, ROTATE_180 );
-					 colour = transitionColor;
-				}
-		  } else if ( !r ) { // If it's only right
-				sprite = new Sprite0x3( 5, 0, ROTATE_180 );
-				colour = transitionColor;
-		  } else { // No contact at all
-				sprite = new Sprite0x3( 4, 0, ROTATE_180 );
+				sprite = new Sprite0x3( 6, 2, Inversion.ROTATE_180 );
 				colour = transitionColor;
 		  }
 		  screen.render( right, down, sprite, colour ); // else render an end piece.
+*/
+
+/*
+		  // Fifth method
+		  if ( !d ) { // If it's up
+				if ( !r ) { // if it's up and left
+					 if ( !dr ) { // if it's up  & left & up-left
+						  sprite = new Sprite0x3( 0, 0, 0 );
+						  colour = col;
+						  // render a corner piece. (up-left sprite)
+					 } else { // If it's only up & left
+						  sprite = new Sprite0x3( 7, 0, 3 );
+						  colour = transitionColor;
+					 }
+				} else { // If it's only up
+					 sprite = new Sprite0x3( 4, 1, 3 );
+					 colour = transitionColor;
+				}
+		  } else if ( !r ) { // If it's only left
+				sprite = new Sprite0x3( 5, 2, 3 );
+				colour = transitionColor;
+		  } else { // No contact at all
+				sprite = new Sprite0x3( 6, 2, 3 );
+				colour = transitionColor;
+		  }
+		  screen.render( right, down, sprite, colour ); // else render an end piece.
+*/
+
+/*
+		  // Fourth method
+		  if ( !d ) { // If it's up
+				if ( !r ) { // if it's up and left
+					 if ( !dr ) { // if it's up  & left & up-left
+						  sprite = new Sprite0x2( 0, 0 );
+						  colour = col;
+		  				  bit = 0;
+						  // render a corner piece. (up-left sprite)
+					 } else { // If it's only up & left
+						  sprite = new Sprite0x2( 7, 0 );
+						  colour = transitionColor;
+		  				  bit = 3;
+					 }
+				} else { // If it's only up
+					 sprite = new Sprite0x2( 4, 1 );
+					 colour = transitionColor;
+		  			 bit = 3;
+				}
+		  } else if ( !r ) { // If it's only left
+				sprite = new Sprite0x2( 5, 2 );
+				colour = transitionColor;
+		  		bit = 3;
+		  } else { // No contact at all
+				sprite = new Sprite0x2( 6, 2 );
+				colour = transitionColor;
+		  		bit = 3;
+		  }
+		  screen.render( right, down, sprite, colour ); // else render an end piece.
+*/
+
+/*
+		  // Third method
+		  if ( !u ) { // If it's up
+				if ( !l ) { // if it's up and left
+					 if ( !ul )// if it's up  & left & up-left
+						  screen.render( column * 16 + 0, row * 16 + 0, new Sprite0x1( 0, 0 ), col, 0 );  // render a corner piece. (upper-left sprite)
+					 else // If it's only up & left
+						  screen.render( column * 16 + 0, row * 16 + 0, new Sprite0x1( 7, 0 ), transitionColor, 3 ); // render a flat tile
+				} else // If it's only up
+					 screen.render( column * 16 + 0, row * 16 + 0, new Sprite0x1( 6, 1 ), transitionColor, 3 ); // else render an end piece.
+		  } else {// if it has no up contact
+				if ( !l )// If it's only left
+					 screen.render( column * 16 + 0, row * 16 + 0, new Sprite0x1( 5, 2 ), transitionColor, 3 ); // else render an end piece.
+				else // No contact at all
+					 screen.render( column * 16 + 0, row * 16 + 0, new Sprite0x1( 6, 2 ), transitionColor, 3 ); // else render an end piece.
+		  }
+*/
+
+/*
+		  // Second method
+		  if ( !u ) { // If it's up
+				if ( !l ) { // if it's up and left
+					 if ( !ul )// if it's up  & left & up-left
+						  screen.render( column * 16 + 0, row * 16 + 0, 0, col, 0 );  // render a corner piece. (upper-left sprite)
+					 else // If it's only up & left
+						  screen.render( column * 16 + 0, row * 16 + 0, 7, transitionColor, 3 ); // render a flat tile
+				} else // If it's only up
+					 screen.render( column * 16 + 0, row * 16 + 0, 6 + 1 * 32, transitionColor, 3 ); // else render an end piece.
+		  } else {// if it has no up contact
+				if ( !l )// If it's only left
+					 screen.render( column * 16 + 0, row * 16 + 0, 5 + 2 * 32, transitionColor, 3 ); // else render an end piece.
+				else // No contact at all
+					 screen.render( column * 16 + 0, row * 16 + 0, 6 + 2 * 32, transitionColor, 3 ); // else render an end piece.
+		  }
+*/
+
+/*
+		  First method
+		  	if ( !u && !l ) { // if there is a rock tile above, or to the left of this then...
+				if ( !ul ) // if there is a rock tile to the upper-left of this one then...
+					 screen.render( column * 16 + 0, row * 16 + 0, 0, col, 0 );  // render a corner piece. (upper-left sprite)
+				else
+					 screen.render( column * 16 + 0, row * 16 + 0, 7 + 0 * 32, transitionColor, 3 ); // render a flat tile
+		  } else
+				screen.render( column * 16 + 0, row * 16 + 0, (l? 6: 5) + (u? 2: 1) * 32, transitionColor, 3 ); // else render an end piece.
+*/
 		  //endregion
-
-
-//		  if ( !d && !r ) { // if there is a rock tile below, or to the right of this then...
-//				if ( !dr ) // if there is a rock tile to the lower-right of this one then...
-//					 screen.render( column * 16 + 8, row * 16 + 8, 3, col, 0 );  // render a corner piece. (lower-right sprite)
-//				else
-//					 screen.render( column * 16 + 8, row * 16 + 8, 8 + 1 * 32, transitionColor, 3 ); // render a flat tile
-//		  } else
-//				screen.render( column * 16 + 8, row * 16 + 8, (r? 4: 5) + (d? 0: 1) * 32, transitionColor, 3 ); // else render an end piece.
+		  
+		  //region render up-left
+		  if ( u ) { // If it's up
+				if ( l ) { // if it's up and left
+					 if ( ul ) { // if it's up  & left & up-left
+						  sprite = new Sprite0x4( 0, 0, NONE, col );
+						  // render a corner piece. (upper-left sprite)
+					 } else { // If it's only up & left
+						  sprite = new Sprite0x4( 7, 0, ROTATE_180, transitionColor );
+					 }
+				} else { // If it's only up
+					 sprite = new Sprite0x4( 6, 1, ROTATE_180, transitionColor );
+				}
+		  } else if ( l ) { // If it's only left
+				sprite = new Sprite0x4( 5, 2, ROTATE_180, transitionColor );
+		  } else { // No contact at all
+				sprite = new Sprite0x4( 6, 2, ROTATE_180, transitionColor );
+		  }
+		  screen.render( left, up, sprite ); // else render an end piece.
+		  //endregion
+		  
+		  //region render up-right
+		  if ( u ) { // If it's up
+				if ( !r ) { // if it's up and right
+					 if ( ur ) { // if it's u  & r & up-right
+						  sprite = new Sprite0x4( 1, 0, NONE, col );
+						  // render a corner piece. (up-right sprite)
+					 } else { // If it's only up & right
+						  sprite = new Sprite0x4( 8, 0, ROTATE_180, transitionColor );
+					 }
+				} else { // If it's only up
+					 sprite = new Sprite0x4( 4, 1, ROTATE_180, transitionColor );
+				}
+		  } else if ( r ) { // If it's only right
+				sprite = new Sprite0x4( 5, 2, ROTATE_180, transitionColor );
+		  } else { // No contact at all
+				sprite = new Sprite0x4( 4, 2, ROTATE_180, transitionColor );
+		  }
+		  screen.render( right, up, sprite ); // else render an end piece.
+		  //endregion
+		  
+		  //region render down-left
+		  if ( d ) { // If it's down
+				if ( l ) { // if it's down and left
+					 if ( dl ) { // if it's down  & left & down-left
+						  sprite = new Sprite0x4( 2, 0, NONE, col );
+						  // render a corner piece. (down-left sprite)
+					 } else { // If it's only d & l
+						  sprite = new Sprite0x4( 7, 1, ROTATE_180, transitionColor );
+					 }
+				} else { // If it's only down
+					 sprite = new Sprite0x4( 6, 1, ROTATE_180, transitionColor );
+				}
+		  } else if ( l ) { // If it's only left
+				sprite = new Sprite0x4( 5, 0, ROTATE_180, transitionColor );
+		  } else { // No contact at all
+				sprite = new Sprite0x4( 6, 0, ROTATE_180, transitionColor );
+		  }
+		  screen.render( left, down, sprite ); // else render an end piece.
+		  //endregion
+		  
+		  //region down-right
+		  if ( d ) { // If it's down
+				if ( r ) { // if it's down and right
+					 if ( dr ) { // if it's down  & right & down-right
+						  sprite = new Sprite0x4( 3, 0, NONE, col );
+						  // render a corner piece. (down-right sprite)
+					 } else { // If it's only down & right
+						  sprite = new Sprite0x4( 8, 1, ROTATE_180, transitionColor );
+					 }
+				} else { // If it's only down
+					 sprite = new Sprite0x4( 4, 1, ROTATE_180, transitionColor );
+				}
+		  } else if ( r ) { // If it's only right
+				sprite = new Sprite0x4( 5, 0, ROTATE_180, transitionColor );
+		  } else { // No contact at all
+				sprite = new Sprite0x4( 4, 0, ROTATE_180, transitionColor );
+		  }
+		  screen.render( right, down, sprite ); // else render an end piece.
+		  //endregion
 	 }
 	 
 	 /**

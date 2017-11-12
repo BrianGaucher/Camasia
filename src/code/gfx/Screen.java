@@ -42,12 +42,12 @@ public class Screen {
 	 /**
 	  * Renders an object from the sprite sheet based on screen coordinates, tile (SpriteSheet location), colors, and bits (for mirroring)
 	  *
-	  * @param xp      The X-coordinate on the screen
-	  * @param yp      The X-coordinate on the screen
-	  * @param sprite  the Sprite object containing (column, row) of the Spritesheet coordinate
-	  * @param colours The colour integer
+	  * @param xp     The X-coordinate on the screen
+	  * @param yp     The X-coordinate on the screen
+	  * @param sprite the Sprite object containing (column, row) of the Spritesheet coordinate
 	  */
-	 public void render(int xp, int yp, Sprite0x3 sprite, int colours) {
+	 public void render(int xp, int yp, Sprite0x5 sprite) {
+		  int colours = sprite.getColour( );
 		  final int tileSize = 8;
 		  xp -= xOffset; // horizontal offset of the screen
 		  yp -= yOffset; // vertical offset of the screen
@@ -110,6 +110,89 @@ public class Screen {
 	 /**
 	  * Renders an object from the sprite sheet based on screen coordinates, tile (SpriteSheet location), colors, and bits (for mirroring)
 	  *
+	  * @param xp     The X-coordinate on the screen
+	  * @param yp     The X-coordinate on the screen
+	  * @param sprite the Sprite object containing (column, row) of the Spritesheet coordinate
+	  */
+	 public void render(int xp, int yp, Sprite0x4 sprite) {
+		  int colours = sprite.getColour( );
+		  final int tileSize = 8;
+		  xp -= xOffset; // horizontal offset of the screen
+		  yp -= yOffset; // vertical offset of the screen
+		  // determines if the image should be mirrored horizontally and vertically
+		  boolean mirrorX = sprite.getBit( ).getX( );
+		  boolean mirrorY = sprite.getBit( ).getY( );
+		  
+		  
+		  int xTile = sprite.getColumn( ); // gets the column position of the tile
+		  int yTile = sprite.getRow( );    // gets the row position of the tile
+		  int toffs = xTile * tileSize + yTile * tileSize * sheet.width; // Get's the offset, the 8's represent the size of tile. (8 by 8 pixels)
+		  
+		  // You can space each line out if it looks too complicated at once.
+		  
+		  for ( int y = 0; y < tileSize; y++ ) {
+				int ys = y; // current row pixel
+				if ( mirrorY ) ys = 7 - y; // reverses the pixel for a mirroring effect
+				if ( y + yp < 0 || y + yp >= h ) continue; // If the pixel is out of bounds, then skip the rest of the loop.
+				
+				for ( int x = 0; x < tileSize; x++ ) { // Loops 8 times (because of the width of the tile)
+					 if ( x + xp < 0 || x + xp >= w )
+						  continue; // If the pixelLocation is out of bounds, then skip the rest of the loop.
+					 int xs = x; // current column pixelLocation
+					 if ( mirrorX ) xs = 7 - x;  // Reverses the pixelLocation for a mirroring effect
+					 
+					 /*
+					 * Brian :
+					 * So I'm trying to understand this code below.
+					 * so the colour variable is an integer, it has 32 bits
+					 * 4 colours are stored in colours. Each one has 8 bis
+					 * So colours >> (sheet.pixels[xs + (ys * sheet.width) + toffs] * 0x8)
+					 * will bit-shift colours
+					 * Sheet has 3 properties, width, height, and pixels
+					 * Pixels is an integer array of 65536 integers, an integer has the value in 0..3
+					 * 0 being black, #000000, 1 being dark gray #515151, 2 being light grey #adadad, 3 being white #ffffff
+					 * Once it shifts $shift << 3, it becomes 0, 8, 16, 24
+					 * When it shifts $colour $shift to the right, it then cuts out anything to the right of the desired value
+					 * When it bitwise and with 0xff, it removes everything to the left of the desired value, leaving the wanted colour.
+					 */
+					 /*int colour = 0x7ad7ac2b*/
+					 int col; // gets the color based on the passed in colors value.
+					 int shift;
+					 int pixelLocation;
+					 // gets
+					 pixelLocation = xs + (ys * sheet.width) + toffs; // Possible values 0..0xffff, 65535, Sample : 0x1725, 5970
+					 // Finds the pixelLocation in the sheet.
+					 shift = sheet.pixels[pixelLocation];               // Possible value : 0..3; Sample : 2
+					 // Shifts to the left 3 bits. Multiplies by eight
+					 shift <<= 3;					/*		*= 8		*///Possible value 0x0,0x8,0x10,0x18, 0,8,16,24 Sample : 0x10, 16
+					 // Shifts colours $shift bits to the left. Divides colour by 2^shift
+					 col = colours >> shift;	/*		colours / 2^shift	*///Sample : 0x7ad7ac2b -> 0x7ad7
+					 // Then it keeps the last 8 bits
+					 col = col & 0xff; /*	col % 255	*/ // Sample : 0x7ad7 -> 0xd7
+					 
+					 pixelLocation = (x + xp) + (y + yp) * w;
+					 pixels[pixelLocation] = col; // Inserts the colors into the image.
+				}
+		  }
+	 }
+	 
+	 /**
+	  * Renders an object from the sprite sheet based on screen coordinates, tile (SpriteSheet location), colors, and bits (for mirroring)
+	  *
+	  * @param xp      The X-coordinate on the screen
+	  * @param yp      The X-coordinate on the screen
+	  * @param sprite  the Sprite object containing (column, row) of the Spritesheet coordinate
+	  * @param colours The colour integer
+	  * @deprecated
+	  */
+	 public void render(int xp, int yp, Sprite0x3 sprite, int colours) {
+		  Sprite0x4 newSprite = sprite.update( colours );
+		  render( xp, yp, newSprite );
+	 }
+	 
+	 /**
+	  * Renders an object from the sprite sheet based on screen coordinates, tile (SpriteSheet location), colors, and bits (for mirroring)
+	  *
 	  * @param xp      The X-coordinate on the screen
 	  * @param yp      The X-coordinate on the screen
 	  * @param sprite  the Sprite object containing (column, row) of the Spritesheet coordinate
@@ -120,7 +203,6 @@ public class Screen {
 		  render( xp, yp, sprite.update( ), colours );
 		  
 	 }
-	 
 	 
 	 /**
 	  * Renders an object from the sprite sheet based on screen coordinates, tile (SpriteSheet location), colors, and bits (for mirroring).

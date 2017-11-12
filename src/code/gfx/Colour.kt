@@ -25,10 +25,10 @@ class Colour(red: Int, yellow: Int, green: Int, blue: Int = 0) {
 		val max = 0xfff
 		require(red <= max && yellow <= max && green <= max && blue <= max) {
 			"""Value of red is $red,
-                |yellow is $yellow,
-                |green is $green,
-                |blue is $blue.
-                |One is not less than 0xfff or 4096""".trimMargin()
+				|yellow is $yellow,
+				|green is $green,
+				|blue is $blue.
+				|One is not less than 0xfff or 4096""".trimMargin()
 		}
 		this.red = red.toSingleColour()
 		this.yellow = yellow.toSingleColour()

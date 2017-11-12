@@ -15,7 +15,6 @@ data class Sprite0x2(val column: Int, val row: Int, val bit: Int) {
 		check(column in 1..128 && row in 1..128 && bit in 1..3)
 		column
 	}
-	
 	fun update(): Sprite0x3 {
 		val bit: Inversion = when (bit) {
 			0 -> Inversion.NONE
