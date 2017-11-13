@@ -260,7 +260,7 @@ public class RockTile extends Tile {
 		  
 		  //region render up-right
 		  if ( u ) { // If it's up
-				if ( !r ) { // if it's up and right
+				if ( r ) { // if it's up and right
 					 if ( ur ) { // if it's u  & r & up-right
 						  sprite = new Sprite0x4( 1, 0, NONE, col );
 						  // render a corner piece. (up-right sprite)

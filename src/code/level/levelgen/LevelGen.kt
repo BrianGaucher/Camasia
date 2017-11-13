@@ -1,6 +1,11 @@
 package code.level.levelgen
 
+import code.level.levelgen.LevelGen.Companion.createCheckerboardMap
+import code.level.levelgen.LevelGen.Companion.createDirtMap
+import code.level.levelgen.LevelGen.Companion.createFourthLevel
+import code.level.levelgen.LevelGen.Companion.createThirdLevel
 import code.level.tile.Tile
+import code.level.tile.Tile.*
 import java.awt.Image
 import java.awt.image.BufferedImage
 import javax.swing.ImageIcon
@@ -26,7 +31,7 @@ class LevelGen {
 			for (x in 0 until w) {
 				for (y in 0 until h) {
 					val i: Int = x + (y * w)
-					map[i] = if (x + y and 1 == 0) Tile.grass.id else Tile.rock.id
+					map[i] = if (x + y and 1 == 0) grass.id else rock.id
 				}
 			}
 			return arrayOf(map, data) // returns the map's tiles and data.
@@ -40,13 +45,12 @@ class LevelGen {
 		fun createDirtMap(w: Int, h: Int): LevelMap {
 			val map = ByteArray(w * h)
 			val data = ByteArray(w * h)
-			for (x in 0 until w) {
-				for (y in 0 until h) {
-					val i: Int = x + (y * w)
-					if (i % 0x222 == 0) map[i] = Tile.stairsDown.id
-				}
-			}
-//			addStairs(map, 0x2d3)
+			for (i in 0 until map.size) map[i] = grass.id
+			
+			map[29 + 21 * w] = stairsUp.id
+			
+			
+			addStairs(w, h, map, 0x2df) // Adds the stairs
 			return arrayOf(map, data) // returns the map's tiles and data.
 		}
 		
@@ -56,24 +60,82 @@ class LevelGen {
 		 * @param h The height of the map
 		 */
 		fun createThirdLevel(w: Int, h: Int): LevelMap {
+			//region Protected
 			val map = ByteArray(w * h)
 			val data = ByteArray(w * h)
+			operator fun ByteArray.set(x: Int, y: Int, value: Tile) = this.set(y * w + x, value.id)
+			//endregion
+			
+			// This populates the entire world with grass
+			for (i in 0 until map.size) map[i] = grass.id
+			
+			// Makes the outside walls
+			for (i in 20..29) map[20, i] = rock
+			for (i in 20..29) map[29, i] = rock
+			for (i in 20..29) map[i, 20] = rock
+			for (i in 20..29) map[i, 29] = rock
+			
+			for (i in 20..25) map[25, i] = rock
+			for (i in 27..28) map[23, i] = rock
+			for (i in 27..28) map[27, i] = rock
+			for (i in 20..23) map[i, 25] = rock
+			for (i in 27..28) map[i, 25] = rock
+			
+			map[28, 21] = stairsDown
+			map[26, 29] = sand
+			map[25, 30] = tree
+			map[27, 30] = tree
+			
+			//region Protected
+			addStairs(w, h, map, 0x248) // Adds the stairs
+			return arrayOf(map, data) // returns the map's tiles and data.
+			//endregion
+		}
+		
+		/**
+		 * This will create a checkerboard world
+		 * @param w The width of the map
+		 * @param h The height of the map
+		 */
+		fun createFourthLevel(w: Int, h: Int): LevelMap {
+			//region Protected
+			val map = ByteArray(w * h)
+			val data = ByteArray(w * h)
+			operator fun ByteArray.set(x: Int, y: Int, value: Tile) = this.set(y * w + x, value.id)
+			//endregion
+			
+			// This populates the entire world with grass
+			for (i in 0 until map.size) map[i] = grass.id
+			
+			// Makes the outside walls
+			for (i in 20..29) map[20, i] = rock
+			for (i in 20..29) map[29, i] = rock
+			for (i in 20..29) map[i, 20] = rock
+			for (i in 20..29) map[i, 29] = rock
+			
+			for (i in 20..25) map[25, i] = rock
+			for (i in 27..28) map[23, i] = rock
+			for (i in 27..28) map[27, i] = rock
+			for (i in 20..23) map[i, 25] = rock
+			for (i in 27..28) map[i, 25] = rock
+			
+			map[28, 28] = stairsDown
+			map[25, 30] = tree
+			map[27, 30] = tree
+			
+			//region Protected
+			addStairs(w, h, map, 0x248) // Adds the stairs
+			return arrayOf(map, data) // returns the map's tiles and data.
+			//endregion
+		}
+		
+		private fun addStairs(w: Int, h: Int, map: ByteArray, frequency: Int = 0x22) {
 			for (x in 0 until w) {
 				for (y in 0 until h) {
 					val i: Int = x + (y * w)
-					map[i] = if (x + y and 1 == 0) Tile.grass.id else Tile.rock.id
-					if (i % 0x2f2 == 0) map[i] = Tile.stairsDown.id
+					if (i % frequency == 0) map[i] = stairsDown.id
 				}
 			}
-//			addStairs(map, 0x234) // Adds the stairs
-			return arrayOf(map, data) // returns the map's tiles and data.
-		}
-		
-		private fun addStairs(map: ByteArray, frequency: Int = 0x222) {
-			map.forEach {
-				if (it % frequency == 0) map[it.toInt()] = Tile.stairsDown.id
-			}
-			
 		}
 	}
 	
@@ -85,14 +147,15 @@ class LevelGen {
  * This will generate the world. Especially useful in testing.
  */
 fun main(args: Array<String>) {
-	var hasquit = false // Determines if the player has quit the program or not.
+	
+	var hasQuit = false // Determines if the player has quit the program or not.
 	val w = 128 // width of the map
 	val h = 128 // height of the map
-	val options = arrayOf("Dirt", "Checkerboard", "Quit") // Name of the buttons used for the window.
-	val optionsFun: Array<() -> LevelMap> = arrayOf({ LevelGen.createDirtMap(w, h) }, { LevelGen.createCheckerboardMap(w, h) }, { throw IllegalArgumentException("This should quit") })
+	val options = arrayOf("Checkerboard", "Dirt", "Third", "Fourth", "Quit") // Name of the buttons used for the window.
+	val optionsFun: Array<() -> LevelMap> = arrayOf({ -> createCheckerboardMap(w, h) }, { -> createDirtMap(w, h) }, { -> createThirdLevel(w, h) }, { -> createFourthLevel(w, h) }, { -> throw IllegalArgumentException("This should quit") })
 	
 	var level = 0 // map being looked at (0 = all-dirt, 1 = checkerboard, 2 = quit)
-	while (!hasquit) { //If the player has not quit the map
+	while (!hasQuit) { //If the player has not quit the map
 		val map: ByteArray// the map
 		
 		try {
@@ -116,18 +179,18 @@ fun main(args: Array<String>) {
 				 0x000000 would be black
 				 and 0xffffff would be white
 				 etc. */
-				if (map[i] == Tile.water.id) pixels[i] = 0x000080 // If the tile is water, then the pixel will be blue
-				if (map[i] == Tile.grass.id) pixels[i] = 0x208020 // If the tile is grass, then the pixel will be green
-				if (map[i] == Tile.rock.id) pixels[i] = 0xa0a0a0 // if the tile is rock, then the pixel will be gray
-				if (map[i] == Tile.dirt.id) pixels[i] = 0x604040 // if the tile is dirt, then the pixel will be brown
-				if (map[i] == Tile.sand.id) pixels[i] = 0xa0a040  // if the tile is sand, then the pixel will be yellow
-				if (map[i] == Tile.tree.id) pixels[i] = 0x003000 // if the tile is tree, then the pixel will be a darker green
-				if (map[i] == Tile.lava.id) pixels[i] = 0xff2020 // if the tile is lava, then it will be red
-				if (map[i] == Tile.cloud.id) pixels[i] = 0xeeeeee // if the tile is a cloud, then it will be light gray
-				if (map[i] == Tile.stairsDown.id) pixels[i] = 0xffffff // if the tile is a stairs down, then it will be white.
-				if (map[i] == Tile.stairsUp.id) pixels[i] = 0xffffff // if the tile is a stairs up, then it will be white.
-				if (map[i] == Tile.cloudCactus.id) pixels[i] = 0xdd55dd // if the tile is a cloud cactus, then it will be pink
-				if (map[i] == Tile.infiniteFall.id) pixels[i] = 0xcccccc // if the tile is a cloud, then it will be lighter gray
+				if (map[i] == water.id) pixels[i] = 0x000080 // If the tile is water, then the pixel will be blue
+				if (map[i] == grass.id) pixels[i] = 0x208020 // If the tile is grass, then the pixel will be green
+				if (map[i] == rock.id) pixels[i] = 0x909090 // if the tile is rock, then the pixel will be gray
+				if (map[i] == dirt.id) pixels[i] = 0x604040 // if the tile is dirt, then the pixel will be brown
+				if (map[i] == sand.id) pixels[i] = 0xa0a020  // if the tile is sand, then the pixel will be yellow
+				if (map[i] == tree.id) pixels[i] = 0x003000 // if the tile is tree, then the pixel will be a darker green
+				if (map[i] == lava.id) pixels[i] = 0xff2020 // if the tile is lava, then it will be red
+				if (map[i] == cloud.id) pixels[i] = 0xeeeeee // if the tile is a cloud, then it will be light gray
+				if (map[i] == stairsDown.id) pixels[i] = 0x000000 // if the tile is a stairs down, then it will be white.
+				if (map[i] == stairsUp.id) pixels[i] = 0x000000 // if the tile is a stairs up, then it will be white.
+				if (map[i] == cloudCactus.id) pixels[i] = 0xdd55dd // if the tile is a cloud cactus, then it will be pink
+				if (map[i] == infiniteFall.id) pixels[i] = 0xcccccc // if the tile is a cloud, then it will be lighter gray
 			}
 		}
 		img.setRGB(0, 0, w, h, pixels, 0, w) // sets the pixels into the image
@@ -148,7 +211,7 @@ fun main(args: Array<String>) {
 		// If the dialog returns -1 (red "column" button) or 1 ("Quit" button) then...
 		
 		level = o
-		if (o == -1 || o == options.lastIndex) hasquit = true // stop the loop and close the program.
+		if (o == -1 || o == options.lastIndex) hasQuit = true // stop the loop and close the program.
 	}
 }
 

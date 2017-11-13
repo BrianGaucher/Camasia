@@ -38,7 +38,7 @@ public class Level {
 	  * Level which the world is contained in
 	  *
 	  * @param w           the world's width
-	  * @param h           The world's heigth
+	  * @param h           The world's height
 	  * @param level       the current level
 	  * @param parentLevel the level above
 	  */
@@ -52,16 +52,20 @@ public class Level {
 		  byte[][] maps; // multidimensional array (an array within a array), used for the map
 		  
 		  switch ( level ) {
-				case 2:
+				case 1:
 					 maps = LevelGen.Companion.createCheckerboardMap( w, h ); // creates the first level
 					 monsterDensity = 200; // Makes very few monsters appear
 					 break;
-				case 3:
+				case 2:
 					 maps = LevelGen.Companion.createDirtMap( w, h ); // creates the second level
 					 monsterDensity = 200; // Makes very few monsters appear
 					 break;
-				case 4:
+				case 3:
 					 maps = LevelGen.Companion.createThirdLevel( w, h ); // Creates the third level
+					 monsterDensity = 400; // Makes very few monsters appear
+					 break;
+				case 4:
+					 maps = LevelGen.Companion.createFourthLevel( w, h ); // Creates the third level
 					 monsterDensity = 400; // Makes very few monsters appear
 					 break;
 				default:
@@ -259,6 +263,7 @@ public class Level {
 	 public void add(Entity entity) {
 		  if ( entity instanceof Player ) { // if the entity happens to be a player
 				player = (Player) entity; // the player object will be this entity
+			 
 		  }
 		  entity.removed = false; // sets the entity's removed value to false
 		  entities.add( entity ); // adds the entity to the entities list
