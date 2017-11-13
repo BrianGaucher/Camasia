@@ -75,12 +75,14 @@ class LevelGen {
 			for (i in 20..29) map[i, 20] = rock
 			for (i in 20..29) map[i, 29] = rock
 			
+			// Makes the inside walls
 			for (i in 20..25) map[25, i] = rock
 			for (i in 27..28) map[23, i] = rock
 			for (i in 27..28) map[27, i] = rock
 			for (i in 20..23) map[i, 25] = rock
 			for (i in 27..28) map[i, 25] = rock
 			
+			// Makes the articles.
 			map[28, 21] = stairsDown
 			map[26, 29] = sand
 			map[25, 30] = tree
@@ -113,15 +115,15 @@ class LevelGen {
 			for (i in 20..29) map[i, 20] = rock
 			for (i in 20..29) map[i, 29] = rock
 			
+			// Makes the inside walls
 			for (i in 20..25) map[25, i] = rock
 			for (i in 27..28) map[23, i] = rock
 			for (i in 27..28) map[27, i] = rock
 			for (i in 20..23) map[i, 25] = rock
 			for (i in 27..28) map[i, 25] = rock
 			
+			// Makes the stairs
 			map[28, 28] = stairsDown
-			map[25, 30] = tree
-			map[27, 30] = tree
 			
 			//region Protected
 			addStairs(w, h, map, 0x248) // Adds the stairs

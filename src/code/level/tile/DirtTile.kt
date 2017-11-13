@@ -1,5 +1,6 @@
 package code.level.tile
 
+import code.entity.Entity
 import code.entity.ItemEntity
 import code.entity.Player
 import code.gfx.Color
@@ -33,6 +34,7 @@ class DirtTile(id: Int): Tile(id) {//assigns the id
 				if (player.payStamina(4 - item.level)) { // if the player can pay the stamina...
 					level.setTile(xt, yt, Tile.hole, 0) //sets the tile to a hole
 					level.add(ItemEntity(ResourceItem(Resource.dirt), xt * 16 + random.nextInt(10) + 3, yt * 16 + random.nextInt(10) + 3)) // pops out a dirt resource
+					// level += ItemEntity(ResourceItem(Resource.dirt), xt * 16 + random.nextInt(10) + 3, yt * 16 + random.nextInt(10) + 3)
 					Sound.monsterHurt.play()// sound plays
 					return true
 				}
@@ -49,3 +51,6 @@ class DirtTile(id: Int): Tile(id) {//assigns the id
 	}
 }
 
+operator fun Level.plusAssign(entity: Entity) {
+	this.add(entity)
+}

@@ -71,7 +71,7 @@ public class Screen {
 						  continue; // If the pixelLocation is out of bounds, then skip the rest of the loop.
 					 int xs = x; // current column pixelLocation
 					 if ( mirrorX ) xs = 7 - x;  // Reverses the pixelLocation for a mirroring effect
-					 
+					 //region comments
 					 /*
 					 * Brian :
 					 * So I'm trying to understand this code below.
@@ -86,6 +86,7 @@ public class Screen {
 					 * When it shifts $colour $shift to the right, it then cuts out anything to the right of the desired value
 					 * When it bitwise and with 0xff, it removes everything to the left of the desired value, leaving the wanted colour.
 					 */
+					 //endregion
 					 /*int colour = 0x7ad7ac2b*/
 					 int col; // gets the color based on the passed in colors value.
 					 int shift;
@@ -141,6 +142,7 @@ public class Screen {
 					 int xs = x; // current column pixelLocation
 					 if ( mirrorX ) xs = 7 - x;  // Reverses the pixelLocation for a mirroring effect
 					 
+					 //region comments
 					 /*
 					 * Brian :
 					 * So I'm trying to understand this code below.
@@ -155,6 +157,7 @@ public class Screen {
 					 * When it shifts $colour $shift to the right, it then cuts out anything to the right of the desired value
 					 * When it bitwise and with 0xff, it removes everything to the left of the desired value, leaving the wanted colour.
 					 */
+					 //endregion
 					 /*int colour = 0x7ad7ac2b*/
 					 int col; // gets the color based on the passed in colors value.
 					 int shift;

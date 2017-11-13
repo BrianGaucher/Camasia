@@ -147,10 +147,10 @@ public class Game extends Canvas implements Runnable {
 						  int gg = (g * 255 / 5);
 						  int bb = (b * 255 / 5);
 						  int mid = (rr * 30 + gg * 59 + bb * 11) / 100;
-						  
-						  int r1 = ((rr + mid * 1) / 2) * 230 / 255 + 10;
-						  int g1 = ((gg + mid * 1) / 2) * 230 / 255 + 10;
-						  int b1 = ((bb + mid * 1) / 2) * 230 / 255 + 10;
+						 
+						  int r1 = ((((rr + mid) / 2) * 230) / 255) + 10;
+						  int g1 = ((((gg + mid) / 2) * 230) / 255) + 10;
+						  int b1 = ((((bb + mid) / 2) * 230) / 255) + 10;
 						  colors[pp++] = r1 << 16 | g1 << 8 | b1;
 						  
 					 }

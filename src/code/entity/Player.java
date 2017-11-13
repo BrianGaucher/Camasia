@@ -34,8 +34,8 @@ public class Player extends Mob {
 	 public Player(Game game, InputHandler input) {
 		  this.game = game; // assigns the game that the player is in
 		  this.input = input; // assigns the input
-		  x = 24; // players column position
-		  y = 24; // players row position
+		  this.x = 24; // players column position
+		  this.y = 24; // players row position
 		  stamina = maxStamina; // assigns the stamina to be the max stamina (10)
 		  
 		  inventory.add( new FurnitureItem( new Workbench( ) ) ); // adds a workbench to the player's inventory
@@ -47,7 +47,6 @@ public class Player extends Mob {
 				inventory.add( new ToolItem( ToolType.pickaxe, 4 ) );
 				inventory.add( new ToolItem( ToolType.sword, 4 ) );
 				inventory.add( new ToolItem( ToolType.shovel, 4 ) );
-				inventory.add( new ResourceItem( Resource.stone, 99 ) );
 		  }
 		  
 	 }
@@ -435,10 +434,10 @@ public class Player extends Mob {
 		  level.add( new TextParticle( "" + damage, x, y, Color
 					 .get( -1, 504, 504, 504 ) ) ); // adds a text particle telling how much damage was done.
 		  health -= damage; // health is decreased by the damage amount
-		  if ( attackDir == 0 ) yKnockback = +6; // if the direction was from below, then get knocked above.
-		  if ( attackDir == 1 ) yKnockback = -6; // if the direction was from above, then get knocked below.
-		  if ( attackDir == 2 ) xKnockback = -6; // if the direction was from the right, then get knocked to the left.
-		  if ( attackDir == 3 ) xKnockback = +6; // if the direction was from the left, then get knocked to the right.
+		  if ( attackDir == 0 ) yKnockBack = +6; // if the direction was from below, then get knocked above.
+		  if ( attackDir == 1 ) yKnockBack = -6; // if the direction was from above, then get knocked below.
+		  if ( attackDir == 2 ) xKnockBack = -6; // if the direction was from the right, then get knocked to the left.
+		  if ( attackDir == 3 ) xKnockBack = +6; // if the direction was from the left, then get knocked to the right.
 		  hurtTime = 10; // hurt time set to 10
 		  invulnerableTime = 30; // invulnerable time is set to 30
 	 }

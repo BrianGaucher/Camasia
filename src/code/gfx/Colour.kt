@@ -30,10 +30,10 @@ class Colour(red: Int, yellow: Int, green: Int, blue: Int = 0) {
 				|blue is $blue.
 				|One is not less than 0xfff or 4096""".trimMargin()
 		}
-		this.red = red.toSingleColour()
-		this.yellow = yellow.toSingleColour()
-		this.green = green.toSingleColour()
-		this.blue = blue.toSingleColour()
+		this.red = red.Colour12_bit()
+		this.yellow = yellow.Colour12_bit()
+		this.green = green.Colour12_bit()
+		this.blue = blue.Colour12_bit()
 	}
 	
 	operator fun get(i: Int): Int {
@@ -47,7 +47,7 @@ class Colour(red: Int, yellow: Int, green: Int, blue: Int = 0) {
 		}.toInt()
 	}
 	
-	private fun Int.toSingleColour() = this.toShort()
+	private fun Int.Colour12_bit() = this.toShort()
 	
 	fun tuple() = Quadruple(red, yellow, green, blue)
 	

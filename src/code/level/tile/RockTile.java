@@ -35,7 +35,6 @@ public class RockTile extends Tile {
 //	  * @param x
 //	  * @param y
 //	  */
-	 @SuppressWarnings( "PointlessArithmeticExpression" )
 	 public void render(Screen screen, Level level, int x, int y) {
 		  
 		  // color of the rock
