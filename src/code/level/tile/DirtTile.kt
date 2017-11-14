@@ -19,7 +19,6 @@ class DirtTile(id: Int): Tile(id) {//assigns the id
 	
 	override fun render(screen: Screen, level: Level, x: Int, y: Int) {
 		val col = Color.get(level.dirtColor, level.dirtColor, level.dirtColor - 111, level.dirtColor - 111) // Colors of the dirt (more info in level.java)
-		
 		screen.apply {
 			render(x * 16 + 0, y * 16 + 0, Sprite0x4(0, 0, NONE, col)) // renders the top-left part of the tile
 			render(x * 16 + 8, y * 16 + 0, Sprite0x4(1, 0, NONE, col)) // renders the top-right part of the tile
