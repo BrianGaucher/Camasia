@@ -1,5 +1,7 @@
 package code.gfx;
 
+import code.Game;
+
 public class Screen {
 	 //region fields
 	 private static final byte BIT_MIRROR_X = 0x01; // used for mirroring an image
@@ -26,7 +28,7 @@ public class Screen {
 	  * Clears all the colors on the screen
 	  */
 	 public void clear( ) {
-		  clear( 0 );
+		  clear( 0x000 );
 	 }
 	 
 	 /**
@@ -46,8 +48,8 @@ public class Screen {
 	  * @param yp     The X-coordinate on the screen
 	  * @param sprite the Sprite object containing (column, row) of the Spritesheet coordinate
 	  */
-	 public void render(int xp, int yp, Sprite0x5 sprite) {
-		  int colours = sprite.getColour( );
+	 public void render(int xp, int yp, Sprite0x6 sprite) {
+		  Colour colours = sprite.getColour( );
 		  final int tileSize = 8;
 		  xp -= xOffset; // horizontal offset of the screen
 		  yp -= yOffset; // vertical offset of the screen
@@ -96,14 +98,18 @@ public class Screen {
 					 // Finds the pixelLocation in the sheet.
 					 shift = sheet.pixels[pixelLocation];               // Possible value : 0..3; Sample : 2
 					 // Shifts to the left 3 bits. Multiplies by eight
-					 shift <<= 3;					/*		*= 8		*///Possible value 0x0,0x8,0x10,0x18, 0,8,16,24 Sample : 0x10, 16
+//					 shift <<= 3;					/*		*= 8		*///Possible value 0x0,0x8,0x10,0x18, 0,8,16,24 Sample : 0x10, 16
 					 // Shifts colours $shift bits to the left. Divides colour by 2^shift
-					 col = colours >> shift;	/*		colours / 2^shift	*///Sample : 0x7ad7ac2b -> 0x7ad7
+					 col = colours.get( shift );
+//					 col = colours >> shift;	/*		colours / 2^shift	*///Sample : 0x7ad7ac2b -> 0x7ad7
+					 
+					 
 					 // Then it keeps the last 8 bits
-					 col = col & 0xff; /*	col % 255	*/ // Sample : 0x7ad7 -> 0xd7
+//					 col = col & 0xff; /*	col % 255	*/ // Sample : 0x7ad7 -> 0xd7
 					 
 					 pixelLocation = (x + xp) + (y + yp) * w;
-					 pixels[pixelLocation] = col; // Inserts the colors into the image.
+					 if ( col > 0 )
+						 pixels[pixelLocation] = UtilitiesKt.bit_12Tobit_24( col ); // Inserts the colors into the image.
 				}
 		  }
 	 }
@@ -174,7 +180,7 @@ public class Screen {
 					 col = col & 0xff; /*	col % 255	*/ // Sample : 0x7ad7 -> 0xd7
 					 
 					 pixelLocation = (x + xp) + (y + yp) * w;
-					 pixels[pixelLocation] = col; // Inserts the colors into the image.
+					 if ( col < 255 ) pixels[pixelLocation] = Game.colors[col]; // Inserts the colors into the image.
 				}
 		  }
 	 }
@@ -218,8 +224,7 @@ public class Screen {
 	  * @deprecated
 	  */
 	 public void render(int xp, int yp, Sprite0x1 sprite, int colours, int bits) {
-		  Sprite0x2 spriteModified = sprite.update( bits );
-		  render( xp, yp, spriteModified, colours );
+		  render( xp, yp, sprite.update( bits ), colours );
 	 }
 	 
 	 /**
@@ -254,7 +259,8 @@ public class Screen {
 					 int xs = x; // current column pixel
 					 if ( mirrorX ) xs = 7 - x;  // Reverses the pixel for a mirroring effect
 					 int col = (colors >> (sheet.pixels[xs + ys * sheet.width + toffs] * 8)) & 255; // gets the color based on the passed in colors value.
-					 if ( col < 255 ) pixels[(x + xp) + (y + yp) * w] = col; // Inserts the colors into the image.
+					 int colour_24_bit = Game.colors[col]; // converts the colour into 24 bits
+					 if ( col < 255 ) pixels[(x + xp) + (y + yp) * w] = colour_24_bit; // Inserts the colors into the image.
 				}
 		  }
 	 }
@@ -304,7 +310,7 @@ public class Screen {
 					 int xd = xx - x; // the horizontal difference between the current pixel and the column position
 					 int dist = xd * xd + yd; // squares the distance of xd and adds yd for total distance.
 					 if ( dist <= r * r ) { // if distance is smaller or equal to r (radius) squared then...
-						  int br = 255 - dist * 255 / (r * r); // (255 - (distance value * 255) / r�) the area where light will be rendered
+						  int br = 255 - dist * 255 / (r * r); // (255 - (distance value * 255) / r²) the area where light will be rendered
 						  if ( pixels[xx + yy * w] < br )
 								pixels[xx + yy * w] = br; // If the current pixel is smaller than br, then the pixel will equal br.
 					 }
