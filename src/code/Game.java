@@ -29,6 +29,7 @@ public class Game extends Canvas implements Runnable {
 	 public static final int WIDTH = 267;
 	 private static final long serialVersionUID = 1L;
 	 private static final int SCALE = 3; // scales the window
+	 public static int[] colors = new int[256]; // All of the colors put into an array
 	 /**
 	  * The history of all the frames in the game
 	  */
@@ -50,7 +51,6 @@ public class Game extends Canvas implements Runnable {
 	 private Screen screen; // Creates the main screen
 	 private Screen lightScreen; // Creates a front screen to render the darkness in caves (Fog of war).
 	 private InputHandler input = new InputHandler( this ); // Creates the class (InputHandler.java) that will take in out inputs (aka: pressing the 'W' key).
-	 private int[] colors = new int[256]; // All of the colors put into an array
 	 private Level level; // This is the current level you are on.
 	 // This array is about the different levels.
 	 // Remember that arrays start at 0 so you have 0,1,2,3,4
@@ -109,20 +109,16 @@ public class Game extends Canvas implements Runnable {
 		  wonTimer = 0;
 		  gameTime = 0;
 		  hasWon = false;
-		 
+		  
 		  levels = new Level[4];
 		  currentLevel = 2;
 		  
 		  // generates new maps
-		  levels[3] = new Level( 128, 128, 4, null ); // Creates some custom level by Matthew
-		  levels[2] = new Level( 128, 128, 3, levels[3] ); // Creates some custom level by Matthew
-		  levels[1] = new Level( 128, 128, 2, levels[2] ); // creates the deep mines (water/gold level)
-		  levels[0] = new Level( 128, 128, 1, levels[1] ); // creates the nether (lava/gem level)
-
-		/* Please note: the terms "Mines", "Deep Mines", and "Nether" are not the real names used in the code
-			I just got those names from the wiki where someone named them that. Those levels don't have any real names yet -David
-		*/
-		 
+		  levels[3] = new Level( 48, 48, 4, null ); // Creates some custom level by Matthew
+		  levels[2] = new Level( 48, 48, 3, levels[3] ); // Creates some custom level by Matthew
+		  levels[1] = new Level( 48, 48, 2, levels[2] ); // creates the plain plain
+		  levels[0] = new Level( 48, 48, 1, levels[1] ); // creates the rockies
+		  
 		  this.level = levels[currentLevel]; // puts level to the current level (surface)
 		  player = new Player( this, input ); // creates a new player
 		  player.findStartPos( level ); // finds the start level for the player
@@ -147,7 +143,7 @@ public class Game extends Canvas implements Runnable {
 						  int gg = (g * 255 / 5);
 						  int bb = (b * 255 / 5);
 						  int mid = (rr * 30 + gg * 59 + bb * 11) / 100;
-						 
+						  
 						  int r1 = ((((rr + mid) / 2) * 230) / 255) + 10;
 						  int g1 = ((((gg + mid) / 2) * 230) / 255) + 10;
 						  int b1 = ((((bb + mid) / 2) * 230) / 255) + 10;
@@ -282,7 +278,7 @@ public class Game extends Canvas implements Runnable {
 				requestFocus( ); // requests the focus of the screen.
 				return;
 		  }
-		 
+		  
 		  int xScroll = player.x - screen.w / 2; // scrolls the screen in the column axis.
 		  int yScroll = player.y - (screen.h - 8) / 2; //scrolls the screen in the row axis.
 		  if ( xScroll < 16 ) xScroll = 16; // if the screen is at the left border, then stop scrolling.
@@ -318,8 +314,18 @@ public class Game extends Canvas implements Runnable {
 		  for ( int y = 0; y < screen.h; y++ ) {
 				for ( int x = 0; x < screen.w; x++ ) {
 					 //loops through all the pixels on the screen
+					 
 					 int cc = screen.pixels[x + y * screen.w]; // finds a pixel on the screen.
-					 if ( cc < 255 ) pixels[x + y * WIDTH] = colors[cc]; // colors the pixel accordingly.
+					 if ( cc >= 0 )
+						  pixels[x + y * WIDTH] = cc;
+					 else
+						  throw new IllegalStateException( "a negative colour has been passed" );
+//					 if ( cc < 255 ) pixels[x + y * WIDTH] = colors[cc]; // colors the pixel accordingly.
+//					 else {
+//					 	 int c = screen.pixels[x + y * WIDTH];
+//					 	 // converts the twelve bits into 24 bits.
+//					 	 int bit_24 = UtilitiesKt.bit_12Tobit_24( bit_12 );
+//					 }
 				}
 		  }
 		  
