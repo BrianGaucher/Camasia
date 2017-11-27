@@ -289,11 +289,11 @@ public class Player extends Mob {
 		  if ( attackTime > 0 && attackDir == 1 ) { // if the attack time is larger than 0 and the attack Direction is 1 (Up)
 				screen.render( xo + 0, yo - 4, 6 + 13 * 32, Color.get( -1, 555, 555, 555 ), 0 ); // render a half-slash
 			 
-				screen.render( xo + 8, yo - 4, 6 + 13 * 32, Color
-						  .get( -1, 555, 555, 555 ), 1 ); // render a mirrored half-slash to the right of it.
-				if ( attackItem != null ) { // if the player has an item
+				// render a mirrored half-slash to the right of it.
+				screen.render( xo + 8, yo - 4, 6 + 13 * 32, Color.get( -1, 555, 555, 555 ), 1 );
+				// if the player has an item
+				if ( attackItem != null )
 					 attackItem.renderIcon( screen, xo + 4, yo - 4 ); // then render the icon of the item.
-				}
 		  }
 		  int col = Color.get( -1, 100, 220, 532 ); // color of the player
 		  if ( hurtTime > 0 ) { // if the player is hurt...
@@ -346,6 +346,7 @@ public class Player extends Mob {
 	 
 	 /**
 	  * What happens when the player interacts with a itemEntity
+	  * @param itemEntity The item being interacted with
 	  */
 	 public void touchItem(ItemEntity itemEntity) {
 		  itemEntity.take( this ); // calls the take() method in ItemEntity
@@ -364,14 +365,15 @@ public class Player extends Mob {
 	  */
 	 public boolean findStartPos(Level level) {
 		  while ( true ) { // will loop until it returns
-				int x = random.nextInt( level.w ); // gets a random value between 0 and the world's width - 1
-				int y = random.nextInt( level.h ); // gets a random value between 0 and the world's height - 1
-				if ( level
-						  .getTile( x, y ) == Tile.grass ) { // if the tile at the column & row coordinates is a grass tile then...
+				int x = 25; // gets a random value between 0 and the world's width - 1
+				int y = 35; // gets a random value between 0 and the world's height - 1
+				if ( level.getTile( x, y ) == Tile.grass | level.getTile( x, y ) == Tile.sand) {
+					 // if the tile at the column & row coordinates is a grass tile then...
 					 this.x = x * 16 + 8; // the player's column coordinate will be in the middle of the tile
 					 this.y = y * 16 + 8; // the player's row coordinate will be in the middle of the tile
 					 return true; // returns and stop's the loop
-				}
+				} else
+					 throw new IllegalStateException( "Coordinate (" + x + ", " + y + ") is not grass, nor sand" );
 		  }
 	 }
 	 
