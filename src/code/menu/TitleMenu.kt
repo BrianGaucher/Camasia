@@ -3,6 +3,11 @@ package code.menu
 import code.gfx.*
 import code.sound.Sound
 
+const val startGame = 0
+const val howToPlay = 1
+const val about = 2
+const val quit = 3
+
 class TitleMenu: Menu() {
 	private var selected = 0 // Currently selected option
 	
@@ -20,15 +25,16 @@ class TitleMenu: Menu() {
 		
 		if (input.attack.clicked || input.menu.clicked) { //If either the "Attack" or "Menu" keys are pressed then...
 			when (selected) {
-				0 -> { /*If the selection is 0 ("Start game")*/
+				startGame -> { /*If the selection is 0 ("Start game")*/
 					Sound.test.play() //Play a sound
 					game.resetGame() //Reset the game
 					game.setMenu(null) //Set the menu to null (No menus active)
 				}
-				1 -> game.setMenu(InstructionsMenu(this)) //If the selection is 1 ("How to play") then go to the instructions menu.
-				2 -> game.setMenu(AboutMenu(this)) //If the selection is 2 ("About") then go to the about menu.
-				3 -> {
-					println("You have decided to quit\n" + "The average FPS was : " + game.totalFrames / (game.gameTime / 60) + '\n' + "The total time was : " + game.gameTime / 60 + '\n')
+				howToPlay -> game.setMenu(InstructionsMenu(this)) //If the selection is 1 ("How to play") then go to the instructions menu.
+				about -> game.setMenu(AboutMenu(this)) //If the selection is 2 ("About") then go to the about menu.
+				quit -> {
+					println("You have decided to quit\nThe average FPS was : ${game.totalFrames / (game.gameTime / 60)}"+
+							        "\nThe total time was : ${game.gameTime / 60}\n")
 					System.exit(0)
 				}
 			}
@@ -47,22 +53,24 @@ class TitleMenu: Menu() {
 		val yo = 24 // Y location of the title
 		for (y in 0 until h) {
 			for (x in 0 until w) {
-				screen.render(xo + x * 8, yo + y * 8, Sprite0x6(x + 1, y + 6, Inversion.NONE, titleColour)) // Loops through all the squares to render them all on the screen.
+				// Loops through all the squares to render them all on the screen.
+				screen.render(xo + x * 8, yo + y * 8, Sprite0x6(x + 1, y + 6, Inversion.NONE, titleColour))
 			}
 		}
 		
 		/* This section is used to display this options on the screen */
 		
+		var colour  = 0x0
 		for (i in options.indices) { // Loops through all the options in the list
 			var msg = options[i] // Text of the current option
-			var colour = Colour(0x0, -1, -1, 0xfff) // Colour of unselected text
+			colour = 0xfff
 			if (i == selected) { // If the current option is the option that is selected
 				msg = "> $msg <" // Add the cursors to the sides of the message
-				colour = Colour(0x0, -1, -1, 0x00f) // change the colour of the option
+				colour = 0x00f
 			}
-			Font.draw(msg, screen, (screen.w - msg.length * 8) / 2, (8 + i) * 8, colour)
+			Font.draw(msg, screen, (screen.w - msg.length * 8) / 2, (8 + i) * 8, colour, 0x000)
 		}
 		
-		Font.draw("(Arrow keys,X and C)", screen, 0, screen.h - 8, Colour(0x0, 0x444, 0x444, 0x444)) // Draw text at the bottom
+		Font.draw("Arrow keys, X and C", screen, 4, screen.h - 8, 0x444, 0x000) // Draw text at the bottom
 	}
 }
