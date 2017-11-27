@@ -39,6 +39,29 @@ public class Font {
 	  * @param screen The screen to display upon
 	  * @param x      The X-coordinate on the screen
 	  * @param y      The Y-coordinate on the screen
+	  * @param colour The Colour object
+	  */
+	 public static void draw(String msg, Screen screen, int x, int y, int fontColour, int background) {
+		  msg = msg.toUpperCase( ); // turns all the characters you type in into upper case letters.
+		  for ( int i = 0; i < msg.length( ); i++ ) { // Loops through all the characters that you typed
+				int ix = chars.indexOf( msg.charAt( i ) ); // the current letter in the message loop
+				if ( ix >= 0 ) { // if that character's position is larger than or equal to 0 then...
+					 // render the character on the screen
+					 int carryOver = ix / 2;
+					 Colour colour = new Colour( background, -0x1, -0x1, fontColour ); // Creates the colour object
+					 Sprite0x6 sprite = new Sprite0x6( ix % 32, 30 + (ix / 32), Inversion.NONE, colour );
+					 screen.render( x + i * 8, y, sprite );
+				}
+		  }
+	 }
+	 
+	 /**
+	  * Draws the message to the column & row coordinates on the screen.
+	  *
+	  * @param msg    The message to be displayed
+	  * @param screen The screen to display upon
+	  * @param x      The X-coordinate on the screen
+	  * @param y      The Y-coordinate on the screen
 	  * @param col    The colour integer
 	  */
 	 public static void draw(String msg, Screen screen, int x, int y, int col) {
