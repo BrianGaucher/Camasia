@@ -109,7 +109,7 @@ public class Screen {
 					 
 					 pixelLocation = (x + xp) + (y + yp) * w;
 					 if ( col > 0 )
-						 pixels[pixelLocation] = UtilitiesKt.bit_12Tobit_24( col ); // Inserts the colors into the image.
+						  pixels[pixelLocation] = UtilitiesKt.bit_12Tobit_24( col ); // Inserts the colors into the image.
 				}
 		  }
 	 }
@@ -305,7 +305,7 @@ public class Screen {
 				y1 = h; // If the ending position of the circle is more than the height, then move it to the height
 		  for ( int yy = y0; yy < y1; yy++ ) { // Loops for (the difference between y0 and y1) times
 				int yd = yy - y; // the vertical difference between the current pixel and the row position
-				yd = yd * yd; // squares the yd value
+				yd *= yd; // squares the yd value
 				for ( int xx = x0; xx < x1; xx++ ) { // Loops for (the difference between x0 and x1) times
 					 int xd = xx - x; // the horizontal difference between the current pixel and the column position
 					 int dist = xd * xd + yd; // squares the distance of xd and adds yd for total distance.
