@@ -38,7 +38,7 @@ class TitleMenu: Menu() {
 	override fun render(screen: Screen) {
 		screen.clear()// Clears the screen to a black color.
 		
-		/* This section is used to display the minicraft title */
+		/* This section is used to display the  title */
 		
 		val h = 2 // Height of squares (on the spritesheet)
 		val w = 11 // Width of squares (on the spritesheet)
@@ -55,7 +55,7 @@ class TitleMenu: Menu() {
 		
 		for (i in options.indices) { // Loops through all the options in the list
 			var msg = options[i] // Text of the current option
-			var colour = Colour(0x0, -1, -1, 0xaaa) // Colour of unselected text
+			var colour = Colour(0x0, -1, -1, 0xfff) // Colour of unselected text
 			if (i == selected) { // If the current option is the option that is selected
 				msg = "> $msg <" // Add the cursors to the sides of the message
 				colour = Colour(0x0, -1, -1, 0x00f) // change the colour of the option
