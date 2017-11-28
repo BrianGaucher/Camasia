@@ -71,17 +71,7 @@ public class Level {
 				default:
 					 maps = null;
 		  }
-/*
-		  if ( level == 0 ) // If the level is 0 (surface)...
-		  else if ( level < 0 ) { // if the level is less than 0 (underground)...
-				maps = LegacyLevelGen
-						  .createAndValidateUndergroundMap( w, h, -level ); // create a underground map (depending on the level)
-				monsterDensity = 4; // lowers the monsterDensity value, which makes more enemies spawn
-		  } else { // if level is anything else, aka: above 0 (sky) then...
-				maps = LegacyLevelGen.createAndValidateSkyMap( w, h );  // creates a sky map
-		  }
 		  
-*/
 		  
 		  tiles = maps[0]; // assigns the tiles in the map
 		  data = maps[1]; // assigns the data of the tiles
@@ -91,23 +81,22 @@ public class Level {
 					 for ( int x = 0; x < w; x++ ) { // Loops through the width of the map
 						  // If the tile in the level above the current one is a stairs down then...
 						  if ( parentLevel.getTile( x, y ) == Tile.stairsDown ) {
-							 
 								setTile( x, y, Tile.stairsUp, 0 ); // set a stairs up tile in the same position on the current level
-							 
-								Tile tile = Tile.dirt; // assigns a tile to be a dirt
+								// assigns a tile to be a dirt
+								Tile tile = Tile.dirt;
 								if ( level == 0 )
 									 tile = Tile.hardRock; // if the level is 0 (surface) then reassign the tile to be a hard rock.
-							 
-								setTile( x - 1, y, tile, 0 ); // places the tile to the left of the stairs.
-								setTile( x + 1, y, tile, 0 ); // places the tile to the right of the stairs.
-								setTile( x, y - 1, tile, 0 ); // places the tile to the above of the stairs.
-								setTile( x, y + 1, tile, 0 ); // places the tile to the below of the stairs.
-								setTile( x - 1, y - 1, tile, 0 ); // places the tile to the upper-left position of the stairs.
-								setTile( x - 1, y + 1, tile, 0 ); // places the tile to the lower-left position of the stairs.
-								setTile( x + 1, y - 1, tile, 0 ); // places the tile to the upper-right position of the stairs.
-								setTile( x + 1, y + 1, tile, 0 ); // places the tile to the lower-right position of the stairs.
+
+//								setTile( x - 1, y, tile, 0 ); // places the tile to the left of the stairs.
+//								setTile( x + 1, y, tile, 0 ); // places the tile to the right of the stairs.
+//								setTile( x, y - 1, tile, 0 ); // places the tile to the above of the stairs.
+//								setTile( x, y + 1, tile, 0 ); // places the tile to the below of the stairs.
+//								setTile( x - 1, y - 1, tile, 0 ); // places the tile to the upper-left position of the stairs.
+//								setTile( x - 1, y + 1, tile, 0 ); // places the tile to the lower-left position of the stairs.
+//								setTile( x + 1, y - 1, tile, 0 ); // places the tile to the upper-right position of the stairs.
+//								setTile( x + 1, y + 1, tile, 0 ); // places the tile to the lower-right position of the stairs.
 						  }
-						
+						  
 					 }
 				}
 		  }
@@ -263,7 +252,7 @@ public class Level {
 	 public void add(Entity entity) {
 		  if ( entity instanceof Player ) { // if the entity happens to be a player
 				player = (Player) entity; // the player object will be this entity
-			 
+				
 		  }
 		  entity.removed = false; // sets the entity's removed value to false
 		  entities.add( entity ); // adds the entity to the entities list

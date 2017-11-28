@@ -44,9 +44,19 @@ typealias Colour12_bit = Short
 /**
  * This serves for Inversions of sprites.
  * @author Brian Gaucher
- * @since 0.1.2
+ * @since 0.1.0.2.3
  */
 enum class Inversion(val X: Boolean, val Y: Boolean) {
 	NONE(false, false), X_AXIS(true, false), Y_AXIS(false, true), ROTATE_180(true, true)
 	
+}
+
+/**
+ * This converts a 12 bit colour into a 24 bit colour
+ * @author Brian Gaucher
+ * @since 0.1.0.2.6
+ */
+fun bit_12Tobit_24(bit_12: Int): Int {
+	val bit_24 = (bit_12 and 0xf00) shl 0x4 or (bit_12 and 0x0f0) shl 0x4 or (bit_12 and 0x00f) shl 0x4
+	return bit_24
 }

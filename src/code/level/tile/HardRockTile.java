@@ -10,8 +10,8 @@ import code.level.Level;
 public class HardRockTile extends RockTile {
 	public HardRockTile(int id) {
 		super(id);
-		mainColor = 334; // assigns the main color 
-		darkColor = 001; // assigns the dark color (for shadows)
+		mainColour = 334; // assigns the main color
+		darkColour = 001; // assigns the dark color (for shadows)
 		t = this; // assigns the tile (for rendering purposes)
 	}
 

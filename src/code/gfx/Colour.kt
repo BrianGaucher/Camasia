@@ -7,48 +7,49 @@ package code.gfx
  * @author Brian Gaucher
  * @since 2017/09/03
  * 0.0.0.1.2
- * @param red The colour substituting for the red pixels
- * @param yellow The colour substituting for the yellow pixels
- * @param green The colour substituting for the green pixels
- * @param blue The colour substituting for the blue pixels
+ * @param black The colour substituting for the black pixels
+ * @param darkGrey The colour substituting for the darkGrey pixels
+ * @param lightGrey The colour substituting for the lightGrey pixels
+ * @param white The colour substituting for the white pixels
  * @constructor Creates a Colour variable from the colours given
- * @sample Colour(red = 0xfff, yellow = 0xf80, green = 0x0f0, blue = 0x00f)
+ * @sample Colour(black = 0xfff, darkGrey
+ *= 0xf80, lightGrey = 0x0f0, white = 0x00f)
  */
-class Colour(red: Int, yellow: Int, green: Int, blue: Int = 0) {
+class Colour(black: Int, darkGrey: Int, lightGrey: Int, white: Int) {
 	
-	val red: Colour12_bit
-	val yellow: Colour12_bit
-	val green: Colour12_bit
-	val blue: Colour12_bit
+	val black: Colour12_bit
+	val darkGrey: Colour12_bit
+	val lightGrey: Colour12_bit
+	val white: Colour12_bit
 	
 	init {
 		val max = 0xfff
-		require(red <= max && yellow <= max && green <= max && blue <= max) {
-			"""Value of red is $red,
-				|yellow is $yellow,
-				|green is $green,
-				|blue is $blue.
+		require(black <= max && darkGrey <= max && lightGrey <= max && white <= max) {
+			"""Value of black is $black,
+				|darkGrey is $darkGrey,
+				|lightGrey is $lightGrey,
+				|white is $white.
 				|One is not less than 0xfff or 4096""".trimMargin()
 		}
-		this.red = red.Colour12_bit()
-		this.yellow = yellow.Colour12_bit()
-		this.green = green.Colour12_bit()
-		this.blue = blue.Colour12_bit()
+		this.black = black.Colour12_bit()
+		this.darkGrey = darkGrey.Colour12_bit()
+		this.lightGrey = lightGrey.Colour12_bit()
+		this.white = white.Colour12_bit()
 	}
 	
 	operator fun get(i: Int): Int {
 		require(i in 0..3) { "index i must be between 0 and 3. It is $i" }
 		return when (i) {
-			0 -> red
-			1 -> yellow
-			2 -> green
-			3 -> blue
+			0 -> black
+			1 -> darkGrey
+			2 -> lightGrey
+			3 -> white
 			else -> throw IllegalArgumentException("Error in code")
 		}.toInt()
 	}
 	
 	private fun Int.Colour12_bit() = this.toShort()
 	
-	fun tuple() = Quadruple(red, yellow, green, blue)
+	fun tuple() = Quadruple(black, darkGrey, lightGrey, white)
 	
 }
